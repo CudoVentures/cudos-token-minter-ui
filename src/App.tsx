@@ -1,27 +1,27 @@
+import theme from 'theme'
+import { RootState } from 'store'
+import Layout from 'components/Layout'
 import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { CssBaseline, Container } from '@mui/material'
-import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom'
-import Layout from 'components/Layout'
 import RequireLedger from 'components/RequireLedger'
 import ConnectWallet from 'containers/ConnectWallet'
-import theme from 'theme'
-import { RootState } from 'store'
 import { useCallback, useEffect } from 'react'
 import { updateUser } from 'store/user'
 import { connectUser } from 'utils/config'
-import { initialState as initialUserState } from 'store/user'
 import { updateModalState } from 'store/modals'
 import Welcome from 'containers/Welcome'
 import { LEDGERS } from 'utils/constants'
+import { initialState as initialModalState } from 'store/modals'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 
 import '@fontsource/poppins'
 
 const App = () => {
   const location = useLocation()
   const themeColor = useSelector((state: RootState) => state.settings.theme)
+  const { chosenNetwork } = useSelector((state: RootState) => state.userState)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   const connectAccount = useCallback(async (ledgerType: string) => {
 
@@ -31,12 +31,9 @@ const App = () => {
         loadingType: true
       }))
 
-      const connectedUser = await connectUser(ledgerType)
+      const connectedUser = await connectUser(chosenNetwork!, ledgerType)
 
-      dispatch(updateUser({
-        ...initialUserState,
-        ...connectedUser
-      }))
+      dispatch(updateUser(connectedUser))
 
     } catch (error) {
       console.error((error as Error).message)
@@ -47,6 +44,7 @@ const App = () => {
         loadingType: false
       }))
     }
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -64,9 +62,15 @@ const App = () => {
 
   }, [connectAccount])
 
+  useEffect(() => {
+    dispatch(updateModalState(initialModalState))
+
+    //eslint-disable-next-line
+  }, [])
+
   return (
     <Container maxWidth='xl' style={{ display: 'contents', height: '100vh', width: '100vw', overflow: 'auto' }}>
-      <ThemeProvider theme={theme[themeColor]}>
+      <ThemeProvider theme={theme![themeColor!]}>
         <CssBaseline />
         {location.pathname !== '/' ? null : (
           <Routes>

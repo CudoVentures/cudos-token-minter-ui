@@ -8,6 +8,7 @@ export interface modalState {
     loadingType?: boolean
     success?: boolean
     failure?: boolean
+    changeChosenBalance?: boolean
     dataObject?: Record<string, unknown>
 }
 
@@ -19,6 +20,7 @@ export const initialState: modalState = {
     success: false,
     loadingType: false,
     failure: false,
+    changeChosenBalance: false,
     dataObject: {}
 }
 

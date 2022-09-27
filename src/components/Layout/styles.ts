@@ -62,7 +62,7 @@ export const styles = {
     background: theme.dark.custom.backgrounds.light,
     float: 'right',
     fontSize: '14px',
-    height: '224px',
+    height: '250px',
     minWidth: '224px',
     fontWeight: '500',
     display: 'flex',
@@ -102,8 +102,7 @@ export const StyledNetwork = styled(Box)(({ theme }) => ({
   height: '35px',
   marginRight: '20px',
   backgroundColor: theme.custom.backgrounds.primary,
-  zIndex: '10',
-  cursor: 'pointer'
+  zIndex: '10'
 }))
 
 export const StyledUser = styled(Box)(({ theme }) => ({
@@ -113,5 +112,5 @@ export const StyledUser = styled(Box)(({ theme }) => ({
   height: '35px',
   background: theme.custom.backgrounds.primary,
   zIndex: '10',
-  cursor: 'pointer'
+  cursor: 'default'
 }))

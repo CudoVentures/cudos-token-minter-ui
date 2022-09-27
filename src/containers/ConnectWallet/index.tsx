@@ -14,25 +14,21 @@ import { RootState } from 'store'
 import Header from 'components/Layout/Header'
 import { connectUser } from 'utils/config'
 import { useState } from 'react'
-
-import {
-  LEDGERS,
-  MODAL_MSGS
-} from 'utils/constants'
+import { LEDGERS, MODAL_MSGS } from 'utils/constants'
 
 const ConnectWallet = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const { address } = useSelector((state: RootState) => state.userState)
+  const { address, chosenNetwork } = useSelector((state: RootState) => state.userState)
   const [loading, setLoading] = useState(new Map())
 
-  const connect = async (ledgerType: string) => {
+  const connect = async (chosenNetwork: string, ledgerType: string) => {
 
     try {
       setLoading(new Map(loading.set(ledgerType, true)))
-      const connectedUser = await connectUser(ledgerType)
+      const connectedUser = await connectUser(chosenNetwork, ledgerType)
       dispatch(updateUser(connectedUser))
       navigate('/welcome')
 
@@ -72,7 +68,7 @@ const ConnectWallet = () => {
               <Typography variant="subtitle1" color="text.secondary">
                 CUDOS Token Minter is..... 'whatever marketing says it is'
                 <br />
-                In order to continue you need to connect your account.
+                In order to continue you need to connect a wallet.
               </Typography>
             </Box>
 
@@ -82,7 +78,7 @@ const ConnectWallet = () => {
                 loading={loading.get(LEDGERS.KEPLR)}
                 variant="contained"
                 color="primary"
-                onClick={() => connect(LEDGERS.KEPLR)}
+                onClick={() => connect(chosenNetwork!, LEDGERS.KEPLR)}
                 sx={styles.connectButton}
               >
                 <img
@@ -98,7 +94,7 @@ const ConnectWallet = () => {
                 loading={loading.get(LEDGERS.COSMOSTATION)}
                 variant="contained"
                 color="primary"
-                onClick={() => connect(LEDGERS.COSMOSTATION)}
+                onClick={() => connect(chosenNetwork!, LEDGERS.COSMOSTATION)}
                 sx={styles.connectButton}
               >
                 <img

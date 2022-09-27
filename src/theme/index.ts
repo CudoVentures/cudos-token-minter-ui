@@ -259,7 +259,9 @@ const light = createTheme({
   }
 })
 
-export default {
+const theme = {
   dark,
   light
 }
+
+export default theme
