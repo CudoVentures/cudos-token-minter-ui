@@ -6,7 +6,6 @@ import { StyledUser, styles } from './styles'
 import WalletIcon from 'assets/vectors/wallet-icon.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
-import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import ArrowIcon from 'assets/vectors/arrow-down.svg'
 import AccountBalance from 'components/AccountBalance'
 import { updateUser } from 'store/user'
@@ -27,12 +26,11 @@ import {
 const UserInfo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { address, accountName, connectedLedger } = useSelector((state: RootState) => state.userState)
+  const { address, accountName, connectedLedger, isAdmin } = useSelector((state: RootState) => state.userState)
 
   const [open, setOpen] = useState(false)
 
   const handleDisconnect = () => {
-    window.cosmostation
     sessionStorage.clear()
     localStorage.clear()
     dispatch(updateUser({ ...initialUserState }))
@@ -42,12 +40,11 @@ const UserInfo = () => {
 
   return (
     <StyledUser>
-      <Box onClick={() => setOpen(!open)} style={styles.userContainer}>
+      <Box style={styles.userContainer}>
         <Box style={styles.userInnerContainer}>
-          <img src={CudosLogo} alt="Cudos logo" />
           <AccountBalance />
           <hr style={styles.fancyLine}></hr>
-          <div style={{ display: 'contents' }}>
+          <div onClick={() => setOpen(!open)} style={{ cursor: 'pointer', display: 'contents' }}>
             <Box sx={{ marginRight: '10px' }}>
               <Avatar
                 style={styles.avatarStyling}
@@ -62,17 +59,17 @@ const UserInfo = () => {
             <Typography>
               {`Hi, ${accountName}`}
             </Typography>
+            <Box style={{ marginLeft: '15px' }}>
+              <img
+                style={{
+                  cursor: 'pointer',
+                  transform: open ? 'rotate(180deg)' : 'rotate(360deg)'
+                }}
+                src={ArrowIcon}
+                alt="Arrow Icon"
+              />
+            </Box>
           </div>
-          <Box style={{ marginLeft: '15px' }}>
-            <img
-              style={{
-                cursor: 'pointer',
-                transform: open ? 'rotate(180deg)' : 'rotate(360deg)'
-              }}
-              src={ArrowIcon}
-              alt="Arrow Icon"
-            />
-          </Box>
         </Box>
       </Box>
       <Collapse
@@ -83,12 +80,19 @@ const UserInfo = () => {
         <Box style={styles.dropdownMenuContainer}>
           <Box style={{ marginTop: '40px' }}>
             <Box sx={styles.userAddressHolder}>
+              {isAdmin ?
+                <Typography
+                  sx={{ color: 'chocolate', fontSize: '12px', marginBottom: '10px' }}
+                >
+                  CUDOS NETWORK ADMIN
+                </Typography>
+                : null}
               <Typography marginBottom={2} color="text.secondary" fontSize={13}>
                 {formatAddress(address!, 20)}
               </Typography>
             </Box>
             <CopyAndFollowComponent address={address!} />
-            <Box style={styles.disconnectBtnHolder}>
+            <Box marginBottom={10} style={styles.disconnectBtnHolder}>
               <Button
                 variant="contained"
                 color="primary"

@@ -26,7 +26,7 @@ export const styles = {
         style: {
             backgroundColor: 'transparent',
             backdropFilter: "blur(6px)",
-            opacity: 0.9
+            opacity: 1
         }
     },
     loadingProps: {

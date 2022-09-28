@@ -6,6 +6,8 @@ import LinkIcon from 'assets/vectors/link-icon.svg'
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import { formatAddress } from "utils/helpers"
 import { styles } from "./styles"
+import { useSelector } from "react-redux"
+import { RootState } from "store"
 
 export const AddressWithCopyAndFollowComponent = ({ address }: { address: string }): JSX.Element => {
     return (
@@ -24,6 +26,7 @@ export const AddressWithCopyAndFollowComponent = ({ address }: { address: string
 
 export const CopyAndFollowComponent = ({ address }: { address: string }): JSX.Element => {
 
+    const { chosenNetwork } = useSelector((state: RootState) => state.userState)
     const [copied, setCopied] = useState<boolean>(false)
 
     const handleCopy = (value: string) => {
@@ -48,7 +51,7 @@ export const CopyAndFollowComponent = ({ address }: { address: string }): JSX.El
                 />
             </Tooltip>
             <Tooltip title="Check address on explorer">
-                <a href={EXPLORER_ADDRESS_DETAILS(address)} target='_blank'>
+                <a href={EXPLORER_ADDRESS_DETAILS(chosenNetwork!, address)} rel="noreferrer" target='_blank'>
                     <img
                         style={{ paddingTop: '5px', ...styles.icons }}
                         src={LinkIcon}

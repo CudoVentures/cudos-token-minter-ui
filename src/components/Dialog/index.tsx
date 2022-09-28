@@ -3,6 +3,7 @@ import Loading from './Loading'
 import Success from './Success'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
+import BalanceSelector from './ModalComponents/BalanceSelector'
 
 const Dialog = () => {
 
@@ -10,6 +11,7 @@ const Dialog = () => {
         success,
         loading,
         failure,
+        changeChosenBalance
     } = useSelector((state: RootState) => state.modalState)
 
     switch (true) {
@@ -19,6 +21,8 @@ const Dialog = () => {
             return <Loading />
         case success:
             return <Success />
+        case changeChosenBalance:
+            return <BalanceSelector />
         default:
             return <div></div>
     }
