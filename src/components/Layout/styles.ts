@@ -14,19 +14,19 @@ export const styles = {
     flexDirection: 'column'
   },
   anchorStyle: {
-    alignItems: 'center', 
-    textDecoration: 'none', 
+    alignItems: 'center',
+    textDecoration: 'none',
     display: 'flex'
   },
   networkInfoHolder: {
-    width: 'max-content', 
-    marginRight: '20px', 
-    display: 'flex', 
+    width: 'max-content',
+    marginRight: '20px',
+    display: 'flex',
     alignItems: 'center'
   },
   avatarStyling: {
-    borderRadius: "0px", 
-    width: '18px', 
+    borderRadius: "0px",
+    width: '18px',
     height: '18px'
   },
   menuContainer: {
@@ -90,7 +90,7 @@ export const styles = {
     right: 0,
     left: 0,
     width: 'inherit',
-    padding: '20px 0 10px 0'
+    padding: '1rem'
   }
 } as const
 

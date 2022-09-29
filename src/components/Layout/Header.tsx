@@ -8,7 +8,7 @@ const Header = () => {
   const location = useLocation()
 
   return (
-    <Box sx={{ padding: '1rem 1rem 1rem 1rem' }}>
+    <Box sx={{ padding: '1rem' }}>
       <Box sx={{ marginBottom: '10px', alignItems: 'center', display: 'flex', flex: '1' }}>
         <a style={{ display: 'flex', textDecoration: 'none' }} href={window.location.origin}>
           <img src={LogoHeader} alt="logo" />

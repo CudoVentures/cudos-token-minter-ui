@@ -1,13 +1,13 @@
 import { Box, Grid, Typography } from '@mui/material'
 import { COLORS_DARK_THEME } from 'theme/colors'
-import { FOOTER_LINKS } from 'utils/constants'
+import { FOOTER } from 'utils/constants'
 import { styles } from './styles'
 
 const Footer = () => {
   return (
     <Box sx={styles.footerContainer} gap={6}>
       <Box display="flex" alignItems="center">
-        {FOOTER_LINKS.map((link) => (
+        {FOOTER.LEFT_LINKS.map((link) => (
           <Grid
             item
             key={link.text}
@@ -32,6 +32,28 @@ const Footer = () => {
             >
               {link.text}
             </Typography>
+          </Grid>
+        ))}
+      </Box>
+      <Box
+        alignItems="center"
+        display="flex"
+        gap={3}
+        sx={{ marginLeft: 'auto' }}
+      >
+        {FOOTER.RIGHT_LINKS.map((link) => (
+          <Grid
+            key={link.url}
+            onClick={() => window.open(link.url, '_blank')?.focus()}
+            sx={({ palette }) => ({
+              cursor: 'pointer',
+              color: palette.text.secondary,
+              '&:hover': {
+                color: palette.primary.main
+              }
+            })}
+          >
+            {link.icon}
           </Grid>
         ))}
       </Box>

@@ -6,7 +6,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <Box style={{height: '100vh', width: '100vw', display: 'grid'}}>
       <Header />
-        <Box sx={{ padding: '0 1rem' }} flexGrow={1}>
+        <Box sx={{ overflow: 'scroll', padding: '0 1rem' }} flexGrow={1}>
           {children}
         </Box>
       <Footer />

@@ -7,7 +7,7 @@ export const styles = {
     justifyContent: 'center',
     width: '100%',
     minWidth: '1000px',
-    height: '100%',
+    height: '700px',
     border: `1px solid ${theme.dark.palette.primary.main}`
   }
 } as const
