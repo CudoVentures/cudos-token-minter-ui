@@ -6,7 +6,7 @@ import { styles } from './styles'
 const Footer = () => {
   return (
     <Box sx={styles.footerContainer} gap={6}>
-      <Box display="flex" alignItems="center">
+      <Box display="flex">
         {FOOTER.LEFT_LINKS.map((link) => (
           <Grid
             item

@@ -85,7 +85,7 @@ export const styles = {
   footerContainer: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     bottom: 0,
     right: 0,
     left: 0,
