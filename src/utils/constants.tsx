@@ -1,6 +1,16 @@
+
+
 import moment from "moment"
 import cudosLogo from 'assets/vectors/cudos-logo.svg'
 import cudosAdminLogo from 'assets/vectors/cudos-admin-logo.svg'
+import { ReactComponent as TwitterIcon } from 'assets/vectors/twitter.svg'
+import { ReactComponent as TelegramIcon } from 'assets/vectors/telegram.svg'
+import { ReactComponent as DiscordIcon } from 'assets/vectors/discord.svg'
+import { ReactComponent as LinkedInIcon } from 'assets/vectors/linkedin.svg'
+import { ReactComponent as MediumIcon } from 'assets/vectors/medium.svg'
+import { ReactComponent as YouTubeIcon } from 'assets/vectors/youtube.svg'
+import { ReactComponent as FacebookIcon } from 'assets/vectors/facebook.svg'
+import { ReactComponent as SpotifyIcon } from 'assets/vectors/spotify.svg'
 
 // CONFIGURATIONS
 export const CHAIN_DETAILS = {
@@ -79,11 +89,25 @@ export const LEDGERS = {
     COSMOSTATION: 'Cosmostation'
 }
 
-export const FOOTER_LINKS = [
-    { text: `All rights reserved ${moment().year()}`, url: 'https://www.cudos.org/' },
-    { text: 'cudos.org', url: 'https://www.cudos.org/' },
-    { text: 'v1.0.0', url: 'https://github.com/CudoVentures/token-minter-ui' },
-]
+export const FOOTER = {
+    LEFT_LINKS: [
+        { text: 'Terms & Conditions', url: 'https://www.cudos.org/terms-and-conditions/' },
+        { text: 'Privacy Policy', url: 'https://www.cudos.org/privacy-policy' },
+        { text: 'cudos.org', url: 'https://www.cudos.org/' },
+        { text: `License © 2018 - ${moment().year()}`, url: 'https://www.cudos.org/' }
+    ],
+    RIGHT_LINKS: [
+        { icon: <TwitterIcon />, url: 'https://twitter.com/CUDOS_' },
+        { icon: <TelegramIcon />, url: 'https://t.me/cudostelegram' },
+        { icon: <DiscordIcon />, url: 'https://discord.com/invite/t397SKqf4u' },
+        { icon: <LinkedInIcon />, url: 'https://www.linkedin.com/company/cudos1' },
+        { icon: <MediumIcon />, url: 'https://medium.com/cudos' },
+        { icon: <YouTubeIcon />, url: 'https://www.youtube.com/c/CUDOS' },
+        { icon: <FacebookIcon />, url: 'https://www.facebook.com/cudos.org' },
+        { icon: <SpotifyIcon />, url: 'https://open.spotify.com/show/2lZuBXJ270g7taK06tnK35' },
+
+    ]
+}
 
 // MODAL MSGS
 export const MODAL_MSGS = {
