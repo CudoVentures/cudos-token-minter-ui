@@ -10,48 +10,20 @@ import { chainIDToAlias, handleAvailableNetworks } from 'utils/helpers'
 import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from 'store/user'
-import { connectUser } from 'utils/config'
-import { useEffect } from 'react'
-import { updateModalState } from 'store/modals'
 
 const NetworkInfo = () => {
 
   const dispatch = useDispatch()
-  const { chosenNetwork, connectedLedger } = useSelector((state: RootState) => state.userState)
+  const { chosenNetwork } = useSelector((state: RootState) => state.userState)
   const networksToDisplayInMenu = handleAvailableNetworks(CHAIN_DETAILS.DEFAULT_NETWORK)
   const collapsable = networksToDisplayInMenu.length > 1
   const aliasChainName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork!])
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<boolean>(false)
 
-  const setSelectedNetwork = (selectedNetwork: string) => {
+  const setChosenNetwork = (selectedNetwork: string) => {
     dispatch(updateUser({ chosenNetwork: selectedNetwork }))
     setOpen(false)
   }
-
-  useEffect(() => {
-    const reconnect = async () => {
-      try {
-        dispatch(updateModalState({
-          loading: true,
-          loadingType: true
-        }))
-        const reconnectedUser = await connectUser(chosenNetwork!, connectedLedger!)
-        dispatch(updateUser(reconnectedUser))
-
-      } catch (error) {
-        console.error((error as Error).message)
-
-      } finally {
-        dispatch(updateModalState({
-          loading: false,
-          loadingType: false
-        }))
-      }
-    }
-
-    reconnect()
-    //eslint-disable-next-line
-  }, [chosenNetwork])
 
   const NetworkLinkComponent = ({ network, key }: { network: networkToDisplay, key: number }): JSX.Element => {
 
@@ -63,7 +35,7 @@ const NetworkInfo = () => {
         key={key}
         onMouseOver={() => setHovered(true)}
         onMouseOut={() => setHovered(false)}
-        onClick={() => setSelectedNetwork(network.SHORT_NAMES[0].toUpperCase())}
+        onClick={() => setChosenNetwork(network.SHORT_NAMES[0].toUpperCase())}
       >
         <img
           style={{ marginRight: '10px' }}
@@ -90,7 +62,7 @@ const NetworkInfo = () => {
             {aliasChainName}
           </Typography>
           {collapsable ?
-            <Box style={{ marginLeft: '15px' }}>
+            <Box style={{ marginLeft: '25px' }}>
               <img
                 style={{
                   cursor: 'pointer',

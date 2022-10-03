@@ -1,5 +1,3 @@
-
-
 import moment from "moment"
 import cudosLogo from 'assets/vectors/cudos-logo.svg'
 import cudosAdminLogo from 'assets/vectors/cudos-admin-logo.svg'
@@ -56,19 +54,19 @@ export const CHAIN_DETAILS = {
         MAINNET: import.meta.env.VITE_APP_MAINNET_CHAIN_ID || process.env.VITE_APP_MAINNET_CHAIN_ID || ""
     },
     LOCAL: {
-        ALIAS_NAME: 'CUDOS Local Testnet',
+        ALIAS_NAME: 'Local Testnet',
         SHORT_NAMES: ['local']
     },
     PRIVATE: {
-        ALIAS_NAME: 'CUDOS Private Testnet',
-        SHORT_NAMES: ['private']
+        ALIAS_NAME: 'Private Testnet',
+        SHORT_NAMES: ['private', 'dev-test']
     },
     PUBLIC: {
-        ALIAS_NAME: 'CUDOS Public Testnet',
+        ALIAS_NAME: 'Public Testnet',
         SHORT_NAMES: ['public']
     },
     MAINNET: {
-        ALIAS_NAME: 'CUDOS Main Network',
+        ALIAS_NAME: 'Main Network',
         SHORT_NAMES: ['mainnet', 'cudos-1']
     }
 }
@@ -87,6 +85,24 @@ export const DENOM_TO_ALIAS = {
 export const LEDGERS = {
     KEPLR: 'Keplr',
     COSMOSTATION: 'Cosmostation'
+}
+
+//APP CONFIG
+export const RESOLUTIONS = {
+    MID_LOW: 1400,
+    LOW: 1000,
+    MID_LOWER: 850,
+    LOWER: 750,
+    MID_LOWEST: 450,
+    LOWEST: 200
+}
+
+export const APP_MENU = {
+    ITEMS: [
+        { icon: <TwitterIcon />, text: 'Mint Tokens', route: '/mint-tokens', disabled: false },
+        { icon: <TwitterIcon />, text: 'Assets', route: '/assets', disabled: false },
+        { icon: <TwitterIcon />, text: 'DEX Tools', route: '/dex-tools', disabled: true }
+    ]
 }
 
 export const FOOTER = {

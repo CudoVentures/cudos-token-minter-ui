@@ -4,6 +4,7 @@ import Success from './Success'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
 import BalanceSelector from './ModalComponents/BalanceSelector'
+import WalletSelector from './ModalComponents/WalletSelector'
 
 const Dialog = () => {
 
@@ -11,7 +12,8 @@ const Dialog = () => {
         success,
         loading,
         failure,
-        changeChosenBalance
+        changeChosenBalance,
+        selectWallet
     } = useSelector((state: RootState) => state.modalState)
 
     switch (true) {
@@ -23,6 +25,8 @@ const Dialog = () => {
             return <Success />
         case changeChosenBalance:
             return <BalanceSelector />
+        case selectWallet:
+            return <WalletSelector />
         default:
             return <div></div>
     }

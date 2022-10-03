@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material'
 import Dialog from 'components/Dialog'
 import { styles } from './styles'
 
-const Welcome = () => {
+const MintTokens = () => {
 
   return (
     <Box style={styles.contentHolder}>
@@ -15,4 +15,4 @@ const Welcome = () => {
 
 }
 
-export default Welcome
+export default MintTokens
