@@ -89,6 +89,7 @@ export const styles = {
   },
   networkSelectionMenuContainer: {
     background: theme.dark.custom.backgrounds.light,
+    minWidth: '180px',
     fontSize: '14px',
     fontWeight: '500',
     display: 'flex',
