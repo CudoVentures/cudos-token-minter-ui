@@ -4,26 +4,25 @@ import Layout from 'components/Layout'
 import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { CssBaseline, Container } from '@mui/material'
-import RequireLedger from 'components/RequireLedger'
-import ConnectWallet from 'containers/ConnectWallet'
 import { useCallback, useEffect } from 'react'
 import { updateUser } from 'store/user'
 import { connectUser } from 'utils/config'
 import { updateModalState } from 'store/modals'
-import Welcome from 'containers/Welcome'
 import { LEDGERS } from 'utils/constants'
 import { initialState as initialModalState } from 'store/modals'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
+import MintTokens from 'containers/MintTokens'
+import MainPage from 'containers/MainPage'
 
 import '@fontsource/poppins'
 
 const App = () => {
   const location = useLocation()
-  const themeColor = useSelector((state: RootState) => state.settings.theme)
-  const { chosenNetwork } = useSelector((state: RootState) => state.userState)
   const dispatch = useDispatch()
+  const themeColor = useSelector((state: RootState) => state.settings.theme)
+  const { chosenNetwork, connectedLedger } = useSelector((state: RootState) => state.userState)
 
-  const connectAccount = useCallback(async (ledgerType: string) => {
+  const connectAccount = useCallback(async (chosenNetwork: string, ledgerType: string) => {
 
     try {
       dispatch(updateModalState({
@@ -31,8 +30,7 @@ const App = () => {
         loadingType: true
       }))
 
-      const connectedUser = await connectUser(chosenNetwork!, ledgerType)
-
+      const connectedUser = await connectUser(chosenNetwork, ledgerType)
       dispatch(updateUser(connectedUser))
 
     } catch (error) {
@@ -48,18 +46,33 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("keplr_keystorechange",
-      async () => {
-        await connectAccount(LEDGERS.KEPLR)
-        return
-      });
 
-    window.cosmostation.cosmos.on("accountChanged",
-      async () => {
-        await connectAccount(LEDGERS.COSMOSTATION)
-        return
-      });
+    if (connectedLedger) {
+      connectAccount(chosenNetwork!, connectedLedger)
+    }
 
+    //eslint-disable-next-line
+  }, [chosenNetwork])
+
+  useEffect(() => {
+
+    if (window.keplr) {
+      window.addEventListener("keplr_keystorechange",
+        async () => {
+          await connectAccount(chosenNetwork!, LEDGERS.KEPLR)
+          return
+        });
+    }
+
+    if (window.cosmostation) {
+      window.cosmostation.cosmos.on("accountChanged",
+        async () => {
+          await connectAccount(chosenNetwork!, LEDGERS.COSMOSTATION)
+          return
+        });
+    }
+
+    //eslint-disable-next-line
   }, [connectAccount])
 
   useEffect(() => {
@@ -74,15 +87,15 @@ const App = () => {
         <CssBaseline />
         {location.pathname !== '/' ? null : (
           <Routes>
-            <Route path="/" element={<ConnectWallet />} />
+            <Route path="/" element={<MainPage />} />
           </Routes>
         )}
         {location.pathname === '/' ? null : (
           <Layout>
             <Routes>
-              <Route element={<RequireLedger />}>
-                <Route path="welcome" element={<Welcome />} />
-              </Route>
+              {/* <Route element={<RequireLedger />}> */}
+              <Route path="mint-tokens" element={<MintTokens />} />
+              {/* </Route> */}
               <Route path="*" element={<Navigate to="/" state={{ from: location }} />} />
             </Routes>
           </Layout>

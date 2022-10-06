@@ -2,10 +2,15 @@ import { Box, Grid, Typography } from '@mui/material'
 import { COLORS_DARK_THEME } from 'theme/colors'
 import { FOOTER } from 'utils/constants'
 import { styles } from './styles'
+import { useLowerResCheck, useLowResCheck } from 'utils/CustomHooks/screenChecks'
 
 const Footer = () => {
+
+  const isLowRes = useLowResCheck()
+  const isLowerRes = useLowerResCheck()
+
   return (
-    <Box sx={styles.footerContainer} gap={6}>
+    <Box sx={styles.footerContainer} flexDirection={isLowRes ? 'column' : 'row'} gap={1}>
       <Box display="flex">
         {FOOTER.LEFT_LINKS.map((link) => (
           <Grid
@@ -27,7 +32,7 @@ const Footer = () => {
                 }
               }}
               color="text.secondary"
-              fontSize="0.8rem"
+              fontSize={isLowerRes ? "0.5rem" : "0.8rem"}
               fontWeight={500}
             >
               {link.text}
@@ -39,7 +44,7 @@ const Footer = () => {
         alignItems="center"
         display="flex"
         gap={3}
-        sx={{ marginLeft: 'auto' }}
+        sx={{ marginLeft: isLowRes ? 'none' : 'auto' }}
       >
         {FOOTER.RIGHT_LINKS.map((link) => (
           <Grid
