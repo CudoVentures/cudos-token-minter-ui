@@ -6,8 +6,8 @@ import { StyledUser, styles } from './styles'
 import WalletIcon from 'assets/vectors/wallet-icon.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
-import ArrowIcon from 'assets/vectors/arrow-down.svg'
-import AccountBalance from 'components/AccountBalance'
+import { ReactComponent as ArrowIcon } from 'assets/vectors/arrow-down.svg'
+// import AccountBalance from 'components/AccountBalance'
 import { updateUser } from 'store/user'
 import { initialState as initialUserState } from 'store/user'
 import { initialState as initialModalState, updateModalState } from 'store/modals'
@@ -40,10 +40,10 @@ const UserInfo = () => {
 
   return (
     <StyledUser>
-      <Box style={styles.userContainer}>
+      <Box borderRadius={5} style={styles.userContainer}>
         <Box style={styles.userInnerContainer}>
-          <AccountBalance />
-          <hr style={styles.fancyLine}></hr>
+          {/* <AccountBalance />
+          <hr style={styles.fancyLine}></hr> */}
           <div onClick={() => setOpen(!open)} style={{ cursor: 'pointer', display: 'contents' }}>
             <Box sx={{ marginRight: '10px' }}>
               <Avatar
@@ -60,14 +60,7 @@ const UserInfo = () => {
               {`Hi, ${accountName}`}
             </Typography>
             <Box style={{ marginLeft: '15px' }}>
-              <img
-                style={{
-                  cursor: 'pointer',
-                  transform: open ? 'rotate(180deg)' : 'rotate(360deg)'
-                }}
-                src={ArrowIcon}
-                alt="Arrow Icon"
-              />
+              <ArrowIcon style={{ transform: open ? 'rotate(180deg)' : 'rotate(360deg)' }} />
             </Box>
           </div>
         </Box>

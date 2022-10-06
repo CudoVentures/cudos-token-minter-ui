@@ -101,7 +101,7 @@ export const APP_MENU = {
     ITEMS: [
         { icon: <TwitterIcon />, text: 'Mint Tokens', route: '/mint-tokens', disabled: false },
         { icon: <TwitterIcon />, text: 'Assets', route: '/assets', disabled: false },
-        { icon: <TwitterIcon />, text: 'DEX Tools', route: '/dex-tools', disabled: true }
+        // { icon: <TwitterIcon />, text: 'DEX Tools', route: '/dex-tools', disabled: true }
     ]
 }
 

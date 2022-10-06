@@ -17,6 +17,20 @@ declare global {
         SHORT_NAMES: string[];
     }
 
+    interface MaxImgResolution {
+        height: number;
+        width: number;
+    }
+
+    interface TokenObject {
+        name?: string;
+        symbol?: string;
+        decimalPrecision?: number;
+        initialSupply?: string;
+        totalSupply?: string;
+        logoUrl?: string;
+    }
+
     type ComponentDefault = {
         className?: string
     }

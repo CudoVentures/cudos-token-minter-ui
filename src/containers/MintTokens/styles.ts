@@ -1,13 +1,19 @@
-import theme from "theme";
-
 export const styles = {
   contentHolder: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
-    minWidth: '1000px',
-    height: '700px',
-    border: `1px solid ${theme.dark.palette.primary.main}`
-  }
+    height: '100%',
+    overflow: 'auto'
+  },
+  controlBtn: {
+    marginTop: '30px',
+    width: '200px',
+    fontWeight: 700
+  },
+  logInControlBtn: {
+    marginTop: '30px',
+    fontWeight: 700
+  },
 } as const

@@ -1,12 +1,14 @@
 import { Box } from '@mui/material'
 import Footer from './Footer'
 import Header from './Header'
+import { styles } from './styles'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
   return (
-    <Box style={{ height: '100vh', width: '100vw', display: 'grid' }}>
+    <Box style={styles.layoutholder}>
       <Header />
-      <Box sx={{ overflow: 'auto', padding: '0 1rem' }} flexGrow={1}>
+      <Box sx={styles.childrenHolder}>
         {children}
       </Box>
       <Footer />

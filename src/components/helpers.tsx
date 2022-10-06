@@ -8,6 +8,7 @@ import { formatAddress } from "utils/helpers"
 import { styles } from "./styles"
 import { useSelector } from "react-redux"
 import { RootState } from "store"
+import { ReactComponent as TooltipIcon } from 'assets/vectors/tooltip.svg'
 
 export const AddressWithCopyAndFollowComponent = ({ address }: { address: string }): JSX.Element => {
     return (
@@ -58,6 +59,26 @@ export const CopyAndFollowComponent = ({ address }: { address: string }): JSX.El
                         alt="Link"
                     />
                 </a>
+            </Tooltip>
+        </Box>
+    )
+}
+
+export const TitleWithTooltip = ({ title, tooltipText }: {
+    title: string, tooltipText: string
+}): JSX.Element => {
+
+    return (
+        <Box style={{ display: 'flex' }}>
+            <Typography
+                variant="subtitle1"
+                fontWeight={700}
+                marginRight={1}
+            >
+                {title}
+            </Typography>
+            <Tooltip placement={'right'} followCursor={true} arrow={true} title={tooltipText}>
+                <Box marginTop={0.3}><TooltipIcon /></Box>
             </Tooltip>
         </Box>
     )

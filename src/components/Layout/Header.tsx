@@ -57,7 +57,7 @@ const Header = () => {
   const LoggedInUserNavBar = useCallback((): JSX.Element => {
     return (
       <Box style={{ display: 'flex', marginBottom: '10px' }}>
-        <NetworkInfo />
+        <NetworkInfo componentStyle={'nav'} />
         <UserInfo />
       </Box>
     )

@@ -13,6 +13,7 @@ import { initialState as initialModalState } from 'store/modals'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import MintTokens from 'containers/MintTokens'
 import MainPage from 'containers/MainPage'
+import Assets from 'containers/Assets'
 
 import '@fontsource/poppins'
 
@@ -95,6 +96,7 @@ const App = () => {
             <Routes>
               {/* <Route element={<RequireLedger />}> */}
               <Route path="mint-tokens" element={<MintTokens />} />
+              <Route path="assets" element={<Assets />} />
               {/* </Route> */}
               <Route path="*" element={<Navigate to="/" state={{ from: location }} />} />
             </Routes>
