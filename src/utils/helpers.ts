@@ -3,6 +3,37 @@ import { Coin } from "cudosjs"
 import { connectLedgerByType, getQueryClient } from "./config"
 import { CHAIN_DETAILS } from "./constants"
 import { isValidCudosAddress } from "./validation"
+import getImageSize from 'image-size-from-url'
+
+export const isValidLetter = (char: string): boolean => {
+  return char.toLowerCase() !== char.toUpperCase()
+}
+
+export const getExtension = (filename: string): string => {
+  return filename.substring(filename.lastIndexOf(".") + 1)
+}
+
+export const isValidImgRes = async (url: string, maxResolution: MaxImgResolution): Promise<boolean> => {
+  const { width, height } = await getImageSize(url)
+
+  if (width > maxResolution.width || height > maxResolution.height) {
+    return false
+  }
+
+  return true
+}
+
+export const isValidImgUrl = (url: string): boolean => {
+  const SUPPORTED_FORMATS = ["jpg", "jpeg", "svg"]
+  const extension = getExtension(url)
+  const validExtension = SUPPORTED_FORMATS.some(e => e === extension)
+
+  if (!validExtension || !url.toLowerCase().startsWith('https')) {
+    return false
+  }
+
+  return true
+}
 
 export const getConnectedUserAddressAndName = async (chosenNetwork: string, ledgerType: string): Promise<{ address: string; accountName: string; }> => {
 
