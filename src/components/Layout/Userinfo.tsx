@@ -12,7 +12,7 @@ import { updateUser } from 'store/user'
 import { initialState as initialUserState } from 'store/user'
 import { initialState as initialModalState, updateModalState } from 'store/modals'
 import { CopyAndFollowComponent } from 'components/helpers'
-import { LEDGERS } from 'utils/constants'
+import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 import { formatAddress } from 'utils/helpers'
 
 import {
@@ -35,7 +35,7 @@ const UserInfo = () => {
     localStorage.clear()
     dispatch(updateUser({ ...initialUserState }))
     dispatch(updateModalState({ ...initialModalState }))
-    navigate("/")
+    navigate(NAVIGATION_PATH.Home)
   }
 
   return (
@@ -70,7 +70,7 @@ const UserInfo = () => {
         style={{ marginTop: '-28px', zIndex: '-1' }}
         in={open}
       >
-        <Box style={styles.dropdownMenuContainer}>
+        <Box style={styles.dropdownMenuContainer} sx={{ height: isAdmin ? '250px' : '220px' }}>
           <Box style={{ marginTop: '40px' }}>
             <Box sx={styles.userAddressHolder}>
               {isAdmin ?

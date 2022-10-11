@@ -27,7 +27,7 @@ const Menu = () => {
                             onClick={() => item.disabled ? () => ({}) : navigateToRoute(item.route)}
                         >
                             {item.icon}
-                            <Typography marginLeft={1}>
+                            <Typography color={!item.disabled && location.pathname === item.route ? 'white' : 'inherit'} marginLeft={1}>
                                 {item.text}
                             </Typography>
                         </Box>

@@ -8,7 +8,7 @@ import { useCallback, useEffect } from 'react'
 import { updateUser } from 'store/user'
 import { connectUser } from 'utils/config'
 import { updateModalState } from 'store/modals'
-import { LEDGERS } from 'utils/constants'
+import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 import { initialState as initialModalState } from 'store/modals'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import MintTokens from 'containers/MintTokens'
@@ -86,19 +86,19 @@ const App = () => {
     <Container maxWidth='xl' style={{ display: 'contents', height: '100vh', width: '100vw', overflow: 'auto' }}>
       <ThemeProvider theme={theme![themeColor!]}>
         <CssBaseline />
-        {location.pathname !== '/' ? null : (
+        {location.pathname !== NAVIGATION_PATH.Home ? null : (
           <Routes>
-            <Route path="/" element={<MainPage />} />
+            <Route path={NAVIGATION_PATH.Home} element={<MainPage />} />
           </Routes>
         )}
-        {location.pathname === '/' ? null : (
+        {location.pathname === NAVIGATION_PATH.Home ? null : (
           <Layout>
             <Routes>
               {/* <Route element={<RequireLedger />}> */}
               <Route path="mint-tokens" element={<MintTokens />} />
               <Route path="assets" element={<Assets />} />
               {/* </Route> */}
-              <Route path="*" element={<Navigate to="/" state={{ from: location }} />} />
+              <Route path="*" element={<Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} />} />
             </Routes>
           </Layout>
         )}

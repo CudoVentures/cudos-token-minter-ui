@@ -1,14 +1,13 @@
 import { Box } from "@mui/material"
 import { FieldHandler } from "components/InputComponents"
 import { styles } from "./styles"
+import { useCallback } from "react"
 
 import {
     DEFAULT_TOTAL_SUPPLY_VALUE,
-    INPUT_FIELD,
-    INPUT_NAMES,
-    INPUT_TYPES,
     PLACEHOLDERS,
-    TOKEN_NAME,
+    TEXT,
+    TOKEN_TYPE,
     TOOLTIPS
 } from "./helpers"
 
@@ -17,72 +16,84 @@ const TokenDetails = ({
     tokenType,
     setTokenObject
 }: {
-    tokenObject: TokenObject
-    tokenType: TOKEN_NAME,
-    setTokenObject: React.Dispatch<React.SetStateAction<TokenObject>>
+    tokenObject: CW20.TokenObject
+    tokenType: TOKEN_TYPE,
+    setTokenObject: React.Dispatch<React.SetStateAction<CW20.TokenObject>>
 }) => {
 
-    const localObject = tokenObject
-    const isMintableToken = tokenType === TOKEN_NAME.Mintable
+    let localObject = tokenObject
 
-    const INPUT_FIELDS: INPUT_FIELD[] = [
+    const isDisabledTotalSupply = (useCallback(() => {
+        return tokenType === TOKEN_TYPE.Burnable || tokenType === TOKEN_TYPE.Standard
+
+        //eslint-disable-next-line
+    }, [localObject]))()
+
+    if (isDisabledTotalSupply && !localObject.totalSupply) {
+        localObject = {
+            ...localObject,
+            totalSupply: DEFAULT_TOTAL_SUPPLY_VALUE
+        }
+    }
+
+    const INPUT_FIELDS: CW20.INPUT_FIELD[] = [
         {
             //TokenName
-            name: INPUT_NAMES.TokenName,
+            name: TEXT.TokenName,
             value: localObject.name || '',
             placeholder: PLACEHOLDERS.TokenName,
             tooltip: TOOLTIPS.TokenName,
-            inputType: INPUT_TYPES.Text,
+            inputType: TEXT.Text,
             oldState: localObject,
             isDisabled: false
         },
         {
             //TokenSymbol
-            name: INPUT_NAMES.TokenSymbol,
+            name: TEXT.TokenSymbol,
             value: localObject.symbol || '',
             placeholder: PLACEHOLDERS.TokenSymbol,
             tooltip: TOOLTIPS.TokenSymbol,
-            inputType: INPUT_TYPES.Text,
+            inputType: TEXT.Text,
             oldState: localObject,
             isDisabled: false
         },
         {
             //DecimalPrecision
-            name: INPUT_NAMES.DecimalPrecision,
+            name: TEXT.DecimalPrecision,
             value: localObject.decimalPrecision || 0,
             placeholder: PLACEHOLDERS.DecimalPrecision,
             tooltip: TOOLTIPS.DecimalPrecision,
-            inputType: INPUT_TYPES.Number,
+            inputType: TEXT.Number,
             oldState: localObject,
             isDisabled: false
         },
         {
             //InitialSupply
-            name: INPUT_NAMES.InitialSupply,
+            name: TEXT.InitialSupply,
             value: localObject.initialSupply || '',
             placeholder: PLACEHOLDERS.InitialSupply,
             tooltip: TOOLTIPS.InitialSupply,
-            inputType: INPUT_TYPES.Text,
+            inputType: TEXT.Text,
             oldState: localObject,
             isDisabled: false
         },
         {
             //TotalSupply
-            name: INPUT_NAMES.TotalSupply,
-            value: isMintableToken ? DEFAULT_TOTAL_SUPPLY_VALUE : localObject.totalSupply || '',
+            name: TEXT.TotalSupply,
+            value: localObject.totalSupply || '',
             placeholder: PLACEHOLDERS.TotalSupply,
             tooltip: TOOLTIPS.TotalSupply,
-            inputType: INPUT_TYPES.Text,
+            inputType: TEXT.Text,
             oldState: localObject,
-            isDisabled: tokenType === TOKEN_NAME.Mintable
+            isDisabled: isDisabledTotalSupply
         },
         {
             //LogoUrl
-            name: INPUT_NAMES.LogoUrl,
+            name: TEXT.LogoUrl,
             value: localObject.logoUrl || '',
             placeholder: PLACEHOLDERS.LogoUrl,
             tooltip: TOOLTIPS.LogoUrl,
-            inputType: INPUT_TYPES.Text,
+            inputType: TEXT.Text,
             oldState: localObject,
             isDisabled: false
         },
@@ -92,8 +103,8 @@ const TokenDetails = ({
         <Box sx={styles.detailsHolder}>
             {INPUT_FIELDS.map((field, idx) => {
 
-                const skipField = tokenType === TOKEN_NAME.Unlimited &&
-                    field.name === INPUT_NAMES.TotalSupply
+                const skipField = tokenType === TOKEN_TYPE.Unlimited &&
+                    field.name === TEXT.TotalSupply
 
                 return skipField ? null :
                     <FieldHandler

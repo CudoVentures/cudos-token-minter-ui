@@ -11,6 +11,7 @@ import { updateModalState } from 'store/modals'
 import { useCallback } from 'react'
 import { useLowResCheck, useMidlowResCheck } from 'utils/CustomHooks/screenChecks'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
+import { NAVIGATION_PATH } from 'utils/constants'
 
 const Header = () => {
 
@@ -67,7 +68,7 @@ const Header = () => {
 
   return (
     <Box sx={isSmallerScreen() ? styles.smallerScreenHeaderContainer : styles.headerContainer}>
-      <Box onClick={() => navigateToRoute('/')} style={styles.logoHolder}>
+      <Box onClick={() => navigateToRoute(NAVIGATION_PATH.Home)} style={styles.logoHolder}>
         <img src={LogoHeader} alt="logo" />
         <Typography fontWeight={900} marginLeft={1} variant="h6" color="text.primary">
           | Token Minter
