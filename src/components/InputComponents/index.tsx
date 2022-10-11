@@ -94,7 +94,7 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
 
     return (
         <Box>
-            <TitleWithTooltip title={fieldObject.name} tooltipText={fieldObject.tooltip} />
+            <TitleWithTooltip text={fieldObject.name} tooltipText={fieldObject.tooltip} />
             <Box style={styles.input}>
                 {isImgUrlInput ? <ImgLogo style={{ margin: '20px 20px 20px 0' }} /> : null}
                 <Input

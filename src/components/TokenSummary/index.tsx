@@ -30,8 +30,8 @@ const TokenSummary = ({ tokenObject, tokenType, estimatedFee }: {
                         <SubTitle text={TEXT.DeploymentNetwork} />
                     </BoxWrapper>
                     <BoxWrapper>
-                        <TitleWithTooltip title={tokenType} tooltipText={TOKEN_DESCRIPTION[tokenType]} />
-                        <TitleWithTooltip title={aliasChainName} tooltipText={TOOLTIPS.DeploymentNetwork} />
+                        <TitleWithTooltip text={tokenType} tooltipText={TOKEN_DESCRIPTION[tokenType]} />
+                        <TitleWithTooltip text={aliasChainName} tooltipText={TOOLTIPS.DeploymentNetwork} />
                     </BoxWrapper>
                 </Card>
                 <Card style={styles.lowerCardHolder}>
@@ -51,14 +51,14 @@ const TokenSummary = ({ tokenObject, tokenType, estimatedFee }: {
                             <Title text={tokenObject.symbol!} />
                             <Title text={tokenObject.decimalPrecision?.toString()!} />
                             <TitleWithTooltip
-                                title={tokenObject.initialSupply!}
+                                text={tokenObject.initialSupply!}
                                 tooltipText={TOOLTIPS.InitialSupply}
                                 precision={tokenObject.decimalPrecision}
                             />
                             {
                                 tokenType === TOKEN_TYPE.Unlimited ? null :
                                     <TitleWithTooltip
-                                        title={tokenObject.totalSupply!}
+                                        text={tokenObject.totalSupply!}
                                         tooltipText={TOOLTIPS.TotalSupply}
                                         precision={tokenObject.decimalPrecision}
                                     />

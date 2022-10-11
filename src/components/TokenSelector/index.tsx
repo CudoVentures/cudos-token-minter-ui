@@ -40,7 +40,7 @@ const TokenSelector = ({ tokenType, setTokenType }: {
 
     return (
         <Box>
-            <TitleWithTooltip title={TEXT.TokenType} tooltipText={TOOLTIPS.TokenType} />
+            <TitleWithTooltip text={TEXT.TokenType} tooltipText={TOOLTIPS.TokenType} />
             <Card style={styles.cardHolder}>
                 {availableTokens.map((token, idx) => (
                     <Box
@@ -69,7 +69,7 @@ const TokenSelector = ({ tokenType, setTokenType }: {
             <AttributeHandler tokenType={tokenType} />
             <Box margin={'20px 0px 50px 0px'}>
                 <TitleWithTooltip
-                    title={TEXT.DeploymentNetwork}
+                    text={TEXT.DeploymentNetwork}
                     tooltipText={TOOLTIPS.DeploymentNetwork}
                 />
                 <Box margin={'10px 0px'}>
