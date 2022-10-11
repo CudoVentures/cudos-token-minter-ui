@@ -1,38 +1,61 @@
 import { BigNumber } from "bignumber.js"
-import { Coin } from "cudosjs"
-import { connectLedgerByType, getQueryClient } from "./config"
+import { Coin, DeliverTxResponse, EncodeObject, StdFee } from "cudosjs"
+import { connectLedgerByType, getQueryClient, getSigningCosmWasmClient } from "./config"
 import { CHAIN_DETAILS } from "./constants"
 import { isValidCudosAddress } from "./validation"
-import getImageSize from 'image-size-from-url'
+import { DEFAULT_TOKEN_IMG_URL } from "components/TokenDetails/helpers"
+import { separateDecimals, separateFractions, setDecimalPrecisionTo } from "./regexFormatting"
 
-export const isValidLetter = (char: string): boolean => {
-  return char.toLowerCase() !== char.toUpperCase()
+export const executeMsgs = async (
+  signer: string,
+  msgs: EncodeObject[],
+  fee: StdFee,
+  connectedLedger: string,
+  chosenNetwork: string
+):
+  Promise<DeliverTxResponse> => {
+
+  const client = await getSigningCosmWasmClient(connectedLedger, chosenNetwork)
+  return client.signAndBroadcast(
+    signer,
+    msgs,
+    fee,
+    CHAIN_DETAILS.DEFAULT_MEMO
+  )
+}
+
+export const getDisplayWorthyFee = (fees: StdFee, precision: number): string => {
+  const feesAmount = fees.gas ? calculateFeeFromGas(fees.gas) : '0'
+  const tempAmount = separateDecimals(separateFractions(feesAmount))
+  const formatedAmount = setDecimalPrecisionTo(tempAmount, precision)
+  return `${formatedAmount} ${CHAIN_DETAILS.CURRENCY_DISPLAY_NAME}`
+}
+
+export const calculateFeeFromGas = (gasAmount: number | string): string => {
+  return new BigNumber(CHAIN_DETAILS.GAS_PRICE).multipliedBy(new BigNumber(gasAmount)).valueOf()
+}
+
+export const getSanitizedTokenObject = (oldObject: CW20.TokenObject): CW20.TokenObject => {
+
+  return {
+    ...oldObject,
+    logoUrl: oldObject.logoUrl ? oldObject.logoUrl : DEFAULT_TOKEN_IMG_URL,
+    initialSupply: sanitizeString(oldObject.initialSupply!),
+    totalSupply: sanitizeString(oldObject.totalSupply!)
+  }
+}
+
+export const sanitizeString = (string: string): string => {
+  const sanitizedString = string
+    .replaceAll(' ', '')
+    .replaceAll('.', '')
+    .replaceAll(',', '')
+
+  return sanitizedString
 }
 
 export const getExtension = (filename: string): string => {
   return filename.substring(filename.lastIndexOf(".") + 1)
-}
-
-export const isValidImgRes = async (url: string, maxResolution: MaxImgResolution): Promise<boolean> => {
-  const { width, height } = await getImageSize(url)
-
-  if (width > maxResolution.width || height > maxResolution.height) {
-    return false
-  }
-
-  return true
-}
-
-export const isValidImgUrl = (url: string): boolean => {
-  const SUPPORTED_FORMATS = ["jpg", "jpeg", "svg"]
-  const extension = getExtension(url)
-  const validExtension = SUPPORTED_FORMATS.some(e => e === extension)
-
-  if (!validExtension || !url.toLowerCase().startsWith('https')) {
-    return false
-  }
-
-  return true
 }
 
 export const getConnectedUserAddressAndName = async (chosenNetwork: string, ledgerType: string): Promise<{ address: string; accountName: string; }> => {

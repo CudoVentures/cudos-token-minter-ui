@@ -1,4 +1,9 @@
 export const styles = {
+  parentHolder: {
+    opacity: '1',
+    transition: 'opacity .2s ease-in-out',
+    height: '100%'
+  },
   contentHolder: {
     display: 'flex',
     flexDirection: 'column',

@@ -65,6 +65,7 @@ export const styles = {
     position: 'relative',
     background: theme.dark.custom.backgrounds.primary,
     maxWidth: '100%',
+    minWidth: 'max-content',
     width: '100%',
     maxHeight: '48px'
   },
@@ -91,13 +92,13 @@ export const styles = {
     background: theme.dark.custom.backgrounds.light,
     float: 'right',
     fontSize: '14px',
-    height: '250px',
     width: '100%',
     fontWeight: '500',
     borderRadius: '0px 0px 20px 20px',
     display: 'flex',
     marginTop: '3px',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: '10px'
   },
   networkSelectionMenuContainer: {
     background: theme.dark.custom.backgrounds.light,

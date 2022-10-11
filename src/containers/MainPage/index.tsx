@@ -6,6 +6,7 @@ import Header from 'components/Layout/Header'
 import Footer from 'components/Layout/Footer'
 import { useLowResCheck, useMidLowestHeight } from 'utils/CustomHooks/screenChecks'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
+import { NAVIGATION_PATH } from 'utils/constants'
 
 const MainPage = () => {
 
@@ -55,7 +56,7 @@ const MainPage = () => {
             variant={isMidLowestHeight ? "outlined" : "contained"}
             color="primary"
             sx={styles.startMintingBtn}
-            onClick={() => navigateToRoute('/mint-tokens')}
+            onClick={() => navigateToRoute(NAVIGATION_PATH.MintTokens)}
           >
             Start Minting
           </Button>

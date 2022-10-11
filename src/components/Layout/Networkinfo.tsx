@@ -11,9 +11,8 @@ import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from 'store/user'
 
-const NetworkLinkComponent = ({ network, key, setChosenNetwork }: {
+const NetworkLinkComponent = ({ network, setChosenNetwork }: {
   network: networkToDisplay,
-  key: number,
   setChosenNetwork: (selectedNetwork: string) => void
 }): JSX.Element => {
 
@@ -22,7 +21,6 @@ const NetworkLinkComponent = ({ network, key, setChosenNetwork }: {
   return (
     <Box
       style={styles.anchorStyle}
-      key={key}
       onMouseOver={() => setHovered(true)}
       onMouseOut={() => setHovered(false)}
       onClick={() => setChosenNetwork(network.SHORT_NAMES[0].toUpperCase())}

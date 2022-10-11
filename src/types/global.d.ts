@@ -1,16 +1,14 @@
+import { Window as KeplrWindow } from "@keplr-wallet/types"
+
 export { }
 
 declare global {
 
     type Override<T1, T2> = Omit<T1, keyof T2> & T2
 
-    interface Window {
-        keplr: any
+    interface Window extends KeplrWindow {
         cosmostation: any
-        getOfflineSigner: any
-        getOfflineSignerOnlyAmino: any
-        meta: any
-    }
+      }
 
     interface networkToDisplay {
         ALIAS_NAME: string;
@@ -20,15 +18,6 @@ declare global {
     interface MaxImgResolution {
         height: number;
         width: number;
-    }
-
-    interface TokenObject {
-        name?: string;
-        symbol?: string;
-        decimalPrecision?: number;
-        initialSupply?: string;
-        totalSupply?: string;
-        logoUrl?: string;
     }
 
     type ComponentDefault = {

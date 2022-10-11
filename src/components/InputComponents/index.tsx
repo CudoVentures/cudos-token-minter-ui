@@ -2,30 +2,34 @@ import { Box, Input, InputAdornment } from "@mui/material"
 import { ReactComponent as ImgLogo } from 'assets/vectors/img-drag-drop-icon.svg'
 import { styles } from "./styles"
 import { TitleWithTooltip } from "components/helpers"
-import { INPUT_FIELD, INPUT_NAMES, FORBIDDEN_SYMBOLS } from "components/TokenDetails/helpers"
-import { isValidLetter } from "utils/helpers"
+import { FORBIDDEN_SYMBOLS, TEXT } from "components/TokenDetails/helpers"
+import { sanitizeString } from "utils/helpers"
+import { isOnlyLetters } from "utils/validation"
 
 export const FieldHandler = ({ fieldObject, setValue, }: {
-    fieldObject: INPUT_FIELD,
-    setValue: React.Dispatch<React.SetStateAction<TokenObject>>,
+    fieldObject: CW20.INPUT_FIELD,
+    setValue: React.Dispatch<React.SetStateAction<CW20.TokenObject>>,
 }) => {
 
     const handleFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 
         //LogoUrl
-        if (fieldObject.name === INPUT_NAMES.LogoUrl) {
+        if (fieldObject.name === TEXT.LogoUrl) {
             setValue({ ...fieldObject.oldState, logoUrl: event.target.value })
             return
         }
 
         //TokenName
-        if (fieldObject.name === INPUT_NAMES.TokenName) {
-            setValue({ ...fieldObject.oldState, name: event.target.value })
+        if (fieldObject.name === TEXT.TokenName) {
+            setValue({
+                ...fieldObject.oldState,
+                name: sanitizeString(event.target.value)
+            })
             return
         }
 
         //TokenSymbol
-        if (fieldObject.name === INPUT_NAMES.TokenSymbol) {
+        if (fieldObject.name === TEXT.TokenSymbol) {
             if (event.target.value.length > 5) {
                 event!.preventDefault()
                 return
@@ -35,7 +39,7 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
         }
 
         //DecimalPrecision
-        if (fieldObject.name === INPUT_NAMES.DecimalPrecision) {
+        if (fieldObject.name === TEXT.DecimalPrecision) {
 
             if (Number(event.target.value) > 18) {
                 event!.preventDefault()
@@ -46,16 +50,16 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
         }
 
         //InitialSupply && TotalSupply
-        if (fieldObject.name === INPUT_NAMES.InitialSupply || fieldObject.name === INPUT_NAMES.TotalSupply) {
+        if (fieldObject.name === TEXT.InitialSupply || fieldObject.name === TEXT.TotalSupply) {
 
-            const validNumber = Number(event.target.value.replaceAll(',', ''))
+            const validNumber = Number(sanitizeString(event.target.value))
 
             if ((!validNumber && validNumber !== 0) || event.target.value.length > 19) {
                 event!.preventDefault()
                 return
             }
 
-            const updatedKey = fieldObject.name === INPUT_NAMES.InitialSupply ? 'initialSupply' : 'totalSupply'
+            const updatedKey = fieldObject.name === TEXT.InitialSupply ? 'initialSupply' : 'totalSupply'
 
             setValue({
                 ...fieldObject.oldState,
@@ -70,23 +74,23 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
         event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
 
-        if (fieldObject.name === INPUT_NAMES.DecimalPrecision) {
+        if (fieldObject.name === TEXT.DecimalPrecision) {
             if (FORBIDDEN_SYMBOLS.Precision.includes(event.key)) {
                 event.preventDefault()
                 return
             }
         }
 
-        if (fieldObject.name === INPUT_NAMES.TokenSymbol ||
-            fieldObject.name === INPUT_NAMES.TokenName) {
-            if (!isValidLetter(event.key)) {
+        if (fieldObject.name === TEXT.TokenSymbol ||
+            fieldObject.name === TEXT.TokenName) {
+            if (!isOnlyLetters(event.key)) {
                 event.preventDefault()
                 return
             }
         }
     }
 
-    const isImgUrlInput = fieldObject.name === INPUT_NAMES.LogoUrl
+    const isImgUrlInput = fieldObject.name === TEXT.LogoUrl
 
     return (
         <Box>

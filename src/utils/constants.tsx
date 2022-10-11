@@ -9,9 +9,12 @@ import { ReactComponent as MediumIcon } from 'assets/vectors/medium.svg'
 import { ReactComponent as YouTubeIcon } from 'assets/vectors/youtube.svg'
 import { ReactComponent as FacebookIcon } from 'assets/vectors/facebook.svg'
 import { ReactComponent as SpotifyIcon } from 'assets/vectors/spotify.svg'
+import { ReactComponent as PlusIcon } from 'assets/vectors/plus-icon.svg'
+import { ReactComponent as MoneyIcon } from 'assets/vectors/money-icon.svg'
 
 // CONFIGURATIONS
 export const CHAIN_DETAILS = {
+    DEFAULT_MEMO: 'Created with CUDOS Token Minter',
     ADMIN_TOKEN_DENOM: 'cudosAdmin',
     NATIVE_TOKEN_DENOM: 'acudos',
     CURRENCY_DISPLAY_NAME: 'CUDOS',
@@ -89,6 +92,10 @@ export const LEDGERS = {
 
 //APP CONFIG
 export const RESOLUTIONS = {
+    MAX_IMG: {
+        height: 512,
+        width: 512,
+    },
     MID_LOW: 1400,
     LOW: 1000,
     MID_LOWER: 850,
@@ -97,11 +104,16 @@ export const RESOLUTIONS = {
     LOWEST: 200
 }
 
+export enum NAVIGATION_PATH {
+    Home = '/',
+    MintTokens = '/mint-tokens',
+    Assets = '/assets'
+}
+
 export const APP_MENU = {
     ITEMS: [
-        { icon: <TwitterIcon />, text: 'Mint Tokens', route: '/mint-tokens', disabled: false },
-        { icon: <TwitterIcon />, text: 'Assets', route: '/assets', disabled: false },
-        // { icon: <TwitterIcon />, text: 'DEX Tools', route: '/dex-tools', disabled: true }
+        { icon: <PlusIcon />, text: 'Mint Tokens', route: NAVIGATION_PATH.MintTokens, disabled: false },
+        { icon: <MoneyIcon />, text: 'Assets', route: NAVIGATION_PATH.Assets, disabled: false }
     ]
 }
 
@@ -127,12 +139,29 @@ export const FOOTER = {
 
 // MODAL MSGS
 export const MODAL_MSGS = {
+    LOADING: {
+        MESSAGES: {
+            DEFAULT: 'Waiting for transaction confirmation...'
+        }
+    },
+    SUCCESS: {
+        TITLES: {
+            DEFAULT: 'Success',
+        },
+    },
     ERRORS: {
         TITLES: {
+            DEFAULT: 'Error',
             LOGIN_FAIL: 'Login Failed'
         },
         MESSAGES: {
-            LOGIN_FAIL: 'Seems like something went wrong. Please try again later'
+            DEFAULT: 'Seems like something went wrong. Please try again later',
+            LOGIN_FAIL: 'Seems like we cannot log you in. Please try again later',
         }
     }
+}
+
+//TYPE URLS
+export enum TYPE_URLS {
+    MsgInstantiateContract = "/cosmwasm.wasm.v1.MsgInstantiateContract",
 }

@@ -1,11 +1,13 @@
 import { RootState } from 'store'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { Dialog as MuiDialog } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import SuccessIcon from 'assets/vectors/success.svg'
 import { useNavigate } from 'react-router-dom'
 import { CancelRoundedIcon, ModalContainer, styles } from './styles'
 import { initialState as initialModalState, updateModalState } from 'store/modals'
+import { NAVIGATION_PATH, TYPE_URLS } from 'utils/constants'
+import InstantiateSuccess from './SuccessTypes/InstantiateSuccess'
 
 const Success = () => {
 
@@ -14,17 +16,18 @@ const Success = () => {
 
   const {
     success,
-    message,
     msgType,
+    dataObject
   } = useSelector((state: RootState) => state.modalState)
 
   const contentComponentHandler = (msgType: string): JSX.Element => {
 
     let contentComponent: JSX.Element = (<div></div>)
-    
+
     switch (msgType) {
 
-      //TODO: Handle various msgType successes
+      case TYPE_URLS.MsgInstantiateContract:
+        return <InstantiateSuccess data={dataObject!} />
 
       default:
         return contentComponent
@@ -34,7 +37,7 @@ const Success = () => {
 
   const handleModalClose = () => {
     dispatch(updateModalState({ ...initialModalState }))
-    navigate("/welcome")
+    navigate(NAVIGATION_PATH.Home)
   }
 
   const closeModal = (event: {}, reason: string) => {
@@ -50,7 +53,7 @@ const Success = () => {
       onClose={closeModal}
       PaperProps={styles.defaultPaperProps}
     >
-      <ModalContainer sx={{ padding: '4rem' }}>
+      <ModalContainer sx={{ padding: '4rem 2rem 1rem 2rem' }}>
         <img src={SuccessIcon} alt="success-icon" />
         <CancelRoundedIcon onClick={handleModalClose} />
         <Box
@@ -66,22 +69,8 @@ const Success = () => {
           >
             Success!
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            {message}
-          </Typography>
         </Box>
         {contentComponentHandler(msgType!)}
-        <Button
-          variant="contained"
-          color="primary"
-          sx={() => ({
-            width: '50%',
-            fontWeight: 700
-          })}
-          onClick={handleModalClose}
-        >
-          Close
-        </Button>
       </ModalContainer>
     </MuiDialog>
   )

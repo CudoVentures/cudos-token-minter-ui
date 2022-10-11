@@ -40,8 +40,8 @@ export const styles = {
     },
     defaultPaperProps: {
         sx: {
+            width: 'max-content',
             background: 'transparent',
-            width: '100%',
             height: 'min-content',
             position: 'absolute',
             top: '1%',

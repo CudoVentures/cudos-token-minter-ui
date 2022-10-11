@@ -4,36 +4,43 @@ import { ReactComponent as RadioBtn } from './emptyRadio.svg'
 import Card from "components/Card/Card"
 import { COLORS_DARK_THEME } from "theme/colors"
 import { styles } from "./styles"
-import { TOKEN_NAME, TOKEN_TYPES } from "components/TokenDetails/helpers"
 import { TitleWithTooltip } from "components/helpers"
 import NetworkInfo from "components/Layout/Networkinfo"
+import { TEXT, TOKEN_TYPE, TOKEN_TYPES, TOOLTIPS } from "components/TokenDetails/helpers"
 
-const AttributeHandler = ({ tokenType }: { tokenType: TOKEN_NAME }): JSX.Element => {
+const AttributeHandler = ({ tokenType }: { tokenType: TOKEN_TYPE }): JSX.Element => {
 
     return TOKEN_TYPES[tokenType].attributes ? (
-        <Box style={{ padding: '15px 0px 5px 15px', borderRadius: '12px', border: `1px solid ${COLORS_DARK_THEME.LIGHT_BACKGROUND}` }}>
-            <Typography marginBottom={1} fontWeight={700}>Based on your token type selection your token will be:</Typography>
-            {TOKEN_TYPES[tokenType].attributes.map((attribute, idx: number) => (
-                <Box key={idx} marginBottom={1} display={'flex'}>
-                    <Typography marginRight={3} variant="subtitle2" color={'text.secondary'}>{attribute.type}</Typography>
-                    <Typography variant="subtitle2">{attribute.option}</Typography>
-                </Box>))}
+        <Box style={styles.attributeHandler}>
+            <Typography marginBottom={1} fontWeight={700}>
+                Based on your token type selection your token will be:
+            </Typography>
+            {
+                TOKEN_TYPES[tokenType].attributes.map((attribute, idx: number) => (
+                    <Box key={idx} marginBottom={1} display={'flex'}>
+                        <Typography marginRight={3} variant="subtitle2" color={'text.secondary'}>{attribute.type}</Typography>
+                        <Typography variant="subtitle2">{attribute.option}</Typography>
+                    </Box>))
+            }
         </Box>
     ) : <div></div>
 }
 
-const TokenSelector = ({ tokenType, setTokenType }: { tokenType: TOKEN_NAME, setTokenType: React.Dispatch<React.SetStateAction<TOKEN_NAME>> }) => {
+const TokenSelector = ({ tokenType, setTokenType }: {
+    tokenType: TOKEN_TYPE,
+    setTokenType: React.Dispatch<React.SetStateAction<TOKEN_TYPE>>
+}) => {
 
     const availableTokens = [
-        TOKEN_TYPES[TOKEN_NAME.Standart],
-        TOKEN_TYPES[TOKEN_NAME.Burnable],
-        TOKEN_TYPES[TOKEN_NAME.Mintable],
-        TOKEN_TYPES[TOKEN_NAME.Unlimited]
+        TOKEN_TYPES[TOKEN_TYPE.Standard],
+        TOKEN_TYPES[TOKEN_TYPE.Burnable],
+        TOKEN_TYPES[TOKEN_TYPE.Mintable],
+        TOKEN_TYPES[TOKEN_TYPE.Unlimited]
     ]
 
     return (
         <Box>
-            <TitleWithTooltip title={"Token Type"} tooltipText={""} />
+            <TitleWithTooltip title={TEXT.TokenType} tooltipText={TOOLTIPS.TokenType} />
             <Card style={styles.cardHolder}>
                 {availableTokens.map((token, idx) => (
                     <Box
@@ -62,8 +69,8 @@ const TokenSelector = ({ tokenType, setTokenType }: { tokenType: TOKEN_NAME, set
             <AttributeHandler tokenType={tokenType} />
             <Box margin={'20px 0px 50px 0px'}>
                 <TitleWithTooltip
-                    title={'Deployment Network'}
-                    tooltipText={'The network where your token will be deployed'}
+                    title={TEXT.DeploymentNetwork}
+                    tooltipText={TOOLTIPS.DeploymentNetwork}
                 />
                 <Box margin={'10px 0px'}>
                     <NetworkInfo componentStyle={"menu"} />

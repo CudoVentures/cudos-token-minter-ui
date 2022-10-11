@@ -1,4 +1,11 @@
+import { COLORS_DARK_THEME } from "theme/colors";
+
 export const styles = {
+    attributeHandler: {
+        padding: '15px 0px 5px 15px', 
+        borderRadius: '12px', 
+        border: `1px solid ${COLORS_DARK_THEME.LIGHT_BACKGROUND}`
+    },
     rowHolder: {
         marginBottom: '15px',
         alignItems: 'flex-start',

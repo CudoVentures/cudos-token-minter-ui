@@ -1,25 +1,45 @@
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Tooltip, Typography } from '@mui/material'
 import Dialog from 'components/Dialog'
 import Stepper from 'components/Stepper'
 import TokenDetails from 'components/TokenDetails'
-import { emptyTokenObject, TOKEN_NAME } from 'components/TokenDetails/helpers'
 import TokenSelector from 'components/TokenSelector'
-import { useRef, useState } from 'react'
+import TokenSummary from 'components/TokenSummary'
+import { EncodeObject, StdFee } from 'cudosjs'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { updateModalState } from 'store/modals'
+import { TYPE_URLS } from 'utils/constants'
 import { useLowResCheck } from 'utils/CustomHooks/screenChecks'
+import useSignAndBroadcast from 'utils/CustomHooks/useSignAndBroadcastTx'
+import useSimulateTx from 'utils/CustomHooks/useSimulateTx'
+import { getInstantiateContractMsg } from 'utils/MsgGenerators/getInstantiateContractMsg'
+import { isValidTokenObject } from 'utils/validation'
 import { styles } from './styles'
+
+import {
+  CODE_IDS,
+  emptyEncodeObject,
+  emptyFeesObject,
+  emptyTokenObject,
+  TOKEN_TYPE,
+} from 'components/TokenDetails/helpers'
 
 const MintTokens = () => {
 
   const dispatch = useDispatch()
+  const simulateTx = useSimulateTx()
+  const signAndBroadcast = useSignAndBroadcast()
   const parentHolder = useRef<HTMLDivElement>(null)
   const isLowRes = useLowResCheck()
   const [currentStep, setCurrentStep] = useState<number>(1)
-  const [tokenType, setTokenType] = useState<TOKEN_NAME>(TOKEN_NAME.Standart)
-  const [tokenObject, setTokenObject] = useState<TokenObject>(emptyTokenObject)
-  const { address } = useSelector((state: RootState) => state.userState)
+  const [tokenType, setTokenType] = useState<TOKEN_TYPE>(TOKEN_TYPE.Standard)
+  const [tokenObject, setTokenObject] = useState<CW20.TokenObject>(emptyTokenObject)
+  const [nextBtnTooltip, setNextBtnTooltip] = useState<string>('')
+  const [validatedData, setValidatedData] = useState<boolean>(false)
+  const [simulatedFee, setSimulatedFee] = useState<StdFee>(emptyFeesObject)
+  const [initMsg, setInitMsg] = useState<EncodeObject>(emptyEncodeObject)
+  const { address, chosenNetwork } = useSelector((state: RootState) => state.userState)
 
   const CONTENT_PAGES = {
     1: <TokenSelector
@@ -31,18 +51,24 @@ const MintTokens = () => {
       setTokenObject={setTokenObject}
       tokenObject={tokenObject}
     />,
-    3: <Box>
-      {/* {JSON.stringify(tokenObject)} */}
-    </Box>
+    3: <TokenSummary
+      tokenType={tokenType}
+      tokenObject={tokenObject}
+      estimatedFee={simulatedFee}
+    />
   }
 
   const handleNavigation = (step: number) => {
 
-    parentHolder!.current!.style.opacity! = '0'
+    if (step < 3) {
+      setSimulatedFee(emptyFeesObject)
+    }
 
     if (step === 1) {
       setTokenObject(emptyTokenObject)
     }
+
+    parentHolder!.current!.style.opacity! = '0'
 
     setTimeout(() => {
       parentHolder!.current!.style.opacity! = '1'
@@ -51,14 +77,50 @@ const MintTokens = () => {
     }, 200)
   }
 
-  const handleMint = () => {
-    //TODO:
+  const handleMint = async () => {
+
+    const signAndBroadcastData:
+      CW20.SignAndBroadcastMsgData = {
+      msgType: TYPE_URLS.MsgInstantiateContract,
+      msgs: [initMsg!],
+      fees: simulatedFee,
+      msgTypeSpecificData: {
+        tokenObject: tokenObject
+      }
+    }
+
+    await signAndBroadcast(signAndBroadcastData)
   }
 
-  const handleNextBtnClick = () => {
+  const handleInstantiateTxSimulation = async (instantiateMsgData: CW20.InstantiateMsgData) => {
+
+    const instantiateMsg = getInstantiateContractMsg(instantiateMsgData)
+    const fee = await simulateTx([instantiateMsg])
+
+    if (fee?.gas) {
+      setSimulatedFee(fee!)
+      setInitMsg(instantiateMsg)
+      handleNavigation(3)
+    }
+  }
+
+  const handleNextBtnClick = async () => {
 
     if (!address) {
       dispatch(updateModalState({ selectWallet: true }))
+      return
+    }
+
+    if (currentStep === 2) {
+
+      const instantiateMsgData: CW20.InstantiateMsgData = {
+        tokenObject: tokenObject,
+        tokenType: tokenType,
+        codeId: CODE_IDS.NETWORK[chosenNetwork!][tokenType],
+        sender: address || ''
+      }
+
+      await handleInstantiateTxSimulation(instantiateMsgData)
       return
     }
 
@@ -87,10 +149,33 @@ const MintTokens = () => {
     return 'Next'
   }
 
+  const validateData = useCallback(async () => {
+
+    if (currentStep === 1) {
+      setValidatedData(true)
+    }
+
+    if (currentStep === 2) {
+
+      const [valid, error] = await isValidTokenObject(tokenObject, tokenType)
+
+      setNextBtnTooltip(error)
+      setValidatedData(valid)
+    }
+
+    //eslint-disable-next-line
+  }, [currentStep, tokenObject])
+
+  useEffect(() => {
+
+    validateData()
+
+  }, [validateData])
+
   return (
     <Box style={styles.contentHolder}>
       <Dialog />
-      <Box ref={parentHolder} style={{ opacity: '1', transition: 'opacity .2s ease-in-out', height: '100%', width: isLowRes ? '70%' : '800px' }}>
+      <Box ref={parentHolder} width={isLowRes ? '70%' : '820px'} style={styles.parentHolder}>
         <Typography variant='h4' fontWeight={700}>Mint Tokens</Typography>
         <Stepper step={currentStep} />
         {
@@ -109,16 +194,20 @@ const MintTokens = () => {
           >
             Back
           </Button>
-          <Button
-            style={{ float: 'right' }}
-            disabled={false}
-            variant="contained"
-            color="primary"
-            sx={!address ? styles.logInControlBtn : styles.controlBtn}
-            onClick={handleNextBtnClick}
-          >
-            {handleNextBtnText()}
-          </Button>
+          <Tooltip title={nextBtnTooltip}>
+            <Box>
+              <Button
+                style={{ float: 'right' }}
+                disabled={!validatedData}
+                variant="contained"
+                color="primary"
+                sx={!address ? styles.logInControlBtn : styles.controlBtn}
+                onClick={() => handleNextBtnClick()}
+              >
+                {handleNextBtnText()}
+              </Button>
+            </Box>
+          </Tooltip>
         </Box>
       </Box>
     </Box>

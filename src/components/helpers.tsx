@@ -9,6 +9,7 @@ import { styles } from "./styles"
 import { useSelector } from "react-redux"
 import { RootState } from "store"
 import { ReactComponent as TooltipIcon } from 'assets/vectors/tooltip.svg'
+import { SubTitle } from "./Dialog/ModalComponents/helpers"
 
 export const AddressWithCopyAndFollowComponent = ({ address }: { address: string }): JSX.Element => {
     return (
@@ -64,8 +65,10 @@ export const CopyAndFollowComponent = ({ address }: { address: string }): JSX.El
     )
 }
 
-export const TitleWithTooltip = ({ title, tooltipText }: {
-    title: string, tooltipText: string
+export const TitleWithTooltip = ({ text, tooltipText, precision }: {
+    text: string,
+    tooltipText: string,
+    precision?: number
 }): JSX.Element => {
 
     return (
@@ -73,13 +76,20 @@ export const TitleWithTooltip = ({ title, tooltipText }: {
             <Typography
                 variant="subtitle1"
                 fontWeight={700}
-                marginRight={1}
+                marginRight={precision ? 0.2 : 1}
             >
-                {title}
+                {text}
             </Typography>
-            <Tooltip placement={'right'} followCursor={true} arrow={true} title={tooltipText}>
-                <Box marginTop={0.3}><TooltipIcon /></Box>
-            </Tooltip>
+            {
+                precision ?
+                    <SubTitle text={`.${'0'.repeat(precision!)}`} /> : null
+            }
+            {
+                tooltipText ?
+                    <Tooltip placement={'right'} followCursor={true} arrow={true} title={tooltipText}>
+                        <Box marginTop={0.3} marginLeft={precision ? '5px' : '0px'}> <TooltipIcon /></Box>
+                    </Tooltip> : null
+            }
         </Box>
     )
 }
