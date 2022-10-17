@@ -3,28 +3,29 @@ import { MsgInstantiateContractEncodeObject } from '@cosmjs/cosmwasm-stargate'
 import { MsgInstantiateContract } from 'cosmjs-types/cosmwasm/wasm/v1/tx'
 import Long from "long"
 import { getSanitizedTokenObject } from "utils/helpers"
+import { CW20 } from "types/CW20"
 
-export const getInstantiateContractMsg = (msgData: msgs.InstantiateMsgData): EncodeObject => {
+export const getInstantiateContractMsg = (msgData: CW20.InstantiateMsgData): EncodeObject => {
 
   const tokenObject: CW20.TokenObject = getSanitizedTokenObject(msgData.tokenObject)
 
-  const initialBalances: CW20.CW20Coin[] = [{
+  const initialBalances = [{
     address: msgData.sender,
-    amount: Number(tokenObject.initialSupply!)
+    amount: tokenObject.initialSupply!
   }]
 
-  const initMsg: CW20.InstantiateMsg = {
+  const initMsg = {
     name: tokenObject.name!,
     symbol: tokenObject.symbol!,
     decimals: tokenObject.decimalPrecision!,
     initial_balances: initialBalances,
     mint: {
       minter: msgData.sender,
-      cap: Number(tokenObject.totalSupply),
+      cap: tokenObject.totalSupply,
     },
     marketing: {
       logo: {
-        Url: tokenObject.logoUrl!,
+        url: tokenObject.logoUrl!,
       },
     },
   }

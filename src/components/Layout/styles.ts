@@ -134,7 +134,7 @@ export const styles = {
     bottom: 0,
     right: 0,
     left: 0,
-    width: 'inherit',
+    width: '100%',
     padding: '1rem 1rem 0.5rem'
   },
   appMenuContainer: {

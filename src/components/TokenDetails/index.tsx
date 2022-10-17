@@ -2,6 +2,7 @@ import { Box } from "@mui/material"
 import { FieldHandler } from "components/InputComponents"
 import { styles } from "./styles"
 import { useCallback } from "react"
+import { CW20 } from "types/CW20"
 
 import {
     DEFAULT_TOTAL_SUPPLY_VALUE,

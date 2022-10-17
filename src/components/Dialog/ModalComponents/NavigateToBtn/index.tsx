@@ -26,12 +26,11 @@ const NavigateToBtn = ({ btnText, route, size, type }: {
         return
       }
 
-      navigate(route)
-
     } finally {
-      setTimeout(() =>
+      setTimeout(() => {
         dispatch(updateModalState(initialState))
-        , 200)
+        navigate(route)
+      }, 400)
     }
   }
 

@@ -11,6 +11,8 @@ import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from 'store/user'
 
+export const networksToDisplayInMenu = handleAvailableNetworks(CHAIN_DETAILS.DEFAULT_NETWORK)
+
 const NetworkLinkComponent = ({ network, setChosenNetwork }: {
   network: networkToDisplay,
   setChosenNetwork: (selectedNetwork: string) => void
@@ -45,7 +47,6 @@ const NetworkInfo = ({ componentStyle }: { componentStyle: 'menu' | 'nav' }) => 
 
   const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
-  const networksToDisplayInMenu = handleAvailableNetworks(CHAIN_DETAILS.DEFAULT_NETWORK)
   const { chosenNetwork, address } = useSelector((state: RootState) => state.userState)
   const aliasChainName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork!])
 

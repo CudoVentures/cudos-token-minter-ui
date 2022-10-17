@@ -6,6 +6,7 @@ import { userState } from "store/user"
 import { CHAIN_DETAILS, LEDGERS } from "./constants"
 import { CW20Token } from "@cosmostation/extension-client/types/message"
 import { cosmos } from "@cosmostation/extension-client"
+import { CW20 } from "types/CW20"
 
 import {
     checkForAdminToken,
@@ -27,7 +28,6 @@ export const getOfflineSignerByType = async (ledgerType: string, chosenNetwork: 
     return undefined
 }
 
-//TODO: To be tested against actual CW20 deployed contract addresses for both wallets
 export const addTokenByLedgerType = async (addToWalletObject: CW20.AddToWalletObject) => {
 
     if (addToWalletObject.connectedLedger === LEDGERS.KEPLR) {
@@ -39,6 +39,10 @@ export const addTokenByLedgerType = async (addToWalletObject: CW20.AddToWalletOb
         return
     }
 
+
+    return
+
+    //The following is not working. Currently in touch with Cosmostation for further information.
     if (addToWalletObject.connectedLedger === LEDGERS.COSMOSTATION) {
 
         const tokenToAdd: CW20Token[] = [{

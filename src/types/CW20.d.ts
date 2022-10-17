@@ -1,3 +1,5 @@
+import { TOKEN_TYPE } from "components/TokenDetails/helpers";
+
 declare module CW20 {
 
     interface CW20Coin {
@@ -50,6 +52,7 @@ declare module CW20 {
         initialSupply?: string;
         totalSupply?: string;
         logoUrl?: string;
+        tokenType?: TOKEN_TYPE
     }
 
     interface AddToWalletObject {

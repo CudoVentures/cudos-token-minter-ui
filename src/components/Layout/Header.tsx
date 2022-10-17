@@ -12,9 +12,12 @@ import { useCallback } from 'react'
 import { useLowResCheck, useMidlowResCheck } from 'utils/CustomHooks/screenChecks'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
 import { NAVIGATION_PATH } from 'utils/constants'
+import AssetsNavBar from 'components/AssetsNavBar'
+import { useLocation } from 'react-router-dom'
 
 const Header = () => {
 
+  const location = useLocation()
   const dispatch = useDispatch()
   const navigateToRoute = useNavigateToRoute()
   const isLowRes = useLowResCheck()
@@ -67,26 +70,31 @@ const Header = () => {
   }, [address])
 
   return (
-    <Box sx={isSmallerScreen() ? styles.smallerScreenHeaderContainer : styles.headerContainer}>
-      <Box onClick={() => navigateToRoute(NAVIGATION_PATH.Home)} style={styles.logoHolder}>
-        <img src={LogoHeader} alt="logo" />
-        <Typography fontWeight={900} marginLeft={1} variant="h6" color="text.primary">
-          | Token Minter
-        </Typography>
+    <Box>
+      <Box sx={isSmallerScreen() ? styles.smallerScreenHeaderContainer : styles.headerContainer}>
+        <Box onClick={() => navigateToRoute(NAVIGATION_PATH.Home)} style={styles.logoHolder}>
+          <img src={LogoHeader} alt="logo" />
+          <Typography fontWeight={900} marginLeft={1} variant="h6" color="text.primary">
+            | Token Minter
+          </Typography>
+        </Box>
+        <Box
+          display={'flex'}
+          flexDirection={isSmallerScreen() ? 'column' : 'row'}
+          alignItems={'center'}
+        >
+          <div style={{ margin: isSmallerScreen() ? '10px 0px' : '0px' }}>
+            <Menu />
+          </div>
+          {isSmallerScreen() ? null : <hr style={styles.fancyWhiteLine}></hr>}
+          <div style={{ margin: isSmallerScreen() ? '10px' : '' }}>
+            {isUserLoggedIn() ? <LoggedInUserNavBar /> : <ConnectWalletBtn />}
+          </div>
+        </Box>
       </Box>
-      <Box
-        display={'flex'}
-        flexDirection={isSmallerScreen() ? 'column' : 'row'}
-        alignItems={'center'}
-      >
-        <div style={{ margin: isSmallerScreen() ? '10px 0px' : '0px' }}>
-          <Menu />
-        </div>
-        {isSmallerScreen() ? null : <hr style={styles.fancyWhiteLine}></hr>}
-        <div style={{ margin: isSmallerScreen() ? '10px' : '' }}>
-          {isUserLoggedIn() ? <LoggedInUserNavBar /> : <ConnectWalletBtn />}
-        </div>
-      </Box>
+      {
+        location.pathname === NAVIGATION_PATH.Assets ? <AssetsNavBar /> : null
+      }
     </Box>
   )
 }

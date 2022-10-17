@@ -9,6 +9,7 @@ import NavigateToBtn from "components/Dialog/ModalComponents/NavigateToBtn"
 import { CHAIN_DETAILS, NAVIGATION_PATH } from "utils/constants"
 import { RootState } from "store"
 import { useSelector } from "react-redux"
+import { CW20 } from "types/CW20"
 
 const InstantiateSuccess = ({ data }: { data: SuccessModalDataObject }) => {
 
