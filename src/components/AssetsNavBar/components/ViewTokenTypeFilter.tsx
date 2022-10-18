@@ -29,7 +29,7 @@ const AVAILABLE_TOKENS: TOKEN_TYPE[] = [
 
 export const getTokenTypeWithlogo = (tokenType: TOKEN_TYPE, color?: string): JSX.Element => {
     return (
-        <Box marginTop={0.6} display={'flex'} gap={2}>
+        <Box marginTop={0.6} display={'flex'} gap={1}>
             <Box color={color}>
                 {TOKEN_ICON_TYPE_MAPPER[tokenType]}
             </Box>

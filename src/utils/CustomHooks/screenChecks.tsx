@@ -2,6 +2,10 @@ import { useMediaQuery } from 'react-responsive'
 import { RESOLUTIONS } from "utils/constants"
 
 //WIDTH
+export const useHighResCheck = () => {
+    return useMediaQuery({ query: `(max-width: ${RESOLUTIONS.HIGH}px)` })
+}
+
 export const useMidlowResCheck = () => {
     return useMediaQuery({ query: `(max-width: ${RESOLUTIONS.MID_LOW}px)` })
 }

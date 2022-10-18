@@ -33,7 +33,7 @@ const InstantiateSuccess = ({ data }: { data: SuccessModalDataObject }) => {
         <Box style={styles.holder}>
             <Box alignItems={'center'} style={styles.holder}>
                 <Typography textAlign={'center'} variant="subtitle1" color='text.secondary'>
-                    {"You have successfully finished minitng your new token."} <br />
+                    {"You have successfully finished minting your new token."} <br />
                     {"You can view detailed information in Explorer."}
                 </Typography>
                 <FollowTxHashToExplorer txHash={data.result.transactionHash} />

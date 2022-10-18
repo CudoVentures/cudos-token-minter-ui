@@ -39,7 +39,7 @@ const ViewAssets = ({ assetsView, assetsCount }: { assetsView: AssetsView, asset
                 variant="subtitle1"
                 color={selected ? 'white' : 'inherit'}
             >
-                {assetsView}
+                {assetsView.toUpperCase()}
             </Typography>
             <Typography
                 fontWeight={700}

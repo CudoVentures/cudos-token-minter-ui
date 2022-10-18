@@ -21,20 +21,22 @@ const myData: CW20.TokenObject[] = Array(3).fill(
         initialSupply: '123456789',
         totalSupply: sanitizeString(DEFAULT_TOTAL_SUPPLY_VALUE),
         logoUrl: DEFAULT_TOKEN_IMG_URL,
-        tokenType: TOKEN_TYPE.Burnable
+        tokenType: TOKEN_TYPE.Burnable,
+        contractAddress: 'cudos1xhcxq4fvxth2hn3msmkpftkfpw73um7s4et3lh4r8cfmumk3qsmspz6p4p'
     }
 )
 
 // DUMMY DATA
 const allData: CW20.TokenObject[] = Array(29).fill(
     {
-        name: 'Token Name Two',
-        symbol: 'TKNT',
-        decimalPrecision: 6,
+        name: 'Token Name Two And Two Thirds',
+        symbol: 'WWWWW',
+        decimalPrecision: 18,
         initialSupply: '123456789',
         totalSupply: sanitizeString(DEFAULT_TOTAL_SUPPLY_VALUE),
         logoUrl: DEFAULT_TOKEN_IMG_URL,
-        tokenType: TOKEN_TYPE.Mintable
+        tokenType: TOKEN_TYPE.Mintable,
+        contractAddress: 'cudos1xhcxq4fvxth2hn3msmkpftkfpw73um7s4et3lh4r8cfmumk3qsmspz6p4p'
     }
 )
 
@@ -71,12 +73,12 @@ const Assets = () => {
     useEffect(() => {
 
         if (currentAssetsView === AssetsView.MyAssets) {
-            setDisplayData(myAssets)
+            setDisplayData(myAssets!)
             return
         }
 
         if (currentAssetsView === AssetsView.AllAssets) {
-            setDisplayData(allAssets)
+            setDisplayData(allAssets!)
         }
 
         //eslint-disable-next-line

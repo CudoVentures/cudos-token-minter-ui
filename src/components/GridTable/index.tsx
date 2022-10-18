@@ -3,7 +3,7 @@ import Card from 'components/Card/Card'
 import { useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import { RootState } from 'store'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getTokenTypeWithlogo } from 'components/AssetsNavBar/components/ViewTokenTypeFilter'
 import { CW20 } from 'types/CW20'
 import { COLORS_DARK_THEME } from 'theme/colors'
@@ -12,9 +12,14 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import NoAssetsView from 'components/NoAssetsView'
 import { TOKEN_TYPE } from 'components/TokenDetails/helpers'
+import { updateAssets } from 'store/assets'
+import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
+import { NAVIGATION_PATH } from 'utils/constants'
 
 const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
 
+    const dispatch = useDispatch()
+    const navigateToRoute = useNavigateToRoute()
     const [page, setPage] = useState<number>(0)
     const contentHolder = useRef<HTMLDivElement>(null)
     const maxItemPerRow: number = 4
@@ -43,10 +48,16 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
         .slice(page * maxItemsPerPage, page * maxItemsPerPage + maxItemsPerPage)
         .filter(filterBySearchTerms)
 
+    const handleClick = (token: CW20.TokenObject) => {
+        dispatch(updateAssets({selectedAsset: token}))
+        const subPath = `/${token.contractAddress}`
+        navigateToRoute(NAVIGATION_PATH.Assets+subPath)
+    }
+
     const TokenCard = ({ token }: { token: CW20.TokenObject }) => {
 
         return (
-            <Card sx={styles.tokenCard}>
+            <Card onClick={() => handleClick(token)} sx={styles.tokenCard}>
                 <img
                     style={styles.img}
                     src={token.logoUrl}

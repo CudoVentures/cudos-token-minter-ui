@@ -80,7 +80,7 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
       const validImgUrl = isValidImgUrl(tokenObject[key]!)
 
       if (!validImgUrl) {
-        informativeError = 'Invalid IMG URL'
+        informativeError = TEXT.InvalidImgUrl
         result = validImgUrl
         break
       }
@@ -94,7 +94,7 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
       )
 
       if (!validRes) {
-        informativeError = 'Invalid IMG Source or Resolution Exceeds Limit'
+        informativeError = `${TEXT.InvalidImgSource} or ${TEXT.ResolutionExceedsLimit}`
         result = validRes
         break
       }
