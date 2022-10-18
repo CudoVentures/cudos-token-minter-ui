@@ -3,6 +3,7 @@ import { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "store"
 import { initialState, SuccessModalDataObject, updateModalState } from "store/modals"
+import { CW20 } from "types/CW20"
 import { MODAL_MSGS } from "utils/constants"
 import { executeMsgs, getDisplayWorthyFee } from "utils/helpers"
 
@@ -16,7 +17,7 @@ const useSignAndBroadcast = () => {
 
     const dispatch = useDispatch()
 
-    const signAndBroadcast = useCallback(async (data: msgs.SignAndBroadcastMsgData) => {
+    const signAndBroadcast = useCallback(async (data: CW20.SignAndBroadcastMsgData) => {
 
         try {
             dispatch(updateModalState({

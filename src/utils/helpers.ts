@@ -5,6 +5,7 @@ import { CHAIN_DETAILS } from "./constants"
 import { isValidCudosAddress } from "./validation"
 import { DEFAULT_TOKEN_IMG_URL } from "components/TokenDetails/helpers"
 import { separateDecimals, separateFractions, setDecimalPrecisionTo } from "./regexFormatting"
+import { CW20 } from "types/CW20"
 
 export const executeMsgs = async (
   signer: string,
@@ -35,13 +36,17 @@ export const calculateFeeFromGas = (gasAmount: number | string): string => {
   return new BigNumber(CHAIN_DETAILS.GAS_PRICE).multipliedBy(new BigNumber(gasAmount)).valueOf()
 }
 
+export const addPrecision = (amount: string, precision: number): string => {
+  return `${amount}${"0".repeat(precision)}`
+}
+
 export const getSanitizedTokenObject = (oldObject: CW20.TokenObject): CW20.TokenObject => {
 
   return {
     ...oldObject,
     logoUrl: oldObject.logoUrl ? oldObject.logoUrl : DEFAULT_TOKEN_IMG_URL,
-    initialSupply: sanitizeString(oldObject.initialSupply!),
-    totalSupply: sanitizeString(oldObject.totalSupply!)
+    initialSupply: addPrecision(sanitizeString(oldObject.initialSupply!), oldObject.decimalPrecision!),
+    totalSupply: addPrecision(sanitizeString(oldObject.totalSupply!), oldObject.decimalPrecision!)
   }
 }
 

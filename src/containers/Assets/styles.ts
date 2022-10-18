@@ -1,10 +1,10 @@
 export const styles = {
     contentHolder: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        display: 'grid',
         width: '100%',
         height: '100%',
-        overflow: 'auto'
+        justifyItems: 'center',
+        transition: 'opacity .3s ease-in-out',
+        opacity: '1'
     },
 } as const

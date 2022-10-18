@@ -6,11 +6,15 @@ import { combineReducers,configureStore } from '@reduxjs/toolkit'
 import userStateReducer from './user'
 import settingsReducer from './settings'
 import modalStateReducer from './modals'
+import assetsNavigationReducer  from './assetsNavigation'
+import assetsReducer from './assets'
 
 const rootReducer = combineReducers({
     userState: userStateReducer,
     settings: settingsReducer,
-    modalState: modalStateReducer
+    modalState: modalStateReducer,
+    assetsNavState: assetsNavigationReducer,
+    assetsState: assetsReducer
 })
 
 const persistConfig = {

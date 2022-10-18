@@ -5,6 +5,7 @@ import { TitleWithTooltip } from "components/helpers"
 import { FORBIDDEN_SYMBOLS, TEXT } from "components/TokenDetails/helpers"
 import { sanitizeString } from "utils/helpers"
 import { isOnlyLetters } from "utils/validation"
+import { CW20 } from "types/CW20"
 
 export const FieldHandler = ({ fieldObject, setValue, }: {
     fieldObject: CW20.INPUT_FIELD,
@@ -54,7 +55,7 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
 
             const validNumber = Number(sanitizeString(event.target.value))
 
-            if ((!validNumber && validNumber !== 0) || event.target.value.length > 19) {
+            if ((!validNumber && validNumber !== 0) || event.target.value.length > 15) {
                 event!.preventDefault()
                 return
             }

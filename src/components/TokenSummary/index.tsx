@@ -9,6 +9,7 @@ import { chainIDToAlias, getDisplayWorthyFee } from "utils/helpers"
 import { styles } from "./styles"
 import { BoxWrapper, SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
 import { DEFAULT_TOKEN_IMG_URL, TEXT, TOKEN_TYPE, TOOLTIPS, TOKEN_DESCRIPTION } from "components/TokenDetails/helpers"
+import { CW20 } from "types/CW20"
 
 const TokenSummary = ({ tokenObject, tokenType, estimatedFee }: {
     tokenObject: CW20.TokenObject

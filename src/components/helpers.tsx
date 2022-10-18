@@ -1,5 +1,5 @@
-import { Box, Tooltip, Typography } from "@mui/material"
-import { useState } from "react"
+import { Box, Tooltip, Typography, TooltipProps, tooltipClasses } from "@mui/material"
+import { Fragment, useState } from "react"
 import { EXPLORER_ADDRESS_DETAILS } from "api/endpoints"
 import copy from "copy-to-clipboard"
 import LinkIcon from 'assets/vectors/link-icon.svg'
@@ -9,7 +9,8 @@ import { styles } from "./styles"
 import { useSelector } from "react-redux"
 import { RootState } from "store"
 import { ReactComponent as TooltipIcon } from 'assets/vectors/tooltip.svg'
-import { SubTitle } from "./Dialog/ModalComponents/helpers"
+import { Variant } from "@mui/material/styles/createTypography"
+import styled from "@emotion/styled"
 
 export const AddressWithCopyAndFollowComponent = ({ address }: { address: string }): JSX.Element => {
     return (
@@ -65,24 +66,30 @@ export const CopyAndFollowComponent = ({ address }: { address: string }): JSX.El
     )
 }
 
-export const TitleWithTooltip = ({ text, tooltipText, precision }: {
+export const TitleWithTooltip = ({ text, tooltipText, precision, variant }: {
     text: string,
     tooltipText: string,
+    variant?: Variant | 'inherit',
     precision?: number
 }): JSX.Element => {
 
     return (
         <Box style={{ display: 'flex' }}>
             <Typography
-                variant="subtitle1"
+                variant={variant ? variant : "inherit"}
                 fontWeight={700}
-                marginRight={precision ? 0.2 : 1}
+                marginRight={precision ? 0.2 : 0.5}
             >
                 {text}
             </Typography>
             {
                 precision ?
-                    <SubTitle text={`.${'0'.repeat(precision!)}`} /> : null
+                    <Typography
+                        variant={variant ? variant : "inherit"}
+                        color='text.secondary'
+                    >
+                        {`.${'0'.repeat(precision!)}`}
+                    </Typography> : null
             }
             {
                 tooltipText ?
@@ -91,5 +98,75 @@ export const TitleWithTooltip = ({ text, tooltipText, precision }: {
                     </Tooltip> : null
             }
         </Box>
+    )
+}
+
+export const TruncatedTextWithTooltip = ({ text, maxAllowed, variant, weight, symbol }: {
+    text: string,
+    maxAllowed: number,
+    variant?: Variant | 'inherit',
+    weight?: number
+    symbol?: boolean
+}): JSX.Element => {
+
+    let tempText = text
+    let tooltipText = ''
+
+    if (text.length > maxAllowed) {
+        tempText = symbol ?
+            `(${text.slice(0, maxAllowed)}...)` :
+            `${text.slice(0, maxAllowed)}...`
+        tooltipText = text
+    }
+
+    if (symbol && !tooltipText) {
+        tempText = `(${tempText})`
+    }
+
+    return (tooltipText ?
+        <AdvancedTooltip
+            tooltipComponent={
+                <TitleWithTooltip
+                    text={tooltipText}
+                    tooltipText={''}
+                    variant={'subtitle2'}
+                />}
+            children={
+                <Typography variant={variant ? variant! : 'inherit'} fontWeight={weight ? weight : 400}>
+                    {tempText}
+                </Typography>
+            }
+        /> :
+        <TitleWithTooltip
+            text={tempText}
+            tooltipText={''}
+            variant={variant}
+        />
+    )
+}
+
+export const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#F6F6F6',
+        color: 'black',
+        maxWidth: 'max-content',
+    },
+}))
+
+export const AdvancedTooltip = ({ tooltipComponent, children }: {
+    tooltipComponent: JSX.Element,
+    children: JSX.Element
+}) => {
+
+    return (
+        <HtmlTooltip title={
+            <Fragment>
+                {tooltipComponent}
+            </Fragment>}
+        >
+            {children}
+        </HtmlTooltip>
     )
 }

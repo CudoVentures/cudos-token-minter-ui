@@ -10,7 +10,7 @@ import { ReactComponent as YouTubeIcon } from 'assets/vectors/youtube.svg'
 import { ReactComponent as FacebookIcon } from 'assets/vectors/facebook.svg'
 import { ReactComponent as SpotifyIcon } from 'assets/vectors/spotify.svg'
 import { ReactComponent as PlusIcon } from 'assets/vectors/plus-icon.svg'
-import { ReactComponent as MoneyIcon } from 'assets/vectors/money-icon.svg'
+import { ReactComponent as AllTypesTokenIcon } from 'assets/vectors/tokenTypeIcons/all-types-icon.svg'
 
 // CONFIGURATIONS
 export const CHAIN_DETAILS = {
@@ -96,7 +96,7 @@ export const RESOLUTIONS = {
         height: 512,
         width: 512,
     },
-    MID_LOW: 1400,
+    MID_LOW: 1300,
     LOW: 1000,
     MID_LOWER: 850,
     LOWER: 750,
@@ -113,7 +113,7 @@ export enum NAVIGATION_PATH {
 export const APP_MENU = {
     ITEMS: [
         { icon: <PlusIcon />, text: 'Mint Tokens', route: NAVIGATION_PATH.MintTokens, disabled: false },
-        { icon: <MoneyIcon />, text: 'Assets', route: NAVIGATION_PATH.Assets, disabled: false }
+        { icon: <AllTypesTokenIcon />, text: 'Assets', route: NAVIGATION_PATH.Assets, disabled: false }
     ]
 }
 

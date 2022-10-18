@@ -15,6 +15,7 @@ import useSignAndBroadcast from 'utils/CustomHooks/useSignAndBroadcastTx'
 import useSimulateTx from 'utils/CustomHooks/useSimulateTx'
 import { getInstantiateContractMsg } from 'utils/MsgGenerators/getInstantiateContractMsg'
 import { isValidTokenObject } from 'utils/validation'
+import { CW20 } from 'types/CW20'
 import { styles } from './styles'
 
 import {

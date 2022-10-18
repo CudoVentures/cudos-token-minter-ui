@@ -3,6 +3,7 @@ import { getExtension } from "./helpers"
 import reactImageSize from 'react-image-size'
 import { TEXT, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { CHAIN_DETAILS, RESOLUTIONS } from "./constants"
+import { CW20 } from "types/CW20"
 
 export const isValidCudosAddress = (addr: string) => {
   if (addr === '' || addr === undefined) return false
