@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TOKEN_TYPE } from 'components/TokenDetails/helpers'
-import { CHAIN_DETAILS } from 'utils/constants'
 
 export enum AssetsView {
   AllAssets = 'All Assets',
@@ -9,7 +8,6 @@ export enum AssetsView {
 
 export interface assetsNavigationState {
   currentAssetsView?: AssetsView;
-  networkView?: string;
   tokenTypeView?: TOKEN_TYPE;
   searchTerms?: string;
   activeSearch?: boolean;
@@ -17,7 +15,6 @@ export interface assetsNavigationState {
 
 export const initialState: assetsNavigationState = {
   currentAssetsView: AssetsView.AllAssets,
-  networkView: CHAIN_DETAILS.DEFAULT_NETWORK,
   tokenTypeView: TOKEN_TYPE.All,
   searchTerms: '',
   activeSearch: false

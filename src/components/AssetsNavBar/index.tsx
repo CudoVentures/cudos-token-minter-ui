@@ -9,7 +9,6 @@ import { useMidlowResCheck } from "utils/CustomHooks/screenChecks"
 import useNavigateToRoute from "utils/CustomHooks/useNavigateToRoute"
 import SearchBar from "./components/SearchBar"
 import ViewAssets from "./components/ViewAssets"
-import ViewNetworkFilter from "./components/ViewNetworkFilter"
 import ViewTokenTypeFilter from "./components/ViewTokenTypeFilter"
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { styles } from "./styles"
@@ -74,7 +73,6 @@ const AssetsNavBar = () => {
                             gap={2}
                             style={styles.removableContentHolder}
                         >
-                            <ViewNetworkFilter />
                             <ViewTokenTypeFilter />
                         </Box>
                 }

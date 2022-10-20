@@ -10,7 +10,7 @@ import { connectUser } from 'utils/config'
 import { updateModalState } from 'store/modals'
 import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 import { initialState as initialModalState } from 'store/modals'
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate, matchPath, useNavigate } from 'react-router-dom'
 import MintTokens from 'containers/MintTokens'
 import MainPage from 'containers/MainPage'
 import Assets from 'containers/Assets'
@@ -20,10 +20,13 @@ import RequireValidContractAddress from 'components/RequireValidContractAddress'
 import '@fontsource/poppins'
 
 const App = () => {
+
+  const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const { chosenNetwork, connectedLedger } = useSelector((state: RootState) => state.userState)
+  const isDetailedViewPath = matchPath(`${NAVIGATION_PATH.Assets}/*`, location.pathname)
 
   const connectAccount = useCallback(async (chosenNetwork: string, ledgerType: string) => {
 
@@ -35,6 +38,10 @@ const App = () => {
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
       dispatch(updateUser(connectedUser))
+
+      if (isDetailedViewPath) {
+        navigate(NAVIGATION_PATH.Assets)
+      }
 
     } catch (error) {
       console.error((error as Error).message)

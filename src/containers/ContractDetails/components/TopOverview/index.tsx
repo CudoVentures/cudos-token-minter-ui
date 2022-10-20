@@ -22,7 +22,7 @@ const TopOverview = () => {
     const editIcon = useRef<HTMLDivElement>()
     const [displayEditIcon, setDisplayEditIcon] = useState<boolean>(false)
     const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
-    const { networkView } = useSelector((state: RootState) => state.assetsNavState)
+    const { chosenNetwork } = useSelector((state: RootState) => state.userState)
 
     const isOwner = true
 
@@ -119,7 +119,7 @@ const TopOverview = () => {
                     style={styles.rightContentHolder}
                 >
                     <SubTitle text={TEXT.DeploymentNetwork} />
-                    <SubTitle text={CHAIN_DETAILS[networkView!].ALIAS_NAME} color={'text.primary'} />
+                    <SubTitle text={CHAIN_DETAILS[chosenNetwork!].ALIAS_NAME} color={'text.primary'} />
 
                     <SubTitle text={TEXT.DecimalPrecision} />
                     <SubTitle text={selectedAsset?.decimalPrecision?.toString()!} color={'text.primary'} />
