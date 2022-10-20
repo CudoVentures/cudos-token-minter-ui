@@ -20,6 +20,18 @@ export const CHAIN_DETAILS = {
     CURRENCY_DISPLAY_NAME: 'CUDOS',
     DEFAULT_NETWORK: import.meta.env.VITE_APP_DEFAULT_NETWORK || process.env.VITE_APP_DEFAULT_NETWORK || "",
     GAS_PRICE: import.meta.env.VITE_APP_GAS_PRICE || process.env.VITE_APP_GAS_PRICE || "",
+    GRAPHQL_URL: {
+        LOCAL: import.meta.env.VITE_APP_LOCAL_GRAPHQL_URL || process.env.VITE_APP_LOCAL_GRAPHQL_URL || "",
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_URL  || process.env.VITE_APP_PRIVATE_GRAPHQL_URL  || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_URL  || process.env.VITE_APP_PUBLIC_GRAPHQL_URL  || "",
+        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_URL  || process.env.VITE_APP_MAINNET_GRAPHQL_URL  || ""
+    },
+    GRAPHQL_WS: {
+        LOCAL: import.meta.env.VITE_APP_LOCAL_GRAPHQL_WS || process.env.VITE_APP_LOCAL_GRAPHQL_WS || "",
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_WS  || process.env.VITE_APP_PRIVATE_GRAPHQL_WS  || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_WS  || process.env.VITE_APP_PUBLIC_GRAPHQL_WS  || "",
+        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_WS || process.env.VITE_APP_MAINNET_GRAPHQL_WS  || ""
+    },
     RPC_ADDRESS: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_RPC || process.env.VITE_APP_LOCAL_RPC || "",
         PRIVATE: import.meta.env.VITE_APP_PRIVATE_RPC || process.env.VITE_APP_PRIVATE_RPC || "",
@@ -141,7 +153,7 @@ export const FOOTER = {
 // MODAL MSGS
 export const MODAL_MSGS = {
     PROMPTS: {
-        VALID_DATA: 'Please prove valid data'
+        VALID_DATA: 'Please provide valid data'
     },
     LOADING: {
         MESSAGES: {
