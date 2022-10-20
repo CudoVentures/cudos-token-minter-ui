@@ -96,6 +96,7 @@ export const RESOLUTIONS = {
         height: 512,
         width: 512,
     },
+    HIGH: 1600,
     MID_LOW: 1300,
     LOW: 1000,
     MID_LOWER: 850,
@@ -139,6 +140,9 @@ export const FOOTER = {
 
 // MODAL MSGS
 export const MODAL_MSGS = {
+    PROMPTS: {
+        VALID_DATA: 'Please prove valid data'
+    },
     LOADING: {
         MESSAGES: {
             DEFAULT: 'Waiting for transaction confirmation...'

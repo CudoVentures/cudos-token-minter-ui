@@ -14,6 +14,8 @@ import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import MintTokens from 'containers/MintTokens'
 import MainPage from 'containers/MainPage'
 import Assets from 'containers/Assets'
+import ContractDetails from 'containers/ContractDetails'
+import RequireValidContractAddress from 'components/RequireValidContractAddress'
 
 import '@fontsource/poppins'
 
@@ -96,7 +98,12 @@ const App = () => {
             <Routes>
               {/* <Route element={<RequireLedger />}> */}
               <Route path="mint-tokens" element={<MintTokens />} />
-              <Route path="assets" element={<Assets />} />
+              <Route path="assets">
+                <Route index element={<Assets />} />
+                <Route element={<RequireValidContractAddress />}>
+                  <Route path=":contractAddress" element={<ContractDetails />} />
+                </Route>
+              </Route>
               {/* </Route> */}
               <Route path="*" element={<Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} />} />
             </Routes>

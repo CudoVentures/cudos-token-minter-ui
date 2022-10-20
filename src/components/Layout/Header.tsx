@@ -12,8 +12,8 @@ import { useCallback } from 'react'
 import { useLowResCheck, useMidlowResCheck } from 'utils/CustomHooks/screenChecks'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
 import { NAVIGATION_PATH } from 'utils/constants'
-import AssetsNavBar from 'components/AssetsNavBar'
-import { useLocation } from 'react-router-dom'
+import AssetsNavBar, { DetailedViewNav } from 'components/AssetsNavBar'
+import { useLocation, matchPath } from 'react-router-dom'
 
 const Header = () => {
 
@@ -23,6 +23,7 @@ const Header = () => {
   const isLowRes = useLowResCheck()
   const isMidLowRes = useMidlowResCheck()
   const { address, accountName, connectedLedger } = useSelector((state: RootState) => state.userState)
+  const isDetailedViewPath = matchPath(`${NAVIGATION_PATH.Assets}/*`, location.pathname)
 
   const handleLogIn = () => {
     dispatch(updateModalState({
@@ -93,7 +94,8 @@ const Header = () => {
         </Box>
       </Box>
       {
-        location.pathname === NAVIGATION_PATH.Assets ? <AssetsNavBar /> : null
+        location.pathname === NAVIGATION_PATH.Assets ? <AssetsNavBar /> :
+        isDetailedViewPath ? <DetailedViewNav /> : null
       }
     </Box>
   )

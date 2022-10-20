@@ -36,6 +36,14 @@ export const emptyEncodeObject: EncodeObject = {
     value: {}
 }
 
+export enum TOKEN_ACTION {
+    IncreaseAllowance = 'Increase Allowance',
+    DecreaseAllowance =  'Decrease Allowance',
+    SendTransfer = 'Send/Transfer',
+    Mint = 'Mint',
+    Burn = 'Burn'
+}
+
 export enum TEXT {
     HTTPS_Prefix = 'https://',
     OK = 'OK',
@@ -53,21 +61,41 @@ export enum TEXT {
     DecimalPrecision = 'Decimal Precision',
     InitialSupply = 'Initial Supply',
     TotalSupply = 'Total Supply',
+    CurrentSupply = 'Current Supply',
+    YourBalance='Your Balance',
     LogoUrl = 'Logo URL',
     TokenType = "Token Type",
-    Summary = 'Summary'
+    Summary = 'Summary',
+    ReceiverAddress = 'Receiver Address',
+    Amount = 'Amount',
+    Send = 'Send',
+    Burn = 'Burn',
+    Mint = 'Mint',
+    Increase = 'Increase',
+    Decrease = 'Decrease',
+    InvalidImgUrl = 'Invalid IMG URL',
+    ResolutionExceedsLimit = 'Resolution Exceeds Limit',
+    InvalidImgSource = 'Invalid IMG Source',
+    DefaultLogo = 'Default Logo'
 }
 
 export enum PLACEHOLDERS {
+    CudosAddress = 'e.g. cudos21j319f2j932j3g92jg2jg',
     TokenName = "e.g 'Bitcoin','Etherium'",
     TokenSymbol = "e.g 'BTC','ETH'",
     DecimalPrecision = "e.g 18",
+    DecimalZeroes = '00.00',
     InitialSupply = 'e.g 100,000,000,000',
     TotalSupply = 'e.g 100,000,000,000',
     LogoUrl = 'e.g https://drive.google.com/file/d/_512x512.svg'
 }
 
 export enum TOOLTIPS {
+    SendTransfer = 'Send an amount of your tokens to a recipient of your choice',
+    Burn = 'Removes the amount from your balance and reduce total supply by the same amount',
+    Mint = 'This will create amount of new tokens (updating total supply) and add them to your balance, as long as it does not exceed the cap',
+    IncreaseAllowance = 'Set or increase the allowance such that spender may access up to amount + current_allowance tokens from the owner account',
+    DecreaseAllowance = 'Decrease or clear the allowance such that spender may access up to current_allowance - amount tokens from the owner account',
     TokenType = 'The specific details for your CW20 tokens',
     DeploymentNetwork = 'The network where your token will be deployed',
     TokenName = 'Choose a name for your token.',

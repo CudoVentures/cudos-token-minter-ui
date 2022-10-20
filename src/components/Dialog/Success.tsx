@@ -8,6 +8,7 @@ import { CancelRoundedIcon, ModalContainer, styles } from './styles'
 import { initialState as initialModalState, updateModalState } from 'store/modals'
 import { NAVIGATION_PATH, TYPE_URLS } from 'utils/constants'
 import InstantiateSuccess from './SuccessTypes/InstantiateSuccess'
+import GeneralSuccess from './SuccessTypes/GeneralSuccess'
 
 const Success = () => {
 
@@ -22,22 +23,22 @@ const Success = () => {
 
   const contentComponentHandler = (msgType: string): JSX.Element => {
 
-    let contentComponent: JSX.Element = (<div></div>)
-
     switch (msgType) {
 
       case TYPE_URLS.MsgInstantiateContract:
         return <InstantiateSuccess data={dataObject!} />
 
       default:
-        return contentComponent
+        return <GeneralSuccess data={dataObject!} />
     }
 
   }
 
   const handleModalClose = () => {
-    dispatch(updateModalState({ ...initialModalState }))
-    navigate(NAVIGATION_PATH.Home)
+    dispatch(updateModalState(initialModalState))
+    if (msgType) {
+      navigate(NAVIGATION_PATH.Home)
+    }
   }
 
   const closeModal = (event: {}, reason: string) => {

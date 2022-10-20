@@ -52,7 +52,8 @@ declare module CW20 {
         initialSupply?: string;
         totalSupply?: string;
         logoUrl?: string;
-        tokenType?: TOKEN_TYPE
+        tokenType?: TOKEN_TYPE;
+        contractAddress?: string;
     }
 
     interface AddToWalletObject {

@@ -20,14 +20,14 @@ const Menu = () => {
                         <Box
                             sx={
                                 item.disabled ? styles.disabledMenuItemHolder :
-                                    !item.disabled && location.pathname === item.route ? styles.selectedMenuItemHolder :
+                                    !item.disabled && location.pathname.includes(item.route) ? styles.selectedMenuItemHolder :
                                         styles.menuItemHolder
                             }
                             style={styles.commonMenuStyles}
                             onClick={() => item.disabled ? () => ({}) : navigateToRoute(item.route)}
                         >
                             {item.icon}
-                            <Typography color={!item.disabled && location.pathname === item.route ? 'white' : 'inherit'} marginLeft={1}>
+                            <Typography color={!item.disabled && location.pathname.includes(item.route) ? 'white' : 'inherit'} marginLeft={1}>
                                 {item.text}
                             </Typography>
                         </Box>

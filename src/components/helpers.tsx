@@ -66,18 +66,21 @@ export const CopyAndFollowComponent = ({ address }: { address: string }): JSX.El
     )
 }
 
-export const TitleWithTooltip = ({ text, tooltipText, precision, variant }: {
+export const TitleWithTooltip = ({ text, tooltipText, precision, variant, color, weight }: {
     text: string,
     tooltipText: string,
     variant?: Variant | 'inherit',
-    precision?: number
+    precision?: number,
+    color?: 'text.primary' | 'text.secondary' | 'inherit',
+    weight?: number
 }): JSX.Element => {
 
     return (
         <Box style={{ display: 'flex' }}>
             <Typography
+                color={color ? color : 'inherit'}
                 variant={variant ? variant : "inherit"}
-                fontWeight={700}
+                fontWeight={weight ? weight : 700}
                 marginRight={precision ? 0.2 : 0.5}
             >
                 {text}
@@ -94,7 +97,7 @@ export const TitleWithTooltip = ({ text, tooltipText, precision, variant }: {
             {
                 tooltipText ?
                     <Tooltip placement={'right'} followCursor={true} arrow={true} title={tooltipText}>
-                        <Box marginTop={0.3} marginLeft={precision ? '5px' : '0px'}> <TooltipIcon /></Box>
+                        <Box marginTop={0} marginLeft={precision ? '5px' : '0px'}> <TooltipIcon /></Box>
                     </Tooltip> : null
             }
         </Box>

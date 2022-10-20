@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { CW20 } from 'types/CW20'
 
 export interface assetsState {
-  allAssets: CW20.TokenObject[];
-  myAssets: CW20.TokenObject[];
+  allAssets?: CW20.TokenObject[];
+  myAssets?: CW20.TokenObject[];
+  selectedAsset?: CW20.TokenObject;
 }
 
 export const initialState: assetsState = {
     allAssets: [],
-    myAssets: []
+    myAssets: [],
+    selectedAsset: {}
 }
 
 export const assetsSlice = createSlice({

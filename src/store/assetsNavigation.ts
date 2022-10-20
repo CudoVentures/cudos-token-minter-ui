@@ -3,8 +3,8 @@ import { TOKEN_TYPE } from 'components/TokenDetails/helpers'
 import { CHAIN_DETAILS } from 'utils/constants'
 
 export enum AssetsView {
-  AllAssets = 'ALL ASSETS',
-  MyAssets = 'MY ASSETS'
+  AllAssets = 'All Assets',
+  MyAssets = 'My Assets'
 }
 
 export interface assetsNavigationState {

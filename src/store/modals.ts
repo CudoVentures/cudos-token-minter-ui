@@ -18,6 +18,7 @@ export interface modalState {
   changeChosenBalance?: boolean
   selectWallet?: boolean
   dataObject?: SuccessModalDataObject
+  openEditLogo?: boolean
 }
 
 export const initialState: modalState = {
@@ -33,7 +34,8 @@ export const initialState: modalState = {
   dataObject: { 
     result: { height: 0, code: 0, transactionHash: '', gasUsed: 0, gasWanted: 0 }, 
     txFee: '' 
-  }
+  },
+  openEditLogo: false
 }
 
 export const modalStateSlice = createSlice({
