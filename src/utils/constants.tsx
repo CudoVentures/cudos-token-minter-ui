@@ -166,6 +166,9 @@ export const MODAL_MSGS = {
         },
     },
     ERRORS: {
+        TYPE: {
+            FETCH: 'FETCH_ERROR'
+        },
         TITLES: {
             DEFAULT: 'Error',
             LOGIN_FAIL: 'Login Failed'

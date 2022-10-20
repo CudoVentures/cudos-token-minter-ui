@@ -6,12 +6,16 @@ import { CancelRoundedIcon, ModalContainer, styles } from './styles'
 import FailureIcon from 'assets/vectors/failure.svg'
 import { updateModalState } from 'store/modals'
 import { initialState as initialModalState } from 'store/modals'
+import { MODAL_MSGS, NAVIGATION_PATH } from 'utils/constants'
+import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
 
 const Failure = () => {
 
   const dispatch = useDispatch()
+  const navigateToRoute = useNavigateToRoute()
 
   const {
+    msgType,
     failure,
     title,
     message
@@ -19,6 +23,11 @@ const Failure = () => {
 
   const handleModalClose = () => {
     dispatch(updateModalState({ ...initialModalState }))
+
+    if (msgType === MODAL_MSGS.ERRORS.TYPE.FETCH) {
+      navigateToRoute(NAVIGATION_PATH.Home)
+    }
+
   }
 
   const closeModal = (event: {}, reason: string) => {

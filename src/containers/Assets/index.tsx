@@ -11,6 +11,9 @@ import GridTable from 'components/GridTable'
 import { updateAssets } from 'store/assets'
 import { CW20 } from 'types/CW20'
 import { sanitizeString } from 'utils/helpers'
+import { useTestGraphqlSubscription } from 'graphql/types'
+import { updateModalState } from 'store/modals'
+import { MODAL_MSGS } from 'utils/constants'
 
 // DUMMY DATA
 const myData: CW20.TokenObject[] = Array(3).fill(
@@ -44,7 +47,7 @@ const Assets = () => {
 
     const dispatch = useDispatch()
     const [displayData, setDisplayData] = useState<CW20.TokenObject[]>([])
-    const [loading, setLoading] = useState<boolean>(true)
+    const { data, loading, error } = useTestGraphqlSubscription()
 
     const {
         allAssets,
@@ -61,11 +64,6 @@ const Assets = () => {
             allAssets: allData,
             myAssets: myData
         }))
-
-        //Fake loading until fetch functions are implemented.
-        setTimeout(() => {
-            setLoading(false)
-        }, 400)
 
         //eslint-disable-next-line
     }, [])
@@ -84,15 +82,33 @@ const Assets = () => {
         //eslint-disable-next-line
     }, [currentAssetsView])
 
+    useEffect(() => {
+
+        if (error) {
+            dispatch(updateModalState({
+                failure: true,
+                msgType: MODAL_MSGS.ERRORS.TYPE.FETCH,
+                title: MODAL_MSGS.ERRORS.TITLES.DEFAULT,
+                message: MODAL_MSGS.ERRORS.MESSAGES.DEFAULT
+            }))
+            console.error(error.message)
+        }
+
+        //eslint-disable-next-line
+    }, [error])
+
     return (
         <Box style={styles.contentHolder}>
             <Dialog />
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100px' }} display={'flex'} gap={2} flexDirection={'column'}>
-                {loading ? <CircularProgress /> :
-                    displayData.length > 0 ? <GridTable displayData={displayData} /> :
-                        <NoAssetsView />
-                }
-            </Box>
+            {!error ?
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100px' }} display={'flex'} gap={2} flexDirection={'column'}>
+                    {loading ? <CircularProgress /> :
+                        displayData.length > 0 ? <GridTable displayData={displayData} /> :
+                            <NoAssetsView />
+                    }
+                </Box> :
+                null
+            }
         </Box>
     )
 }
