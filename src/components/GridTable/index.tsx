@@ -114,7 +114,7 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
         )
 
         //eslint-disable-next-line
-    }, [])
+    }, [address])
 
     const transitionTo = (pageNumber: number) => {
         contentHolder!.current!.style.opacity! = '0'
