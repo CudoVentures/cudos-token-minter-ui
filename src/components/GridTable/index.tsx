@@ -112,6 +112,8 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
 
             </Card >
         )
+
+        //eslint-disable-next-line
     }, [])
 
     const transitionTo = (pageNumber: number) => {
