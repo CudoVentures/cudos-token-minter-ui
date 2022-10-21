@@ -11,7 +11,7 @@ const RequireValidContractAddress = () => {
     return selectedAsset?.contractAddress === contractAddress ? (
         <Outlet />
     ) : (
-        <Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} replace />
+        <Navigate to={NAVIGATION_PATH.Assets} state={{ from: location }} replace />
     )
 }
 

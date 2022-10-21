@@ -19,6 +19,8 @@ import RequireValidContractAddress from 'components/RequireValidContractAddress'
 import { ApolloProvider, NormalizedCacheObject, ApolloClient } from '@apollo/client'
 import { useApollo } from './graphql/client'
 import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
+import RequireConnectedWallet from 'components/RequireConnectedWallet'
+import { updateAssets } from 'store/assets'
 
 import '@fontsource/poppins'
 
@@ -42,6 +44,9 @@ const App = () => {
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
       dispatch(updateUser(connectedUser))
+      dispatch(updateAssets({
+        selectedAsset: {}
+      }))
 
     } catch (error) {
       console.error((error as Error).message)
@@ -111,15 +116,15 @@ const App = () => {
           {location.pathname === NAVIGATION_PATH.Home ? null : (
             <Layout>
               <Routes>
-                {/* <Route element={<RequireLedger />}> */}
                 <Route path="mint-tokens" element={<MintTokens />} />
                 <Route path="assets">
                   <Route index element={<Assets />} />
-                  <Route element={<RequireValidContractAddress />}>
-                    <Route path=":contractAddress" element={<ContractDetails />} />
+                  <Route element={<RequireConnectedWallet />}>
+                    <Route element={<RequireValidContractAddress />}>
+                      <Route path=":contractAddress" element={<ContractDetails />} />
+                    </Route>
                   </Route>
                 </Route>
-                {/* </Route> */}
                 <Route path="*" element={<Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} />} />
               </Routes>
             </Layout>

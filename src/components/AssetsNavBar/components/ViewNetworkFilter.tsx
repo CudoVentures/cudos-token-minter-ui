@@ -2,23 +2,23 @@ import { FormControl, Select, MenuItem, SelectChangeEvent, Typography, Box } fro
 import { networksToDisplayInMenu } from "components/Layout/Networkinfo"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "store"
-import { updateAssetsNavigation } from "store/assetsNavigation"
 import { COLORS_DARK_THEME } from "theme/colors"
 import { CHAIN_DETAILS } from "utils/constants"
 import { chainIDToAlias } from "utils/helpers"
 import { styles } from "../styles"
 import { ReactComponent as ArrowIcon } from 'assets/vectors/arrow-down.svg'
+import { updateUser } from "store/user"
 
 const ViewNetworkFilter = () => {
 
-    const { networkView } = useSelector((state: RootState) => state.assetsNavState)
-    const aliasName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[networkView!])
+    const { chosenNetwork } = useSelector((state: RootState) => state.userState)
+    const aliasName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork!])
     const dispatch = useDispatch()
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const value = event.target.value
-        dispatch(updateAssetsNavigation({
-            networkView: value
+        dispatch(updateUser({
+            chosenNetwork: value
         }))
     }
 
@@ -46,7 +46,7 @@ const ViewNetworkFilter = () => {
                     IconComponent={nonDropDown ? () => null : () => <ArrowIcon />}
                     variant='standard'
                     disableUnderline
-                    value={networkView}
+                    value={''}
                     renderValue={() => getConcatenatedText(aliasName)}
                     onChange={handleChange}
                 >

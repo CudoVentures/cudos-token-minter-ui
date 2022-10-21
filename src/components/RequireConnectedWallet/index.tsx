@@ -4,7 +4,7 @@ import { RootState } from 'store'
 import { isValidCudosAddress } from 'utils/validation'
 import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 
-const RequireLedger = () => {
+const RequireConnectedWallet = () => {
   const { address, connectedLedger } = useSelector((state: RootState) => state.userState)
   const validLedgers = [LEDGERS.KEPLR, LEDGERS.COSMOSTATION]
   const location = useLocation()
@@ -12,8 +12,8 @@ const RequireLedger = () => {
   return isValidCudosAddress(address!) && validLedgers.includes(connectedLedger!) ? (
     <Outlet />
   ) : (
-    <Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} replace />
+    <Navigate to={NAVIGATION_PATH.Assets} state={{ from: location }} replace />
   )
 }
 
-export default RequireLedger
+export default RequireConnectedWallet

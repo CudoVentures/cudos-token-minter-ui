@@ -61,7 +61,7 @@ const ViewTokenTypeFilter = () => {
                     MenuProps={styles.menuProps}
                     variant='standard'
                     disableUnderline
-                    value={tokenTypeView}
+                    value={""}
                     renderValue={() => getTokenTypeWithlogo(tokenTypeView!, COLORS_DARK_THEME.PRIMARY_BLUE)}
                     onChange={handleChange}
                 >

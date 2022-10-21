@@ -16,7 +16,7 @@ import { styles } from "./styles"
 import { COLORS_DARK_THEME } from "theme/colors"
 
 export const DetailedViewNav = () => {
-    
+
     const { currentAssetsView } = useSelector((state: RootState) => state.assetsNavState)
     const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
     const navigateToRoute = useNavigateToRoute()
@@ -74,7 +74,7 @@ const AssetsNavBar = () => {
                             gap={2}
                             style={styles.removableContentHolder}
                         >
-                            <ViewNetworkFilter />
+                            {address && connectedLedger ? null : <ViewNetworkFilter />}
                             <ViewTokenTypeFilter />
                         </Box>
                 }

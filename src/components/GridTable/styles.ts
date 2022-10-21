@@ -34,19 +34,29 @@ export const styles = {
         width: '100%',
         height: "100%"
     },
+    connectedUserCard: {
+        cursor: 'pointer',
+        "&:hover": {
+            backgroundColor: 'rgba(82, 166, 248, 0.1)'
+        },
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+        alignContent: 'center',
+        alignItems: 'center',
+        padding: '20px',
+        width: '285px',
+        height: '305px',
+    },
     tokenCard: {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'column',
         alignContent: 'center',
         alignItems: 'center',
-        cursor: 'pointer',
         padding: '20px',
         width: '285px',
         height: '305px',
-        "&:hover": {
-            backgroundColor: 'rgba(82, 166, 248, 0.1)'
-        }
     },
     pagination: {
         width: '100%',
