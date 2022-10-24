@@ -167,7 +167,8 @@ export const MODAL_MSGS = {
     },
     ERRORS: {
         TYPE: {
-            FETCH: 'FETCH_ERROR'
+            FETCH: 'FETCH_ERROR',
+            CONNECTION: 'CONNECTION_ERROR'
         },
         TITLES: {
             DEFAULT: 'Error',

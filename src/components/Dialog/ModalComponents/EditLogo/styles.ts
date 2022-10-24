@@ -18,4 +18,15 @@ export const styles = {
             borderRadius: '25px'
         }
     },
+    estimatorHolder: {
+        marginTop: '5px',
+        height: '15px',
+        float: 'right'
+    },
+    inputHolder: { 
+        display: 'flex', 
+        alignItems: 'center', 
+        flexDirection: 'column', 
+        width: '100%' 
+    }
 } as const
