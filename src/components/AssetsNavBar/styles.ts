@@ -52,6 +52,18 @@ export const styles = {
         height: '50px',
         paddingLeft: '20px',
     },
+    connectedBox: {
+        color: COLORS_DARK_THEME.SECONDARY_TEXT,
+        display: 'flex',
+        alignItems: 'center',
+        fontWeight: '400',
+        width: 'max-content',
+        height: '50px',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        borderRadius: '10px',
+        border: `1px solid rgba(65, 73, 99, 0.3)`
+    },
     formControl: {
         paddingRight: '20px',
         borderRadius: '10px',

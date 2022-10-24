@@ -14,9 +14,14 @@ import ViewTokenTypeFilter from "./components/ViewTokenTypeFilter"
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { styles } from "./styles"
 import { COLORS_DARK_THEME } from "theme/colors"
+import ViewConnectedNetwork from "./components/ViewConnectedNetwork"
+
+export const getConcatenatedText = (text: string): string => {
+    return `${text} ${"Tokens"}`
+}
 
 export const DetailedViewNav = () => {
-    
+
     const { currentAssetsView } = useSelector((state: RootState) => state.assetsNavState)
     const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
     const navigateToRoute = useNavigateToRoute()
@@ -42,6 +47,7 @@ const AssetsNavBar = () => {
     const { allAssets, myAssets } = useSelector((state: RootState) => state.assetsState)
     const { address, connectedLedger } = useSelector((state: RootState) => state.userState)
     const [removedContent, setRemovedContent] = useState<boolean>(false)
+    const connectedUser = address && connectedLedger
 
     useEffect(() => {
         if (activeSearch) {
@@ -74,7 +80,7 @@ const AssetsNavBar = () => {
                             gap={2}
                             style={styles.removableContentHolder}
                         >
-                            <ViewNetworkFilter />
+                            {connectedUser ? <ViewConnectedNetwork /> : <ViewNetworkFilter />}
                             <ViewTokenTypeFilter />
                         </Box>
                 }

@@ -4,11 +4,11 @@ import Layout from 'components/Layout'
 import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { CssBaseline, Container } from '@mui/material'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { updateUser } from 'store/user'
 import { connectUser } from 'utils/config'
 import { updateModalState } from 'store/modals'
-import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
+import { CHAIN_DETAILS, LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 import { initialState as initialModalState } from 'store/modals'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import MintTokens from 'containers/MintTokens'
@@ -16,14 +16,23 @@ import MainPage from 'containers/MainPage'
 import Assets from 'containers/Assets'
 import ContractDetails from 'containers/ContractDetails'
 import RequireValidContractAddress from 'components/RequireValidContractAddress'
+import { ApolloProvider, NormalizedCacheObject, ApolloClient } from '@apollo/client'
+import { useApollo } from './graphql/client'
+import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
+import RequireConnectedWallet from 'components/RequireConnectedWallet'
+import { updateAssets } from 'store/assets'
 
 import '@fontsource/poppins'
 
 const App = () => {
   const location = useLocation()
   const dispatch = useDispatch()
+  const newApolloClient = useApollo(null)
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const { chosenNetwork, connectedLedger } = useSelector((state: RootState) => state.userState)
+  const [currentApolloClient, setCurrentApolloClient] = useState<ApolloClient<NormalizedCacheObject>>(
+    newApolloClient(defaultApolloLinks)
+  )
 
   const connectAccount = useCallback(async (chosenNetwork: string, ledgerType: string) => {
 
@@ -35,6 +44,9 @@ const App = () => {
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
       dispatch(updateUser(connectedUser))
+      dispatch(updateAssets({
+        selectedAsset: {}
+      }))
 
     } catch (error) {
       console.error((error as Error).message)
@@ -49,6 +61,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+
+    const newApolloLinks: ApolloLinks = {
+      uri: CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork!],
+      url: CHAIN_DETAILS.GRAPHQL_WS[chosenNetwork!]
+    }
+
+    setCurrentApolloClient(newApolloClient(newApolloLinks))
 
     if (connectedLedger) {
       connectAccount(chosenNetwork!, connectedLedger)
@@ -86,30 +105,32 @@ const App = () => {
 
   return (
     <Container maxWidth='xl' style={{ display: 'contents', height: '100vh', width: '100vw', overflow: 'auto' }}>
-      <ThemeProvider theme={theme![themeColor!]}>
-        <CssBaseline />
-        {location.pathname !== NAVIGATION_PATH.Home ? null : (
-          <Routes>
-            <Route path={NAVIGATION_PATH.Home} element={<MainPage />} />
-          </Routes>
-        )}
-        {location.pathname === NAVIGATION_PATH.Home ? null : (
-          <Layout>
+      <ApolloProvider client={currentApolloClient!}>
+        <ThemeProvider theme={theme![themeColor!]}>
+          <CssBaseline />
+          {location.pathname !== NAVIGATION_PATH.Home ? null : (
             <Routes>
-              {/* <Route element={<RequireLedger />}> */}
-              <Route path="mint-tokens" element={<MintTokens />} />
-              <Route path="assets">
-                <Route index element={<Assets />} />
-                <Route element={<RequireValidContractAddress />}>
-                  <Route path=":contractAddress" element={<ContractDetails />} />
-                </Route>
-              </Route>
-              {/* </Route> */}
-              <Route path="*" element={<Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} />} />
+              <Route path={NAVIGATION_PATH.Home} element={<MainPage />} />
             </Routes>
-          </Layout>
-        )}
-      </ThemeProvider>
+          )}
+          {location.pathname === NAVIGATION_PATH.Home ? null : (
+            <Layout>
+              <Routes>
+                <Route path="mint-tokens" element={<MintTokens />} />
+                <Route path="assets">
+                  <Route index element={<Assets />} />
+                  <Route element={<RequireConnectedWallet />}>
+                    <Route element={<RequireValidContractAddress />}>
+                      <Route path=":contractAddress" element={<ContractDetails />} />
+                    </Route>
+                  </Route>
+                </Route>
+                <Route path="*" element={<Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} />} />
+              </Routes>
+            </Layout>
+          )}
+        </ThemeProvider>
+      </ApolloProvider>
     </Container>
   )
 }

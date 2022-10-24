@@ -1,6 +1,6 @@
 import { Box, Grid, Pagination, PaginationItem, Typography } from '@mui/material'
 import Card from 'components/Card/Card'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,6 +30,11 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
     const dataLength: number = displayData.length
 
     const {
+        address,
+        connectedLedger
+    } = useSelector((state: RootState) => state.userState)
+
+    const {
         currentAssetsView,
         searchTerms,
         tokenTypeView
@@ -49,15 +54,20 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
         .filter(filterBySearchTerms)
 
     const handleClick = (token: CW20.TokenObject) => {
-        dispatch(updateAssets({selectedAsset: token}))
+        dispatch(updateAssets({ selectedAsset: token }))
         const subPath = `/${token.contractAddress}`
-        navigateToRoute(NAVIGATION_PATH.Assets+subPath)
+        navigateToRoute(NAVIGATION_PATH.Assets + subPath)
     }
 
-    const TokenCard = ({ token }: { token: CW20.TokenObject }) => {
+    const connectedUser = address && connectedLedger
+
+    const TokenCard = useCallback(({ token }: { token: CW20.TokenObject }) => {
 
         return (
-            <Card onClick={() => handleClick(token)} sx={styles.tokenCard}>
+            <Card
+                onClick={connectedUser ? () => handleClick(token) : undefined}
+                sx={connectedUser ? styles.connectedUserCard : styles.tokenCard}
+            >
                 <img
                     style={styles.img}
                     src={token.logoUrl}
@@ -102,7 +112,9 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
 
             </Card >
         )
-    }
+
+        //eslint-disable-next-line
+    }, [address])
 
     const transitionTo = (pageNumber: number) => {
         contentHolder!.current!.style.opacity! = '0'

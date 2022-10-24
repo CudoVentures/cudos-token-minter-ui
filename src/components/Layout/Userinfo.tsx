@@ -14,6 +14,7 @@ import { initialState as initialModalState, updateModalState } from 'store/modal
 import { CopyAndFollowComponent } from 'components/helpers'
 import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 import { formatAddress } from 'utils/helpers'
+import { initialState as initialAssetsState, updateAssets } from 'store/assets'
 
 import {
   Typography,
@@ -33,8 +34,9 @@ const UserInfo = () => {
   const handleDisconnect = () => {
     sessionStorage.clear()
     localStorage.clear()
-    dispatch(updateUser({ ...initialUserState }))
-    dispatch(updateModalState({ ...initialModalState }))
+    dispatch(updateUser(initialUserState))
+    dispatch(updateModalState(initialModalState))
+    dispatch(updateAssets(initialAssetsState))
     navigate(NAVIGATION_PATH.Home)
   }
 
