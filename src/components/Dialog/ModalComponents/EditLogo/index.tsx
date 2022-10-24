@@ -7,22 +7,48 @@ import { styles } from './styles'
 import { CW20 } from "types/CW20"
 import { styles as defaultStyles } from 'components/Dialog/styles'
 import { FieldHandler } from 'components/InputComponents'
-import { DEFAULT_TOKEN_IMG_URL, PLACEHOLDERS, TEXT, TOOLTIPS } from 'components/TokenDetails/helpers'
 import { useCallback, useEffect, useState } from 'react'
 import { isValidImgRes, isValidImgUrl } from 'utils/validation'
-import { RESOLUTIONS } from 'utils/constants'
+import { MODAL_MSGS, RESOLUTIONS } from 'utils/constants'
+import { FeeEstimator, generateMsgHandler } from 'containers/ContractDetails/components/helpers'
+import { EncodeObject, StdFee } from 'cudosjs'
+import useSignAndBroadcast from 'utils/CustomHooks/useSignAndBroadcastTx'
+
+import {
+    DEFAULT_TOKEN_IMG_URL,
+    emptyEncodeObject,
+    emptyFeesObject,
+    PLACEHOLDERS,
+    TEXT,
+    TOKEN_ACTION,
+    TOOLTIPS
+} from 'components/TokenDetails/helpers'
 
 const EditLogo = () => {
 
     const dispatch = useDispatch()
+    const signAndBroadcast = useSignAndBroadcast()
     const { openEditLogo } = useSelector((state: RootState) => state.modalState)
     const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
     const [newTokenObject, setNewTokenObject] = useState<CW20.TokenObject>(selectedAsset!)
     const [validatedLogo, setValidatedLogo] = useState<boolean>(false)
+    const [msg, setMsg] = useState<EncodeObject>(emptyEncodeObject)
+    const [fee, setFee] = useState<StdFee>(emptyFeesObject)
+    const [validatedBroadcastData, setValidatedBroadcastData] = useState<boolean>(false)
 
-    const handleClick = () => {
-        // const newLogo = newTokenObject.logoUrl
-        //TODO: Implement Edit Logo
+    const broadcast = async () => {
+
+        const signAndBroadcastData:
+            CW20.SignAndBroadcastMsgData = {
+            msgType: TOKEN_ACTION.EditLogo,
+            msgs: [msg],
+            fees: fee,
+            msgTypeSpecificData: {
+                operationType: TOKEN_ACTION.EditLogo
+            }
+        }
+
+        await signAndBroadcast(signAndBroadcastData)
     }
 
     const validNewLogo = async (newUrl: string) => {
@@ -64,6 +90,35 @@ const EditLogo = () => {
         //eslint-disable-next-line
     }, [validateData])
 
+    useEffect(() => {
+
+        if (msg.typeUrl && fee.gas) {
+            setValidatedBroadcastData(true)
+            return
+        }
+
+        setValidatedBroadcastData(false)
+
+        //eslint-disable-next-line
+    }, [msg, fee])
+
+    useEffect(() => {
+
+        setMsg(emptyEncodeObject)
+        setFee(emptyFeesObject)
+
+        const handleMsg = async () => {
+            const newMsg = await generateMsgHandler(TOKEN_ACTION.EditLogo)
+            setMsg(newMsg)
+        }
+
+        if (validatedLogo) {
+            handleMsg()
+        }
+
+        //eslint-disable-next-line
+    }, [validatedLogo])
+
     const handleModalClose = () => {
         dispatch(updateModalState(initialState))
     }
@@ -100,21 +155,31 @@ const EditLogo = () => {
                             Enter the new logo URL and update it.
                         </Typography>
                     </Box>
-                    <Box gap={6} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', width: '100%' }}>
+                    <Box gap={6} sx={styles.inputHolder}>
                         <Box sx={{ width: '100%' }}>
                             <FieldHandler
                                 fieldObject={urlInput}
                                 setValue={setNewTokenObject}
                             />
+                            <Box sx={styles.estimatorHolder}>
+                                {validatedLogo ?
+                                    <FeeEstimator
+                                        msg={msg}
+                                        setFee={setFee}
+                                    /> : null
+                                }
+                            </Box>
                         </Box>
-                        <Tooltip title={!validatedLogo ? `${TEXT.InvalidImgSource} or ${TEXT.ResolutionExceedsLimit}` : ''}>
+                        <Tooltip
+                            title={!validatedLogo ? `${TEXT.InvalidImgSource} or ${TEXT.ResolutionExceedsLimit}` :
+                                !validatedBroadcastData ? MODAL_MSGS.ERRORS.TYPE.CONNECTION : ''}>
                             <Box>
                                 <Button
-                                    disabled={!validatedLogo}
+                                    disabled={!validatedLogo || !validatedBroadcastData}
                                     variant="contained"
                                     color="primary"
                                     sx={{ width: '250px' }}
-                                    onClick={() => handleClick()}
+                                    onClick={broadcast}
                                 >
                                     Submit Change
                                 </Button>

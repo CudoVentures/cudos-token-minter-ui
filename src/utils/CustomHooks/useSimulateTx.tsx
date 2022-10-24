@@ -4,7 +4,7 @@ import { RootState } from "store"
 import { getSigningCosmWasmClient } from "utils/config"
 import { estimateFee } from "cudosjs"
 import { DEFAULT_GAS_MULTIPLIER } from "cudosjs"
-import { CHAIN_DETAILS, MODAL_MSGS } from "utils/constants"
+import { CHAIN_DETAILS, MODAL_MSGS, TYPE_URLS } from "utils/constants"
 import { useCallback } from "react"
 import { updateModalState } from "store/modals"
 
@@ -24,10 +24,12 @@ const useSimulateTx = () => {
     const simulateTx = useCallback(async (msgs: EncodeObject[]): Promise<StdFee | undefined> => {
 
         try {
-            dispatch(updateModalState({
-                loading: true,
-                loadingType: true
-            }))
+            if (msgs[0]?.typeUrl === TYPE_URLS.MsgInstantiateContract) {
+                dispatch(updateModalState({
+                    loading: true,
+                    loadingType: true
+                }))
+            }
 
             const client = await getSigningCosmWasmClient(connectedLedger!, chosenNetwork!)
             const fee = await estimateFee(
@@ -51,13 +53,15 @@ const useSimulateTx = () => {
             return fee
 
         } catch (error) {
-            dispatch(updateModalState({
-                loading: false,
-                loadingType: false,
-                failure: true,
-                title: MODAL_MSGS.ERRORS.TITLES.DEFAULT,
-                message: MODAL_MSGS.ERRORS.MESSAGES.DEFAULT
-            }))
+            if (msgs[0]?.typeUrl === TYPE_URLS.MsgInstantiateContract) {
+                dispatch(updateModalState({
+                    loading: false,
+                    loadingType: false,
+                    failure: true,
+                    title: MODAL_MSGS.ERRORS.TITLES.DEFAULT,
+                    message: MODAL_MSGS.ERRORS.MESSAGES.DEFAULT
+                }))
+            }
 
             console.error((error as Error).message)
         }

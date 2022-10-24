@@ -37,6 +37,8 @@ export const emptyEncodeObject: EncodeObject = {
 }
 
 export enum TOKEN_ACTION {
+    Instantiate = 'Instantiate',
+    EditLogo = 'Edit Logo',
     IncreaseAllowance = 'Increase Allowance',
     DecreaseAllowance =  'Decrease Allowance',
     SendTransfer = 'Send/Transfer',
@@ -74,6 +76,8 @@ export enum TEXT {
     Increase = 'Increase',
     Decrease = 'Decrease',
     InvalidImgUrl = 'Invalid IMG URL',
+    InvalidAddress = 'Invalid Address',
+    InsufficientBalance = 'Insufficient Balance',
     ResolutionExceedsLimit = 'Resolution Exceeds Limit',
     InvalidImgSource = 'Invalid IMG Source',
     DefaultLogo = 'Default Logo'

@@ -2,11 +2,13 @@ import { Box, Input, InputAdornment, Tooltip } from "@mui/material"
 import Card from "components/Card/Card"
 import { Title } from "components/Dialog/ModalComponents/helpers"
 import { TitleWithTooltip } from "components/helpers"
-import { PLACEHOLDERS, TEXT, TOKEN_ACTION } from "components/TokenDetails/helpers"
-import { useState } from "react"
+import { emptyEncodeObject, emptyFeesObject, PLACEHOLDERS, TEXT, TOKEN_ACTION } from "components/TokenDetails/helpers"
+import { EncodeObject, StdFee } from "cudosjs"
+import { useEffect, useState } from "react"
+import { CW20 } from "types/CW20"
 import { MODAL_MSGS } from "utils/constants"
-import { isValidCudosAddress } from "utils/validation"
-import { SubmitBtn, isAddressRequired } from "../helpers"
+import useSignAndBroadcast from "utils/CustomHooks/useSignAndBroadcastTx"
+import { SubmitBtn, isAddressRequired, FeeEstimator, validInput, generateMsgHandler } from "../helpers"
 import { styles } from "./styles"
 
 const TokenInteractionCard = ({ type, tooltipText, btnText }: {
@@ -16,9 +18,31 @@ const TokenInteractionCard = ({ type, tooltipText, btnText }: {
 }) => {
 
     //TODO: Implement token balance check
-    const senderTokenBalance = 10
+    const senderTokenBalance = 1000
+    const signAndBroadcast = useSignAndBroadcast()
     const [value, setValue] = useState<string>('')
     const [recipient, setRecipient] = useState<string>('')
+    const [msg, setMsg] = useState<EncodeObject>(emptyEncodeObject)
+    const [fee, setFee] = useState<StdFee>(emptyFeesObject)
+    const [validatedInput, setValidatedInput] = useState<boolean>(false)
+    const [validatedBroadcastData, setValidatedBroadcastData] = useState<boolean>(false)
+    const [error, setError] = useState<string>('')
+
+    const handleData = async () => {
+
+        setMsg(emptyEncodeObject)
+        setFee(emptyFeesObject)
+
+        const [validatedInput, error] = validInput(type, value, recipient, senderTokenBalance)
+
+        if (validatedInput) {
+            const newMsg = await generateMsgHandler(type)
+            setMsg(newMsg)
+        }
+
+        setError(error)
+        setValidatedInput(validatedInput)
+    }
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 
@@ -30,48 +54,75 @@ const TokenInteractionCard = ({ type, tooltipText, btnText }: {
         setValue(event.target.value as string)
     }
 
-    const validInput = () => {
+    useEffect(() => {
 
-        const amount = parseFloat(value)
-
-        if (!amount || amount <= 0) {
-            return false
+        if (msg.typeUrl && fee.gas) {
+            setValidatedBroadcastData(true)
+            return
         }
 
-        if (type === TOKEN_ACTION.SendTransfer && amount > senderTokenBalance) {
-            return false
+        setValidatedBroadcastData(false)
+    }, [msg, fee])
+
+    useEffect(() => {
+
+        handleData()
+
+        //eslint-disable-next-line
+    }, [recipient, value])
+
+    const broadcast = async () => {
+
+        const signAndBroadcastData:
+            CW20.SignAndBroadcastMsgData = {
+            msgType: type,
+            msgs: [msg],
+            fees: fee,
+            msgTypeSpecificData: {
+                operationType: type
+            }
         }
 
-        if (isAddressRequired(type) && !isValidCudosAddress(recipient)) {
-            return false
-        }
-
-        return true
+        await signAndBroadcast(signAndBroadcastData)
     }
 
+    const EndAdornment = () => {
 
-    //TODO: Implement
-    const handleClick = () => {
+        let preAdornment = <div></div>
 
-        if (type === TOKEN_ACTION.SendTransfer) {
-
+        if (error) {
+            preAdornment = <TitleWithTooltip
+                text={error}
+                tooltipText={''}
+                color={'text.secondary'}
+                variant={'subtitle2'}
+                weight={400}
+            />
         }
 
-        if (type === TOKEN_ACTION.IncreaseAllowance) {
-
+        if (validatedInput) {
+            preAdornment = <FeeEstimator
+                msg={msg}
+                setFee={setFee}
+            />
         }
 
-        if (type === TOKEN_ACTION.DecreaseAllowance) {
-
-        }
-
-        if (type === TOKEN_ACTION.Mint) {
-
-        }
-
-        if (type === TOKEN_ACTION.Burn) {
-
-        }
+        return (
+            <Box gap={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                {preAdornment}
+                <Tooltip
+                    title={!validatedInput ? MODAL_MSGS.PROMPTS.VALID_DATA :
+                        !validatedBroadcastData ? MODAL_MSGS.ERRORS.TYPE.CONNECTION : ''}>
+                    <Box>
+                        <SubmitBtn
+                            btnText={btnText}
+                            handleSend={broadcast}
+                            validInput={validatedInput && validatedBroadcastData}
+                        />
+                    </Box>
+                </Tooltip>
+            </Box>
+        )
     }
 
     return (
@@ -107,15 +158,7 @@ const TokenInteractionCard = ({ type, tooltipText, btnText }: {
                         <Input
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <Tooltip title={!validInput() ? MODAL_MSGS.PROMPTS.VALID_DATA : ''}>
-                                        <Box>
-                                            <SubmitBtn
-                                                btnText={btnText}
-                                                handleSend={handleClick}
-                                                validInput={validInput()}
-                                            />
-                                        </Box>
-                                    </Tooltip>
+                                    <EndAdornment />
                                 </InputAdornment>
                             }
                             name={TEXT.Amount}

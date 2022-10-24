@@ -1,5 +1,11 @@
-import { Button } from "@mui/material"
-import { TEXT, TOOLTIPS, TOKEN_ACTION } from "components/TokenDetails/helpers"
+import { Box, Button, CircularProgress } from "@mui/material"
+import { TitleWithTooltip } from "components/helpers"
+import { TEXT, TOOLTIPS, TOKEN_ACTION, emptyEncodeObject, emptyFeesObject } from "components/TokenDetails/helpers"
+import { EncodeObject, StdFee } from "cudosjs"
+import { useEffect, useState } from "react"
+import useSimulateTx from "utils/CustomHooks/useSimulateTx"
+import { getDisplayWorthyFee } from "utils/helpers"
+import { isValidCudosAddress } from "utils/validation"
 import TokenInteractionCard from "./TokenInteractionCard"
 
 export const TokenActionMapper = [
@@ -81,3 +87,100 @@ export const isAddressRequired = (typeToCheck: TOKEN_ACTION): boolean => {
         typeToCheck === TOKEN_ACTION.IncreaseAllowance ||
         typeToCheck === TOKEN_ACTION.DecreaseAllowance
 }
+
+export const FeeEstimator = ({ msg, setFee }: {
+    msg: EncodeObject,
+    setFee: React.Dispatch<React.SetStateAction<StdFee>>
+}): JSX.Element => {
+
+    const simulateTx = useSimulateTx()
+    const [loading, setLoading] = useState<boolean>(false)
+    const [estimatedFee, setEstimatedFee] = useState<string>(
+        getDisplayWorthyFee(emptyFeesObject!, 4)
+    )
+
+    const estimateFee = async () => {
+        try {
+            setLoading(true)
+            const newFee = await simulateTx([msg])
+            const displayWorthyFee: string = getDisplayWorthyFee(newFee!, 4)
+            setFee(newFee!)
+            setEstimatedFee(displayWorthyFee)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (msg.typeUrl) {
+            estimateFee()
+        }
+
+        //eslint-disable-next-line
+    }, [msg])
+
+    return (
+        <Box gap={0.5} sx={{ height: '15px', display: 'flex', alignItems: 'center' }}>
+            <TitleWithTooltip tooltipText="" text={"Fee Estimate:"} variant={'subtitle2'} color={'text.secondary'} weight={400} />
+            <TitleWithTooltip tooltipText="" text={estimatedFee} variant={'subtitle2'} weight={400} />
+            <Box sx={{ width: '5px' }}>
+                {loading ? <CircularProgress sx={{ marginBottom: '2px' }} size={12} color={'inherit'} /> : null}
+            </Box>
+        </Box>
+    )
+}
+
+export const validInput = (
+    type: TOKEN_ACTION,
+    value: string,
+    recipient: string,
+    senderTokenBalance: number
+): [boolean, string] => {
+
+    const amount = parseFloat(value)
+
+    if (!amount || amount <= 0) {
+        return [false, '']
+    }
+
+    if (isAddressRequired(type) && !isValidCudosAddress(recipient)) {
+        return [false, TEXT.InvalidAddress]
+    }
+
+    if (type === TOKEN_ACTION.SendTransfer && amount > senderTokenBalance) {
+        return [false, TEXT.InsufficientBalance]
+    }
+
+    return [true, '']
+}
+
+export //TODO: Waiting on CudosJS CW20 helpers
+    const generateMsgHandler = async (type: TOKEN_ACTION): Promise<EncodeObject> => {
+        let tempMsg: EncodeObject = emptyEncodeObject
+
+        if (type === TOKEN_ACTION.EditLogo) {
+
+        }
+
+        if (type === TOKEN_ACTION.SendTransfer) {
+
+        }
+
+        if (type === TOKEN_ACTION.IncreaseAllowance) {
+
+        }
+
+        if (type === TOKEN_ACTION.DecreaseAllowance) {
+
+        }
+
+        if (type === TOKEN_ACTION.Mint) {
+
+        }
+
+        if (type === TOKEN_ACTION.Burn) {
+
+        }
+
+        return tempMsg
+    }
