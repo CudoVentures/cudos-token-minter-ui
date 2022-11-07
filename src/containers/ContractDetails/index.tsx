@@ -1,27 +1,206 @@
-import { Box } from "@mui/material"
 import Dialog from "components/Dialog"
 import HolderView from "./components/HolderView"
 import OwnerView from "./components/OwnerView"
 import PublicView from "./components/PublicView"
-import TopOverview from "./components/TopOverview"
-
 import { styles } from "./styles"
+import { Box, CircularProgress, Divider } from "@mui/material"
+import { getTokenTypeWithlogo } from "components/AssetsNavBar/components/ViewTokenTypeFilter"
+import Card from "components/Card/Card"
+import { SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
+import { TruncatedTextWithTooltip } from "components/helpers"
+import { TEXT } from "components/TokenDetails/helpers"
+import { useEffect, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "store"
+import { CHAIN_DETAILS } from "utils/constants"
+import { useLowResCheck, useMidlowResCheck } from "utils/CustomHooks/screenChecks"
+import { ReactComponent as EditIcon } from 'assets/vectors/edit-icon.svg'
+import { updateModalState } from "store/modals"
+import { displayTooltipedValue } from "./components/helpers"
+import { BigNumber } from "bignumber.js"
+import { updateUser } from "store/user"
 
 const ContractDetails = () => {
 
-    const isOwner = true
-    const isHolder = false
+    const dispatch = useDispatch()
+    const isMidLowRes = useMidlowResCheck()
+    const isLowRes = useLowResCheck()
+    const editIcon = useRef<HTMLDivElement>()
+    const [displayEditIcon, setDisplayEditIcon] = useState<boolean>(false)
+    const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
+    const { networkView } = useSelector((state: RootState) => state.assetsNavState)
+    const { address: loggedInUser, assets } = useSelector((state: RootState) => state.userState)
+    const [isOwner, setIsOwner] = useState<boolean>(false)
+    const [isHolder, setIsHolder] = useState<boolean>(false)
+    const [userBalance, setUserBalance] = useState<string>('0')
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleLoading = async () => {
+
+        try {
+            setLoading(true)
+
+            // Setting Token Ownership
+            setIsOwner(selectedAsset?.owner === loggedInUser)
+
+            // Setting Token Holdership
+            await setHolderShip(loggedInUser!)
+
+
+        } catch (e) {
+            console.error(e)
+
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleEditLogo = () => {
+        dispatch(updateModalState({ openEditLogo: true }))
+    }
+
+    const setHolderShip = async (userAddress: string) => {
+
+        const balance = await getTokenBalance(userAddress)
+        setUserBalance(balance)
+        setIsHolder(new BigNumber(balance).isGreaterThan(0))
+        dispatch(updateUser({
+            assets: {
+                ...assets,
+                [selectedAsset?.contractAddress!]: balance
+            }
+        }))
+    }
+
+    const getTokenBalance = async (userAddress: string): Promise<string> => {
+
+        //TODO: Waiting on Token Traker
+        const balance = '33'
+
+        return balance ?? '0'
+    }
+
+    useEffect(() => {
+        handleLoading()
+
+        //eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        if (displayEditIcon) {
+            editIcon.current!.style.visibility = 'visible'
+            editIcon.current!.style.opacity = '1'
+            return
+        }
+
+        if (editIcon.current) {
+            editIcon.current!.style.opacity = '0'
+        }
+
+
+        //eslint-disable-next-line
+    }, [displayEditIcon])
 
     return (
-        <Box>
-            <Dialog />
-            <Box gap={2} style={styles.contentHolder}>
-                <TopOverview />
-                {isOwner ? <OwnerView /> :
-                    !isOwner && isHolder ? <HolderView /> :
-                        <PublicView />}
+        loading ? <Box style={styles.spinnerHolder}><CircularProgress /></Box> :
+            <Box>
+                <Dialog />
+                <Box gap={2} style={styles.contentHolder}>
+
+                    <Card style={styles.contentCard} sx={{ minWidth: 'max-content' }}>
+                        <Dialog />
+                        <Box
+                            gap={isLowRes ? 1 : 3}
+                            style={styles.boxHolder}
+                            flexDirection={isMidLowRes ? 'column' : 'row'}
+                        >
+                            <Box
+                                id="left-content"
+                                gap={isLowRes ? 0 : 3}
+                                style={styles.leftContentHolder}
+                            >
+                                <Box style={styles.imgHolder}>
+                                    <img
+                                        onMouseOver={() => isOwner ? setDisplayEditIcon(true) : null}
+                                        onMouseOut={() => displayEditIcon ? setDisplayEditIcon(false) : null}
+                                        style={isLowRes ? styles.smallerIgm : styles.img}
+                                        src={selectedAsset!.logoUrl}
+                                        alt="Token Logo"
+                                    />
+                                    {isOwner ?
+                                        <Box
+                                            style={styles.editIconHolder}
+                                            ref={editIcon}
+                                        >
+                                            <EditIcon
+                                                style={isLowRes ? styles.smallerEdit : styles.edit}
+                                                onClick={() => handleEditLogo()}
+                                                onMouseOver={() => setDisplayEditIcon(true)}
+                                                onMouseOut={() => setDisplayEditIcon(false)}
+                                            />
+                                        </Box> : null}
+                                </Box>
+                                <Box gap={2} display={'flex'} flexDirection={'column'}>
+                                    <TruncatedTextWithTooltip
+                                        text={selectedAsset?.name!}
+                                        maxAllowed={20}
+                                        variant={isLowRes ? 'h5' : 'h4'}
+                                        weight={700}
+                                    />
+                                    <Title text={`(${selectedAsset?.symbol!})`} variant={isLowRes ? 'subtitle1' : 'h5'} />
+                                    <Box gap={3} display={'flex'}>
+                                        <SubTitle text={TEXT.TokenType} />
+                                        {getTokenTypeWithlogo(selectedAsset?.tokenType!)}
+                                    </Box>
+                                </Box>
+                            </Box>
+                            <Box
+                                id='right-content'
+                                style={styles.rightContentHolder}
+                            >
+                                <SubTitle text={TEXT.DeploymentNetwork} />
+                                <SubTitle text={CHAIN_DETAILS[networkView!].ALIAS_NAME} color={'text.primary'} />
+
+                                <SubTitle text={TEXT.DecimalPrecision} />
+                                <SubTitle text={selectedAsset?.decimalPrecision?.toString()!} color={'text.primary'} />
+
+                                <SubTitle text={TEXT.InitialSupply} />
+                                {displayTooltipedValue(
+                                    selectedAsset?.initialSupply!,
+                                    400,
+                                    selectedAsset?.decimalPrecision
+                                )}
+
+                                <SubTitle text={TEXT.TotalSupply} />
+                                {displayTooltipedValue(
+                                    selectedAsset?.totalSupply!,
+                                    400,
+                                    selectedAsset?.decimalPrecision
+                                )}
+
+                                <SubTitle text={TEXT.CurrentSupply} />
+                                {displayTooltipedValue(
+                                    '000000',
+                                    400,
+                                    selectedAsset?.decimalPrecision
+                                )}
+
+                                <Divider sx={{ gridColumn: '1/3' }} />
+
+                                <SubTitle text={TEXT.YourBalance} weight={700} />
+                                {displayTooltipedValue(
+                                    userBalance,
+                                    700,
+                                    selectedAsset?.decimalPrecision
+                                )}
+                            </Box>
+                        </Box>
+                    </Card>
+                    {isOwner ? <OwnerView /> : null}
+                    {isHolder ? <HolderView /> : null}
+                    <PublicView />
+                </Box>
             </Box>
-        </Box>
     )
 }
 

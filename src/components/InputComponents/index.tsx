@@ -24,7 +24,7 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
         if (fieldObject.name === TEXT.TokenName) {
             setValue({
                 ...fieldObject.oldState,
-                name: sanitizeString(event.target.value)
+                name: event.target.value
             })
             return
         }
@@ -35,15 +35,16 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
                 event!.preventDefault()
                 return
             }
-            setValue({ ...fieldObject.oldState, symbol: event.target.value.toUpperCase() })
+            setValue({ ...fieldObject.oldState, symbol: sanitizeString(event.target.value.toUpperCase()) })
             return
         }
 
         //DecimalPrecision
         if (fieldObject.name === TEXT.DecimalPrecision) {
 
-            if (Number(event.target.value) > 18) {
-                event!.preventDefault()
+            const maximumDecimals = 18
+            if (Number(event.target.value) > maximumDecimals) {
+                setValue({ ...fieldObject.oldState, decimalPrecision: maximumDecimals })
                 return
             }
             setValue({ ...fieldObject.oldState, decimalPrecision: parseInt(event.target.value) })
@@ -82,9 +83,16 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
             }
         }
 
-        if (fieldObject.name === TEXT.TokenSymbol ||
-            fieldObject.name === TEXT.TokenName) {
+        if (fieldObject.name === TEXT.TokenSymbol) {
             if (!isOnlyLetters(event.key)) {
+                event.preventDefault()
+                return
+            }
+        }
+
+        if (fieldObject.name === TEXT.TokenName) {
+            const maximumNameLength = 128 // To comply with network max-label limits.
+            if ((fieldObject.value as string).length + 1 > maximumNameLength) {
                 event.preventDefault()
                 return
             }

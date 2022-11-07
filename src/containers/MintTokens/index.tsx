@@ -9,20 +9,19 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { updateModalState } from 'store/modals'
-import { TYPE_URLS } from 'utils/constants'
 import { useLowResCheck } from 'utils/CustomHooks/screenChecks'
 import useSignAndBroadcast from 'utils/CustomHooks/useSignAndBroadcastTx'
 import useSimulateTx from 'utils/CustomHooks/useSimulateTx'
-import { getInstantiateContractMsg } from 'utils/MsgGenerators/getInstantiateContractMsg'
 import { isValidTokenObject } from 'utils/validation'
 import { CW20 } from 'types/CW20'
 import { styles } from './styles'
+import useGenerateMsgHandler from 'utils/CustomHooks/useGenerateMsgHandler'
 
 import {
-  CODE_IDS,
   emptyEncodeObject,
   emptyFeesObject,
   emptyTokenObject,
+  TOKEN_ACTION,
   TOKEN_TYPE,
 } from 'components/TokenDetails/helpers'
 
@@ -30,6 +29,7 @@ const MintTokens = () => {
 
   const dispatch = useDispatch()
   const simulateTx = useSimulateTx()
+  const generateMsgHandler = useGenerateMsgHandler()
   const signAndBroadcast = useSignAndBroadcast()
   const parentHolder = useRef<HTMLDivElement>(null)
   const isLowRes = useLowResCheck()
@@ -40,7 +40,7 @@ const MintTokens = () => {
   const [validatedData, setValidatedData] = useState<boolean>(false)
   const [simulatedFee, setSimulatedFee] = useState<StdFee>(emptyFeesObject)
   const [initMsg, setInitMsg] = useState<EncodeObject>(emptyEncodeObject)
-  const { address, chosenNetwork } = useSelector((state: RootState) => state.userState)
+  const { address } = useSelector((state: RootState) => state.userState)
 
   const CONTENT_PAGES = {
     1: <TokenSelector
@@ -82,7 +82,7 @@ const MintTokens = () => {
 
     const signAndBroadcastData:
       CW20.SignAndBroadcastMsgData = {
-      msgType: TYPE_URLS.MsgInstantiateContract,
+      msgType: TOKEN_ACTION.Instantiate,
       msgs: [initMsg!],
       fees: simulatedFee,
       msgTypeSpecificData: {
@@ -93,9 +93,16 @@ const MintTokens = () => {
     await signAndBroadcast(signAndBroadcastData)
   }
 
-  const handleInstantiateTxSimulation = async (instantiateMsgData: CW20.InstantiateMsgData) => {
+  const handleInstantiateTxSimulation = async () => {
 
-    const instantiateMsg = getInstantiateContractMsg(instantiateMsgData)
+    const handlerSpecificData = {
+      tokenType: tokenType,
+      tokenObject: tokenObject
+    }
+    const instantiateMsg = await generateMsgHandler(
+      TOKEN_ACTION.Instantiate,
+      handlerSpecificData
+    )
     const fee = await simulateTx([instantiateMsg])
 
     if (fee?.gas) {
@@ -114,14 +121,7 @@ const MintTokens = () => {
 
     if (currentStep === 2) {
 
-      const instantiateMsgData: CW20.InstantiateMsgData = {
-        tokenObject: tokenObject,
-        tokenType: tokenType,
-        codeId: CODE_IDS.NETWORK[chosenNetwork!][tokenType],
-        sender: address || ''
-      }
-
-      await handleInstantiateTxSimulation(instantiateMsgData)
+      await handleInstantiateTxSimulation()
       return
     }
 

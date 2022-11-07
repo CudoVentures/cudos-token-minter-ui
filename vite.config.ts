@@ -12,7 +12,7 @@ export default defineConfig({
     preserveSymlinks: true
   },
   build: {
-    chunkSizeWarningLimit: 1600,
+    chunkSizeWarningLimit: 2500,
     rollupOptions: {
       output: {
         manualChunks(id) {

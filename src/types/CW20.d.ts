@@ -4,7 +4,7 @@ declare module CW20 {
 
     interface CW20Coin {
         address: string;
-        amount: number;
+        amount: string;
     }
 
     interface MinterResponse {
@@ -54,6 +54,7 @@ declare module CW20 {
         logoUrl?: string;
         tokenType?: TOKEN_TYPE;
         contractAddress?: string;
+        owner?: string
     }
 
     interface AddToWalletObject {

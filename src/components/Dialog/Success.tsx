@@ -6,9 +6,10 @@ import SuccessIcon from 'assets/vectors/success.svg'
 import { useNavigate } from 'react-router-dom'
 import { CancelRoundedIcon, ModalContainer, styles } from './styles'
 import { initialState as initialModalState, updateModalState } from 'store/modals'
-import { NAVIGATION_PATH, TYPE_URLS } from 'utils/constants'
+import { NAVIGATION_PATH } from 'utils/constants'
 import InstantiateSuccess from './SuccessTypes/InstantiateSuccess'
 import GeneralSuccess from './SuccessTypes/GeneralSuccess'
+import { TOKEN_ACTION } from 'components/TokenDetails/helpers'
 
 const Success = () => {
 
@@ -25,7 +26,7 @@ const Success = () => {
 
     switch (msgType) {
 
-      case TYPE_URLS.MsgInstantiateContract:
+      case TOKEN_ACTION.Instantiate:
         return <InstantiateSuccess data={dataObject!} />
 
       default:

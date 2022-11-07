@@ -81,7 +81,9 @@ const TokenDetails = ({
         {
             //TotalSupply
             name: TEXT.TotalSupply,
-            value: localObject.totalSupply || '',
+            value: tokenType === TOKEN_TYPE.Standard ?
+                localObject.initialSupply! :
+                localObject.totalSupply || '',
             placeholder: PLACEHOLDERS.TotalSupply,
             tooltip: TOOLTIPS.TotalSupply,
             inputType: TEXT.Text,

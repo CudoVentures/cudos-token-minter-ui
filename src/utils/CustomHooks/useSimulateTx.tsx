@@ -61,9 +61,11 @@ const useSimulateTx = () => {
                     title: MODAL_MSGS.ERRORS.TITLES.DEFAULT,
                     message: MODAL_MSGS.ERRORS.MESSAGES.DEFAULT
                 }))
+                console.error((error as Error).message)
+                return
             }
 
-            console.error((error as Error).message)
+          throw error
         }
 
         //eslint-disable-next-line

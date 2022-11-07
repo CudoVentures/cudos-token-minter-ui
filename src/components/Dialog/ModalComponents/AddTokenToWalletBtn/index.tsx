@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { initialState, updateModalState } from "store/modals"
 import { CW20 } from "types/CW20"
 import { addTokenByLedgerType } from "utils/config"
-import { NAVIGATION_PATH } from "utils/constants"
+import { LEDGERS, NAVIGATION_PATH } from "utils/constants"
 
 const AddTokenToWalletBtn = ({ addToWalletObject }: { addToWalletObject: CW20.AddToWalletObject }) => {
 
@@ -27,17 +27,19 @@ const AddTokenToWalletBtn = ({ addToWalletObject }: { addToWalletObject: CW20.Ad
     }
 
     return (
-        <Button
-            variant="contained"
-            color="primary"
-            sx={() => ({
-                width: '100%',
-                fontWeight: 700
-            })}
-            onClick={handleAddToken}
-        >
-            {`Add token to ${addToWalletObject.connectedLedger}`}
-        </Button>
+        // At this point we cannot offer "add token to wallet" functionality for Cosmostation.
+        addToWalletObject.connectedLedger === LEDGERS.COSMOSTATION ? null :
+            <Button
+                variant="contained"
+                color="primary"
+                sx={() => ({
+                    width: '100%',
+                    fontWeight: 700
+                })}
+                onClick={handleAddToken}
+            >
+                {`Add token to ${addToWalletObject.connectedLedger}`}
+            </Button>
     )
 }
 

@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from "@mui/material"
+import { Box, Divider, Tooltip, Typography } from "@mui/material"
 import AddTokenToWalletBtn from "components/Dialog/ModalComponents/AddTokenToWalletBtn"
 import FollowTxHashToExplorer from "components/Dialog/ModalComponents/FollowTxHashToExplorer"
 import { BoxWrapper, SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
@@ -46,7 +46,11 @@ const InstantiateSuccess = ({ data }: { data: SuccessModalDataObject }) => {
                     <SubTitle text={"Gas Fee"} />
                 </BoxWrapper>
                 <BoxWrapper>
-                    <Title text={formatAddress(contractAddress, 20)} />
+                    <Tooltip title={contractAddress}>
+                        <Box>
+                            <Title text={formatAddress(contractAddress, 20)} />
+                        </Box>
+                    </Tooltip>
                     <Title text={tokenObject.symbol!} />
                     <Title text={data.txFee} />
                 </BoxWrapper>
