@@ -28,7 +28,7 @@ export const emptyTokenObject: CW20.TokenObject = {
 
 export const emptyFeesObject: StdFee = {
     amount: [],
-    gas: ""
+    gas: "0"
 }
 
 export const emptyEncodeObject: EncodeObject = {
@@ -41,7 +41,7 @@ export enum TOKEN_ACTION {
     EditLogo = 'Edit Logo',
     IncreaseAllowance = 'Increase Allowance',
     DecreaseAllowance =  'Decrease Allowance',
-    SendTransfer = 'Send/Transfer',
+    Transfer = 'Transfer',
     Mint = 'Mint',
     Burn = 'Burn'
 }
@@ -95,7 +95,7 @@ export enum PLACEHOLDERS {
 }
 
 export enum TOOLTIPS {
-    SendTransfer = 'Send an amount of your tokens to a recipient of your choice',
+    Transfer = 'Moves amount tokens from the info.sender account to the recipient account. This is designed to send to an address controlled by a private key and does not trigger any actions on the recipient if it is a contract',
     Burn = 'Removes the amount from your balance and reduce total supply by the same amount',
     Mint = 'This will create amount of new tokens (updating total supply) and add them to your balance, as long as it does not exceed the cap',
     IncreaseAllowance = 'Set or increase the allowance such that spender may access up to amount + current_allowance tokens from the owner account',

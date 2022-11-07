@@ -54,7 +54,7 @@ export const isValidImgRes = async (url: string, maxResolution: MaxImgResolution
 
 
 export const isOnlyLetters = (string: string): boolean => {
-  return /^[A-Za-z]*$/.test(string)
+  return /^[A-Za-z\s]*$/.test(string)
 }
 
 export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenType: string): Promise<[boolean, string]> => {

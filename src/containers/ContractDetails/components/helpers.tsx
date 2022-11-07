@@ -1,30 +1,27 @@
-import { Box, Button, CircularProgress } from "@mui/material"
-import { TitleWithTooltip } from "components/helpers"
-import { TEXT, TOOLTIPS, TOKEN_ACTION, emptyEncodeObject, emptyFeesObject } from "components/TokenDetails/helpers"
-import { EncodeObject, StdFee } from "cudosjs"
-import { useEffect, useState } from "react"
-import useSimulateTx from "utils/CustomHooks/useSimulateTx"
-import { getDisplayWorthyFee } from "utils/helpers"
+import { Box, Button, CircularProgress, Typography } from "@mui/material"
+import { SubTitle } from "components/Dialog/ModalComponents/helpers"
+import { AdvancedTooltip, TitleWithTooltip } from "components/helpers"
+import { TEXT, TOOLTIPS, TOKEN_ACTION } from "components/TokenDetails/helpers"
 import { isValidCudosAddress } from "utils/validation"
 import TokenInteractionCard from "./TokenInteractionCard"
 
 export const TokenActionMapper = [
     {
         public: false,
-        owner: true,
+        owner: false,
         holder: true,
         component: <TokenInteractionCard
-            type={TOKEN_ACTION.SendTransfer}
-            tooltipText={TOOLTIPS.SendTransfer}
+            tokenAction={TOKEN_ACTION.Transfer}
+            tooltipText={TOOLTIPS.Transfer}
             btnText={TEXT.Send}
         />
     },
     {
         public: false,
-        owner: true,
-        holder: false,
+        owner: false,
+        holder: true,
         component: <TokenInteractionCard
-            type={TOKEN_ACTION.Burn}
+            tokenAction={TOKEN_ACTION.Burn}
             tooltipText={TOOLTIPS.Burn}
             btnText={TEXT.Burn}
         />
@@ -34,27 +31,27 @@ export const TokenActionMapper = [
         owner: true,
         holder: false,
         component: <TokenInteractionCard
-            type={TOKEN_ACTION.Mint}
+            tokenAction={TOKEN_ACTION.Mint}
             tooltipText={TOOLTIPS.Mint}
             btnText={TEXT.Mint}
         />
     },
     {
         public: false,
-        owner: true,
+        owner: false,
         holder: true,
         component: <TokenInteractionCard
-            type={TOKEN_ACTION.IncreaseAllowance}
+            tokenAction={TOKEN_ACTION.IncreaseAllowance}
             tooltipText={TOOLTIPS.IncreaseAllowance}
             btnText={TEXT.Increase}
         />
     },
     {
         public: false,
-        owner: true,
+        owner: false,
         holder: true,
         component: <TokenInteractionCard
-            type={TOKEN_ACTION.DecreaseAllowance}
+            tokenAction={TOKEN_ACTION.DecreaseAllowance}
             tooltipText={TOOLTIPS.DecreaseAllowance}
             btnText={TEXT.Decrease}
         />
@@ -83,46 +80,20 @@ export const SubmitBtn = ({ btnText, handleSend, validInput }: {
 }
 
 export const isAddressRequired = (typeToCheck: TOKEN_ACTION): boolean => {
-    return typeToCheck === TOKEN_ACTION.SendTransfer ||
+    return typeToCheck === TOKEN_ACTION.Transfer ||
         typeToCheck === TOKEN_ACTION.IncreaseAllowance ||
         typeToCheck === TOKEN_ACTION.DecreaseAllowance
 }
 
-export const FeeEstimator = ({ msg, setFee }: {
-    msg: EncodeObject,
-    setFee: React.Dispatch<React.SetStateAction<StdFee>>
+export const FeeDisplayer = ({ fee, loading }: {
+    fee: string,
+    loading: boolean
 }): JSX.Element => {
-
-    const simulateTx = useSimulateTx()
-    const [loading, setLoading] = useState<boolean>(false)
-    const [estimatedFee, setEstimatedFee] = useState<string>(
-        getDisplayWorthyFee(emptyFeesObject!, 4)
-    )
-
-    const estimateFee = async () => {
-        try {
-            setLoading(true)
-            const newFee = await simulateTx([msg])
-            const displayWorthyFee: string = getDisplayWorthyFee(newFee!, 4)
-            setFee(newFee!)
-            setEstimatedFee(displayWorthyFee)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        if (msg.typeUrl) {
-            estimateFee()
-        }
-
-        //eslint-disable-next-line
-    }, [msg])
 
     return (
         <Box gap={0.5} sx={{ height: '15px', display: 'flex', alignItems: 'center' }}>
             <TitleWithTooltip tooltipText="" text={"Fee Estimate:"} variant={'subtitle2'} color={'text.secondary'} weight={400} />
-            <TitleWithTooltip tooltipText="" text={estimatedFee} variant={'subtitle2'} weight={400} />
+            <TitleWithTooltip tooltipText="" text={fee} variant={'subtitle2'} weight={400} />
             <Box sx={{ width: '5px' }}>
                 {loading ? <CircularProgress sx={{ marginBottom: '2px' }} size={12} color={'inherit'} /> : null}
             </Box>
@@ -147,40 +118,52 @@ export const validInput = (
         return [false, TEXT.InvalidAddress]
     }
 
-    if (type === TOKEN_ACTION.SendTransfer && amount > senderTokenBalance) {
+    if (type === TOKEN_ACTION.Transfer && amount > senderTokenBalance) {
         return [false, TEXT.InsufficientBalance]
     }
 
     return [true, '']
 }
 
-export //TODO: Waiting on CudosJS CW20 helpers
-    const generateMsgHandler = async (type: TOKEN_ACTION): Promise<EncodeObject> => {
-        let tempMsg: EncodeObject = emptyEncodeObject
+export const displayTooltipedValue = (value: string, weight?: number, precision?: number): JSX.Element => {
 
-        if (type === TOKEN_ACTION.EditLogo) {
+    return (
+        <AdvancedTooltip
+            tooltipComponent={
+                <TitleWithTooltip
+                    text={Number(value).toLocaleString()}
+                    tooltipText={''}
+                    variant={'subtitle2'}
+                    precision={precision}
+                />}
+            children={
+                <Typography>
+                    <SubTitle
+                        text={Number(value).toLocaleString()}
+                        color={'text.primary'}
+                        weight={weight}
+                    />
+                </Typography>
+            }
+        />
+    )
+}
 
-        }
+export const errorHandler = (rawError: Error): string => {
 
-        if (type === TOKEN_ACTION.SendTransfer) {
+    let humanReadableError = ''
 
-        }
-
-        if (type === TOKEN_ACTION.IncreaseAllowance) {
-
-        }
-
-        if (type === TOKEN_ACTION.DecreaseAllowance) {
-
-        }
-
-        if (type === TOKEN_ACTION.Mint) {
-
-        }
-
-        if (type === TOKEN_ACTION.Burn) {
-
-        }
-
-        return tempMsg
+    if (rawError.message.includes('AllowanceResponse not found')) {
+        humanReadableError = 'Address have no allowance'
     }
+
+    if (rawError.message.includes('Cannot set to own account')) {
+        humanReadableError = 'Cannot set to own account'
+    }
+
+    if (rawError.message.includes('Minting cannot exceed the cap')) {
+        humanReadableError = 'Minting cannot exceed the cap'
+    }
+
+    return humanReadableError
+}

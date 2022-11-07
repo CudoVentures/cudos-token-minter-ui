@@ -2,6 +2,10 @@ import { Coin } from 'cudosjs'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { CHAIN_DETAILS } from 'utils/constants'
 
+export interface assets {
+    [key: string]: string;
+}
+
 export interface userState {
     address?: string
     isAdmin?: boolean
@@ -10,7 +14,8 @@ export interface userState {
     balances?: readonly Coin[]
     chosenBalance?: Coin
     connectedLedger?: string
-    chosenNetwork?: string
+    chosenNetwork?: string,
+    assets?: assets
 }
 
 export const initialState: userState = {
@@ -21,7 +26,8 @@ export const initialState: userState = {
     balances: [],
     chosenBalance: { denom: '', amount: '' },
     connectedLedger: '',
-    chosenNetwork: CHAIN_DETAILS.DEFAULT_NETWORK
+    chosenNetwork: CHAIN_DETAILS.DEFAULT_NETWORK,
+    assets: {}
 }
 
 export const userStateSlice = createSlice({

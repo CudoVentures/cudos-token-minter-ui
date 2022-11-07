@@ -6,7 +6,7 @@ import { RootState } from 'store'
 import { AssetsView, initialState, updateAssetsNavigation } from 'store/assetsNavigation'
 import { styles } from './styles'
 import Dialog from 'components/Dialog'
-import { DEFAULT_TOKEN_IMG_URL, DEFAULT_TOTAL_SUPPLY_VALUE, TOKEN_TYPE } from 'components/TokenDetails/helpers'
+import { DEFAULT_TOKEN_IMG_URL, DEFAULT_TOTAL_SUPPLY_VALUE, emptyTokenObject, TOKEN_TYPE } from 'components/TokenDetails/helpers'
 import GridTable from 'components/GridTable'
 import { updateAssets } from 'store/assets'
 import { CW20 } from 'types/CW20'
@@ -21,11 +21,12 @@ const myData: CW20.TokenObject[] = Array(3).fill(
         name: 'Dummy Name',
         symbol: 'DMY',
         decimalPrecision: 18,
-        initialSupply: '123456789',
-        totalSupply: sanitizeString(DEFAULT_TOTAL_SUPPLY_VALUE),
+        initialSupply: '100',
+        totalSupply: '100',
         logoUrl: DEFAULT_TOKEN_IMG_URL,
-        tokenType: TOKEN_TYPE.Burnable,
-        contractAddress: 'cudos1xhcxq4fvxth2hn3msmkpftkfpw73um7s4et3lh4r8cfmumk3qsmspz6p4p'
+        tokenType: TOKEN_TYPE.Standard,
+        contractAddress: 'cudos196mtnay5xar0ruaxm46x4nec373mz0ccl43r84dfprd3hyxy9erq27d8zq',
+        owner: 'cudos182gkp7lt5kvahat6dt7yj2n6mfku753y2lac0p'
     }
 )
 
@@ -38,8 +39,9 @@ const allData: CW20.TokenObject[] = Array(29).fill(
         initialSupply: '123456789',
         totalSupply: sanitizeString(DEFAULT_TOTAL_SUPPLY_VALUE),
         logoUrl: DEFAULT_TOKEN_IMG_URL,
-        tokenType: TOKEN_TYPE.Mintable,
-        contractAddress: 'cudos1xhcxq4fvxth2hn3msmkpftkfpw73um7s4et3lh4r8cfmumk3qsmspz6p4p'
+        tokenType: TOKEN_TYPE.Standard,
+        contractAddress: 'cudos1pryug3pp92fhn5qavdt2uxu32j3gv0v7vueuzs3ep8xelqd6exlsdgndla',
+        owner: 'cudos1knf0flyucc2ut40cg8tn48sp70p2e65wse7qec'
     }
 )
 
@@ -51,7 +53,7 @@ const Assets = () => {
 
     const {
         allAssets,
-        myAssets
+        myAssets,
     } = useSelector((state: RootState) => state.assetsState)
 
     const {
@@ -59,10 +61,17 @@ const Assets = () => {
     } = useSelector((state: RootState) => state.assetsNavState)
 
     useEffect(() => {
-        dispatch(updateAssetsNavigation(initialState))
+
+        const lastView = currentAssetsView
+        dispatch(updateAssetsNavigation({
+            ...initialState,
+            currentAssetsView: lastView
+        }))
+
         dispatch(updateAssets({
             allAssets: allData,
-            myAssets: myData
+            myAssets: myData,
+            selectedAsset: emptyTokenObject
         }))
 
         //eslint-disable-next-line

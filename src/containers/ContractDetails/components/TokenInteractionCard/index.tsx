@@ -1,50 +1,104 @@
 import { Box, Input, InputAdornment, Tooltip } from "@mui/material"
 import Card from "components/Card/Card"
-import { Title } from "components/Dialog/ModalComponents/helpers"
+import { SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
 import { TitleWithTooltip } from "components/helpers"
-import { emptyEncodeObject, emptyFeesObject, PLACEHOLDERS, TEXT, TOKEN_ACTION } from "components/TokenDetails/helpers"
 import { EncodeObject, StdFee } from "cudosjs"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { RootState } from "store"
 import { CW20 } from "types/CW20"
 import { MODAL_MSGS } from "utils/constants"
+import useGenerateMsgHandler from "utils/CustomHooks/useGenerateMsgHandler"
 import useSignAndBroadcast from "utils/CustomHooks/useSignAndBroadcastTx"
-import { SubmitBtn, isAddressRequired, FeeEstimator, validInput, generateMsgHandler } from "../helpers"
+import useSimulateTx from "utils/CustomHooks/useSimulateTx"
+import { getDisplayWorthyFee } from "utils/helpers"
+import { SubmitBtn, isAddressRequired, FeeDisplayer, validInput, errorHandler } from "../helpers"
 import { styles } from "./styles"
 
-const TokenInteractionCard = ({ type, tooltipText, btnText }: {
-    type: TOKEN_ACTION,
+import {
+    emptyEncodeObject,
+    emptyFeesObject,
+    PLACEHOLDERS,
+    TEXT,
+    TOKEN_ACTION,
+    TOKEN_TYPE
+} from "components/TokenDetails/helpers"
+
+
+const disabledActions = {
+    [TOKEN_TYPE.Standard]: [TOKEN_ACTION.Burn, TOKEN_ACTION.Mint],
+    [TOKEN_TYPE.Burnable]: [TOKEN_ACTION.Mint],
+    [TOKEN_TYPE.Mintable]: [TOKEN_ACTION.Burn],
+    [TOKEN_TYPE.Unlimited]: []
+}
+
+const TokenInteractionCard = ({ tokenAction, tooltipText, btnText }: {
+    tokenAction: TOKEN_ACTION,
     tooltipText: string,
     btnText: string
 }) => {
 
-    //TODO: Implement token balance check
-    const senderTokenBalance = 1000
     const signAndBroadcast = useSignAndBroadcast()
+    const generateMsgHandler = useGenerateMsgHandler()
+    const simulateTx = useSimulateTx()
+    const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
+    const { assets } = useSelector((state: RootState) => state.userState)
     const [value, setValue] = useState<string>('')
     const [recipient, setRecipient] = useState<string>('')
     const [msg, setMsg] = useState<EncodeObject>(emptyEncodeObject)
     const [fee, setFee] = useState<StdFee>(emptyFeesObject)
     const [validatedInput, setValidatedInput] = useState<boolean>(false)
-    const [validatedBroadcastData, setValidatedBroadcastData] = useState<boolean>(false)
+    const [isDisabled, setIsDisabled] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const cleanState = () => {
+        setMsg(emptyEncodeObject)
+        setFee(emptyFeesObject)
+        setValue('')
+        setRecipient('')
+    }
 
     const handleData = async () => {
 
-        setMsg(emptyEncodeObject)
-        setFee(emptyFeesObject)
+        try {
+            setLoading(true)
+            setMsg(emptyEncodeObject)
+            setFee(emptyFeesObject)
 
-        const [validatedInput, error] = validInput(type, value, recipient, senderTokenBalance)
+            const [validatedInput, error] = validInput(
+                tokenAction, value, recipient, Number(assets![selectedAsset?.contractAddress!])
+            )
 
-        if (validatedInput) {
-            const newMsg = await generateMsgHandler(type)
-            setMsg(newMsg)
+            setValidatedInput(validatedInput)
+            setError(error)
+
+            if (validatedInput) {
+
+                const handlerSpecificData = {
+                    value: value,
+                    recipient: recipient
+                }
+
+                const newMsg = await generateMsgHandler(tokenAction, handlerSpecificData)
+                setMsg(newMsg)
+
+                const newFee = await simulateTx([newMsg])
+                setFee(newFee!)
+            }
+
+        } catch (error: any) {
+            setError(errorHandler(error as Error))
+            console.error((error as Error).stack)
+
+        } finally {
+            setLoading(false)
         }
-
-        setError(error)
-        setValidatedInput(validatedInput)
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+
+        setLoading(false)
 
         if (event.target.name === TEXT.ReceiverAddress) {
             setRecipient(event.target.value as string)
@@ -56,13 +110,12 @@ const TokenInteractionCard = ({ type, tooltipText, btnText }: {
 
     useEffect(() => {
 
-        if (msg.typeUrl && fee.gas) {
-            setValidatedBroadcastData(true)
-            return
-        }
+        setIsDisabled(
+            disabledActions[selectedAsset?.tokenType!].includes(tokenAction)
+        )
 
-        setValidatedBroadcastData(false)
-    }, [msg, fee])
+        //eslint-disable-next-line
+    }, [])
 
     useEffect(() => {
 
@@ -75,18 +128,35 @@ const TokenInteractionCard = ({ type, tooltipText, btnText }: {
 
         const signAndBroadcastData:
             CW20.SignAndBroadcastMsgData = {
-            msgType: type,
+            msgType: tokenAction,
             msgs: [msg],
             fees: fee,
             msgTypeSpecificData: {
-                operationType: type
+                operationType: tokenAction
             }
         }
-
+        cleanState()
         await signAndBroadcast(signAndBroadcastData)
     }
 
-    const EndAdornment = () => {
+    const handleBtnTooltip = (): string => {
+
+        if (isDisabled || error) {
+            return ''
+        }
+
+        if (!validatedInput) {
+            return MODAL_MSGS.PROMPTS.VALID_DATA
+        }
+
+        if (fee.gas === emptyFeesObject.gas) {
+            return MODAL_MSGS.ERRORS.TYPE.CONNECTION
+        }
+
+        return ''
+    }
+
+    const EndAdornment = useCallback(() => {
 
         let preAdornment = <div></div>
 
@@ -100,46 +170,58 @@ const TokenInteractionCard = ({ type, tooltipText, btnText }: {
             />
         }
 
-        if (validatedInput) {
-            preAdornment = <FeeEstimator
-                msg={msg}
-                setFee={setFee}
+        if (validatedInput && !error) {
+            preAdornment = <FeeDisplayer
+                fee={getDisplayWorthyFee(fee, 4)}
+                loading={loading}
             />
+        }
+
+        if (isDisabled) {
+            preAdornment = <SubTitle text={'Cannot be used due to Token Type'} />
         }
 
         return (
             <Box gap={2} sx={{ display: 'flex', alignItems: 'center' }}>
                 {preAdornment}
                 <Tooltip
-                    title={!validatedInput ? MODAL_MSGS.PROMPTS.VALID_DATA :
-                        !validatedBroadcastData ? MODAL_MSGS.ERRORS.TYPE.CONNECTION : ''}>
+                    title={handleBtnTooltip()}>
                     <Box>
                         <SubmitBtn
                             btnText={btnText}
                             handleSend={broadcast}
-                            validInput={validatedInput && validatedBroadcastData}
+                            validInput={
+                                validatedInput &&
+                                msg.typeUrl !== '' &&
+                                fee.gas !== emptyFeesObject.gas &&
+                                !loading &&
+                                !error
+                            }
                         />
                     </Box>
                 </Tooltip>
             </Box>
         )
-    }
+
+        //eslint-disable-next-line
+    }, [error, validatedInput, isDisabled, msg, fee])
 
     return (
         <Card style={styles.contentCard} sx={{ minWidth: 'max-content' }}>
             <Box gap={2} style={styles.boxHolder}>
                 <TitleWithTooltip
-                    text={type.toUpperCase()}
+                    text={tokenAction.toUpperCase()}
                     tooltipText={tooltipText}
                     color={'text.secondary'}
                     variant={'subtitle2'}
                     weight={600}
                 />
-                {isAddressRequired(type) ?
+                {isAddressRequired(tokenAction) ?
                     <Box gap={1} style={styles.inputHolder}>
                         <Title text={TEXT.ReceiverAddress} />
                         <Box style={styles.input}>
                             <Input
+                                disabled={isDisabled}
                                 name={TEXT.ReceiverAddress}
                                 disableUnderline
                                 sx={styles.textInput}
@@ -161,6 +243,7 @@ const TokenInteractionCard = ({ type, tooltipText, btnText }: {
                                     <EndAdornment />
                                 </InputAdornment>
                             }
+                            disabled={isDisabled}
                             name={TEXT.Amount}
                             disableUnderline
                             sx={styles.amountInput}
