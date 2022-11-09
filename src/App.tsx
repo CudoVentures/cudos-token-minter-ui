@@ -20,7 +20,6 @@ import { ApolloProvider, NormalizedCacheObject, ApolloClient } from '@apollo/cli
 import { useApollo } from './graphql/client'
 import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
 import RequireConnectedWallet from 'components/RequireConnectedWallet'
-import { updateAssets } from 'store/assets'
 
 import '@fontsource/poppins'
 

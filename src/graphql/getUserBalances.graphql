@@ -1,0 +1,5 @@
+subscription getUserBalances($address: String = "", $token: String = "") {
+  cw20token_balance_by_pk(address: $address, token: $token) {
+    balance
+  }
+}

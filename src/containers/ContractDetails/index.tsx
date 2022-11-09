@@ -18,7 +18,7 @@ import { ReactComponent as EditIcon } from 'assets/vectors/edit-icon.svg'
 import { initialState, updateModalState } from "store/modals"
 import { displayTokenValueWithPrecisionTooltip } from "./components/helpers"
 import { BigNumber } from "bignumber.js"
-import { useGetUserAndContractBalancesSubscription } from "graphql/types"
+import { useGetContractDetailsSubscription, useGetUserBalancesSubscription } from "graphql/types"
 import { updateUser } from "store/user"
 import { updateAssets } from "store/assets"
 
@@ -36,8 +36,19 @@ const ContractDetails = () => {
     const [isHolder, setIsHolder] = useState<boolean>(false)
     const [userBalance, setUserBalance] = useState<string>('0')
     const [dataProcessing, setDataProcessing] = useState<boolean>(true)
-    const { data, error } = useGetUserAndContractBalancesSubscription({
+
+    const {
+        data: fetchedUserData,
+        error: userFetchError
+    } = useGetUserBalancesSubscription({
         variables: { address: loggedInUser, token: selectedAsset?.contractAddress }
+    })
+
+    const {
+        data: fetchedContractData,
+        error: contractFetchError
+    } = useGetContractDetailsSubscription({
+        variables: { token: selectedAsset?.contractAddress }
     })
 
     const handleEditLogo = () => {
@@ -59,39 +70,44 @@ const ContractDetails = () => {
     }, [displayEditIcon])
 
     useEffect(() => {
-        if (data) {
-            setUserBalance(data.cw20token_balance_by_pk?.balance)
+        if (fetchedUserData) {
+            setUserBalance(fetchedUserData.cw20token_balance_by_pk?.balance)
             dispatch(updateUser({
                 assets: {
                     ...assets,
-                    [selectedAsset?.contractAddress!]: data.cw20token_balance_by_pk?.balance
+                    [selectedAsset?.contractAddress!]: fetchedUserData.cw20token_balance_by_pk?.balance
                 }
             }))
+
+            setIsOwner(selectedAsset?.owner === loggedInUser)
+        }
+
+        if (fetchedContractData) {
             dispatch(updateAssets({
                 selectedAsset: {
                     ...selectedAsset,
-                    totalSupply: data.cw20token_balance_by_pk?.cw20token_info.max_supply,
-                    circulatingSupply: data.cw20token_balance_by_pk?.cw20token_info.circulating_supply,
-                    logoUrl: JSON.parse(data.cw20token_balance_by_pk?.cw20token_info.logo!).url
+                    totalSupply: fetchedContractData.cw20token_info_by_pk?.max_supply,
+                    circulatingSupply: fetchedContractData.cw20token_info_by_pk?.circulating_supply,
+                    logoUrl: JSON.parse(fetchedContractData.cw20token_info_by_pk?.logo!).url
                 }
             }))
-            setIsOwner(selectedAsset?.owner === loggedInUser)
+        }
+
+        if (fetchedContractData && fetchedUserData) {
             setTimeout(() => { setDataProcessing(false) }, 200)
         }
 
         //eslint-disable-next-line
-    }, [data])
+    }, [fetchedUserData, fetchedContractData])
 
     useEffect(() => {
-        if (userBalance) {
-            setIsHolder(new BigNumber(userBalance).isGreaterThan(0))
-        }
+        setIsHolder(new BigNumber(userBalance).isGreaterThan(0))
 
         //eslint-disable-next-line
     }, [userBalance])
 
     useEffect(() => {
-        if (error) {
+        if (contractFetchError || userFetchError) {
             dispatch(updateModalState({
                 ...initialState,
                 failure: true,
@@ -99,11 +115,15 @@ const ContractDetails = () => {
                 title: MODAL_MSGS.ERRORS.TITLES.DEFAULT,
                 message: MODAL_MSGS.ERRORS.MESSAGES.DEFAULT
             }))
-            console.error(error.message)
+            console.error(
+                contractFetchError ?
+                    contractFetchError.message :
+                    userFetchError?.message
+            )
         }
 
         //eslint-disable-next-line
-    }, [error])
+    }, [contractFetchError, userFetchError])
 
     return (
         dataProcessing ? <Box style={styles.spinnerHolder}><CircularProgress /></Box> :

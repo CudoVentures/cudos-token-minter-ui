@@ -16978,6 +16978,13 @@ export type GetAllNetworkTokensQueryVariables = Exact<{ [key: string]: never; }>
 
 export type GetAllNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply: any, code_id: number, minter?: string | null, decimals: number, circulating_supply: any }> };
 
+export type GetContractDetailsSubscriptionVariables = Exact<{
+  token?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetContractDetailsSubscription = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', circulating_supply: any, max_supply: any, logo?: string | null } | null };
+
 export type GetTokenDetailsQueryVariables = Exact<{
   address?: InputMaybe<Scalars['String']>;
 }>;
@@ -16985,13 +16992,13 @@ export type GetTokenDetailsQueryVariables = Exact<{
 
 export type GetTokenDetailsQuery = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply: any, code_id: number, minter?: string | null, decimals: number, circulating_supply: any } | null };
 
-export type GetUserAndContractBalancesSubscriptionVariables = Exact<{
+export type GetUserBalancesSubscriptionVariables = Exact<{
   address?: InputMaybe<Scalars['String']>;
   token?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetUserAndContractBalancesSubscription = { cw20token_balance_by_pk?: { __typename?: 'cw20token_balance', balance: any, cw20token_info: { __typename?: 'cw20token_info', circulating_supply: any, max_supply: any, logo?: string | null } } | null };
+export type GetUserBalancesSubscription = { cw20token_balance_by_pk?: { __typename?: 'cw20token_balance', balance: any } | null };
 
 
 export const GetAllNetworkTokensDocument = gql`
@@ -17036,6 +17043,38 @@ export function useGetAllNetworkTokensLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAllNetworkTokensQueryHookResult = ReturnType<typeof useGetAllNetworkTokensQuery>;
 export type GetAllNetworkTokensLazyQueryHookResult = ReturnType<typeof useGetAllNetworkTokensLazyQuery>;
 export type GetAllNetworkTokensQueryResult = Apollo.QueryResult<GetAllNetworkTokensQuery, GetAllNetworkTokensQueryVariables>;
+export const GetContractDetailsDocument = gql`
+    subscription getContractDetails($token: String = "") {
+  cw20token_info_by_pk(address: $token) {
+    circulating_supply
+    max_supply
+    logo
+  }
+}
+    `;
+
+/**
+ * __useGetContractDetailsSubscription__
+ *
+ * To run a query within a React component, call `useGetContractDetailsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetContractDetailsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContractDetailsSubscription({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useGetContractDetailsSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetContractDetailsSubscription, GetContractDetailsSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetContractDetailsSubscription, GetContractDetailsSubscriptionVariables>(GetContractDetailsDocument, options);
+      }
+export type GetContractDetailsSubscriptionHookResult = ReturnType<typeof useGetContractDetailsSubscription>;
+export type GetContractDetailsSubscriptionResult = Apollo.SubscriptionResult<GetContractDetailsSubscription>;
 export const GetTokenDetailsDocument = gql`
     query getTokenDetails($address: String = "") {
   cw20token_info_by_pk(address: $address) {
@@ -17079,39 +17118,34 @@ export function useGetTokenDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetTokenDetailsQueryHookResult = ReturnType<typeof useGetTokenDetailsQuery>;
 export type GetTokenDetailsLazyQueryHookResult = ReturnType<typeof useGetTokenDetailsLazyQuery>;
 export type GetTokenDetailsQueryResult = Apollo.QueryResult<GetTokenDetailsQuery, GetTokenDetailsQueryVariables>;
-export const GetUserAndContractBalancesDocument = gql`
-    subscription getUserAndContractBalances($address: String = "", $token: String = "") {
+export const GetUserBalancesDocument = gql`
+    subscription getUserBalances($address: String = "", $token: String = "") {
   cw20token_balance_by_pk(address: $address, token: $token) {
     balance
-    cw20token_info {
-      circulating_supply
-      max_supply
-      logo
-    }
   }
 }
     `;
 
 /**
- * __useGetUserAndContractBalancesSubscription__
+ * __useGetUserBalancesSubscription__
  *
- * To run a query within a React component, call `useGetUserAndContractBalancesSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGetUserAndContractBalancesSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserBalancesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserBalancesSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserAndContractBalancesSubscription({
+ * const { data, loading, error } = useGetUserBalancesSubscription({
  *   variables: {
  *      address: // value for 'address'
  *      token: // value for 'token'
  *   },
  * });
  */
-export function useGetUserAndContractBalancesSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetUserAndContractBalancesSubscription, GetUserAndContractBalancesSubscriptionVariables>) {
+export function useGetUserBalancesSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetUserBalancesSubscription, GetUserBalancesSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<GetUserAndContractBalancesSubscription, GetUserAndContractBalancesSubscriptionVariables>(GetUserAndContractBalancesDocument, options);
+        return Apollo.useSubscription<GetUserBalancesSubscription, GetUserBalancesSubscriptionVariables>(GetUserBalancesDocument, options);
       }
-export type GetUserAndContractBalancesSubscriptionHookResult = ReturnType<typeof useGetUserAndContractBalancesSubscription>;
-export type GetUserAndContractBalancesSubscriptionResult = Apollo.SubscriptionResult<GetUserAndContractBalancesSubscription>;
+export type GetUserBalancesSubscriptionHookResult = ReturnType<typeof useGetUserBalancesSubscription>;
+export type GetUserBalancesSubscriptionResult = Apollo.SubscriptionResult<GetUserBalancesSubscription>;

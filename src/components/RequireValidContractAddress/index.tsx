@@ -15,7 +15,7 @@ const RequireValidContractAddress = () => {
     const { chosenNetwork } = useSelector((state: RootState) => state.userState)
     const { contractAddress } = useParams()
     const [processingData, setProcessingData] = useState<boolean>(false)
-    
+
     const { data, loading, error } = useGetTokenDetailsQuery({
         variables: { address: contractAddress }
     })
@@ -49,6 +49,8 @@ const RequireValidContractAddress = () => {
 
             setProcessingData(false)
         }
+
+        //eslint-disable-next-line
     }, [data?.cw20token_info_by_pk, error])
 
     return loading || processingData ? <Box style={styles.spinnerHolder}><CircularProgress /></Box> :

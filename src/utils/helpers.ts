@@ -10,7 +10,7 @@ import { CW20 } from "types/CW20"
 export const getTokenTypeFromCodeId = (chosenNetwork: string, codeId: number): TOKEN_TYPE => {
   let tokenType: TOKEN_TYPE = TOKEN_TYPE.Undefined
 
-  Object.entries(CODE_IDS.NETWORK[chosenNetwork]).find(([key, value]) => {
+  Object.entries(CODE_IDS.NETWORK[chosenNetwork]).forEach(([key, value]) => {
     if ((value as number[]).includes(codeId)) {
       tokenType = key as TOKEN_TYPE
     }
