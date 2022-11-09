@@ -28,7 +28,7 @@ const useGenerateMsgHandler = () => {
 
             const tokenType = handlerSpecificData.tokenType as TOKEN_TYPE
             const tokenObject = getSanitizedTokenObject(handlerSpecificData.tokenObject as CW20.TokenObject)
-            const codeId: number = CODE_IDS.NETWORK[chosenNetwork!][tokenType]
+            const codeId: number = CODE_IDS.NETWORK[chosenNetwork!][tokenType].at(-1)
             const instantiateMsg = generateInstantiateMsg(tokenType, tokenObject)
 
             tempMsg = client.Cw20Module.msgInstantiate(

@@ -11,7 +11,7 @@ export const getTokenTypeFromCodeId = (chosenNetwork: string, codeId: number): T
   let tokenType: TOKEN_TYPE = TOKEN_TYPE.Undefined
 
   Object.entries(CODE_IDS.NETWORK[chosenNetwork]).find(([key, value]) => {
-    if (value === codeId) {
+    if ((value as number[]).includes(codeId)) {
       tokenType = key as TOKEN_TYPE
     }
   })
