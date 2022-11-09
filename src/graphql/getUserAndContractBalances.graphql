@@ -1,0 +1,10 @@
+subscription getUserAndContractBalances($address: String = "", $token: String = "") {
+  cw20token_balance_by_pk(address: $address, token: $token) {
+    balance
+    cw20token_info {
+      circulating_supply
+      max_supply
+      logo
+    }
+  }
+}

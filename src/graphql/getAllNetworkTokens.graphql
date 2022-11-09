@@ -1,0 +1,13 @@
+query GetAllNetworkTokens {
+  cw20token_info {
+    address
+    logo
+    name
+    symbol
+    max_supply
+    code_id
+    minter
+    decimals
+    circulating_supply
+  }
+}

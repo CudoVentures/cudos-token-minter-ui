@@ -8,7 +8,7 @@ import { getTokenTypeWithlogo } from "components/AssetsNavBar/components/ViewTok
 import Card from "components/Card/Card"
 import { SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
 import { TruncatedTextWithTooltip } from "components/helpers"
-import { TEXT } from "components/TokenDetails/helpers"
+import { TEXT, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "store"
@@ -16,9 +16,11 @@ import { CHAIN_DETAILS } from "utils/constants"
 import { useLowResCheck, useMidlowResCheck } from "utils/CustomHooks/screenChecks"
 import { ReactComponent as EditIcon } from 'assets/vectors/edit-icon.svg'
 import { updateModalState } from "store/modals"
-import { displayTooltipedValue } from "./components/helpers"
+import { displayTokenValueWithPrecisionTooltip } from "./components/helpers"
 import { BigNumber } from "bignumber.js"
+import { useGetUserAndContractBalancesSubscription } from "graphql/types"
 import { updateUser } from "store/user"
+import { updateAssets } from "store/assets"
 
 const ContractDetails = () => {
 
@@ -33,58 +35,13 @@ const ContractDetails = () => {
     const [isOwner, setIsOwner] = useState<boolean>(false)
     const [isHolder, setIsHolder] = useState<boolean>(false)
     const [userBalance, setUserBalance] = useState<string>('0')
-    const [loading, setLoading] = useState<boolean>(false)
-
-    const handleLoading = async () => {
-
-        try {
-            setLoading(true)
-
-            // Setting Token Ownership
-            setIsOwner(selectedAsset?.owner === loggedInUser)
-
-            // Setting Token Holdership
-            await setHolderShip(loggedInUser!)
-
-
-        } catch (e) {
-            console.error(e)
-
-        } finally {
-            setLoading(false)
-        }
-    }
+    const { data, loading, error } = useGetUserAndContractBalancesSubscription({
+        variables: { address: loggedInUser, token: selectedAsset?.contractAddress }
+    })
 
     const handleEditLogo = () => {
         dispatch(updateModalState({ openEditLogo: true }))
     }
-
-    const setHolderShip = async (userAddress: string) => {
-
-        const balance = await getTokenBalance(userAddress)
-        setUserBalance(balance)
-        setIsHolder(new BigNumber(balance).isGreaterThan(0))
-        dispatch(updateUser({
-            assets: {
-                ...assets,
-                [selectedAsset?.contractAddress!]: balance
-            }
-        }))
-    }
-
-    const getTokenBalance = async (userAddress: string): Promise<string> => {
-
-        //TODO: Waiting on Token Traker
-        const balance = '33'
-
-        return balance ?? '0'
-    }
-
-    useEffect(() => {
-        handleLoading()
-
-        //eslint-disable-next-line
-    }, [])
 
     useEffect(() => {
         if (displayEditIcon) {
@@ -97,13 +54,51 @@ const ContractDetails = () => {
             editIcon.current!.style.opacity = '0'
         }
 
-
         //eslint-disable-next-line
     }, [displayEditIcon])
 
+    useEffect(() => {
+        if (data) {
+            setUserBalance(data.cw20token_balance_by_pk?.balance)
+            dispatch(updateUser({
+                assets: {
+                    ...assets,
+                    [selectedAsset?.contractAddress!]: data.cw20token_balance_by_pk?.balance
+                }
+            }))
+            dispatch(updateAssets({
+                selectedAsset: {
+                    ...selectedAsset,
+                    totalSupply: data.cw20token_balance_by_pk?.cw20token_info.max_supply,
+                    circulatingSupply: data.cw20token_balance_by_pk?.cw20token_info.circulating_supply,
+                    logoUrl: JSON.parse(data.cw20token_balance_by_pk?.cw20token_info.logo!).url
+                }
+            }))
+            setIsOwner(selectedAsset?.owner === loggedInUser)
+        }
+
+        //eslint-disable-next-line
+    }, [data])
+
+    useEffect(() => {
+        if (userBalance) {
+            setIsHolder(new BigNumber(userBalance).isGreaterThan(0))
+        }
+
+        //eslint-disable-next-line
+    }, [userBalance])
+
+    useEffect(() => {
+        if (error) {
+            console.error(error.message)
+        }
+
+        //eslint-disable-next-line
+    }, [error])
+
     return (
         loading ? <Box style={styles.spinnerHolder}><CircularProgress /></Box> :
-            <Box>
+            <Box marginTop={2}>
                 <Dialog />
                 <Box gap={2} style={styles.contentHolder}>
 
@@ -142,14 +137,15 @@ const ContractDetails = () => {
                                 </Box>
                                 <Box gap={2} display={'flex'} flexDirection={'column'}>
                                     <TruncatedTextWithTooltip
-                                        text={selectedAsset?.name!}
+                                        text={selectedAsset?.name! || ''}
                                         maxAllowed={20}
                                         variant={isLowRes ? 'h5' : 'h4'}
                                         weight={700}
                                     />
                                     <Title text={`(${selectedAsset?.symbol!})`} variant={isLowRes ? 'subtitle1' : 'h5'} />
-                                    <Box gap={3} display={'flex'}>
-                                        <SubTitle text={TEXT.TokenType} />
+                                    <Box gap={3} display={'flex'} alignItems='center'>
+                                        <Box height={'25px'}>
+                                            <SubTitle text={TEXT.TokenType} /></Box>
                                         {getTokenTypeWithlogo(selectedAsset?.tokenType!)}
                                     </Box>
                                 </Box>
@@ -165,33 +161,38 @@ const ContractDetails = () => {
                                 <SubTitle text={selectedAsset?.decimalPrecision?.toString()!} color={'text.primary'} />
 
                                 <SubTitle text={TEXT.InitialSupply} />
-                                {displayTooltipedValue(
+                                {displayTokenValueWithPrecisionTooltip(
                                     selectedAsset?.initialSupply!,
-                                    400,
-                                    selectedAsset?.decimalPrecision
+                                    selectedAsset?.decimalPrecision!,
+                                    2,
+                                    400
                                 )}
 
                                 <SubTitle text={TEXT.TotalSupply} />
-                                {displayTooltipedValue(
-                                    selectedAsset?.totalSupply!,
-                                    400,
-                                    selectedAsset?.decimalPrecision
-                                )}
+                                {selectedAsset?.tokenType === TOKEN_TYPE.Unlimited ? 'Not Limited' :
+                                    displayTokenValueWithPrecisionTooltip(
+                                        selectedAsset?.initialSupply!,
+                                        selectedAsset?.decimalPrecision!,
+                                        2,
+                                        400
+                                    )}
 
                                 <SubTitle text={TEXT.CurrentSupply} />
-                                {displayTooltipedValue(
-                                    '000000',
-                                    400,
-                                    selectedAsset?.decimalPrecision
+                                {displayTokenValueWithPrecisionTooltip(
+                                    selectedAsset?.circulatingSupply!,
+                                    selectedAsset?.decimalPrecision!,
+                                    2,
+                                    400
                                 )}
 
                                 <Divider sx={{ gridColumn: '1/3' }} />
 
                                 <SubTitle text={TEXT.YourBalance} weight={700} />
-                                {displayTooltipedValue(
+                                {displayTokenValueWithPrecisionTooltip(
                                     userBalance,
-                                    700,
-                                    selectedAsset?.decimalPrecision
+                                    selectedAsset?.decimalPrecision!,
+                                    2,
+                                    700
                                 )}
                             </Box>
                         </Box>

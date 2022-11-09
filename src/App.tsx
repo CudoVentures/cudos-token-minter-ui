@@ -44,9 +44,6 @@ const App = () => {
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
       dispatch(updateUser(connectedUser))
-      dispatch(updateAssets({
-        selectedAsset: {}
-      }))
 
     } catch (error) {
       console.error((error as Error).message)

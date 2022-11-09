@@ -59,7 +59,9 @@ const TokenSummary = ({ tokenObject, tokenType, estimatedFee }: {
                             {
                                 tokenType === TOKEN_TYPE.Unlimited ? null :
                                     <TitleWithTooltip
-                                        text={tokenObject.totalSupply!}
+                                        text={tokenType === TOKEN_TYPE.Standard ?
+                                            tokenObject.initialSupply! :
+                                            tokenObject.totalSupply!}
                                         tooltipText={TOOLTIPS.TotalSupply}
                                         precision={tokenObject.decimalPrecision}
                                     />

@@ -121,17 +121,18 @@ export enum TOKEN_TYPE {
     Standard = 'Standard',
     Burnable = 'Burnable',
     Mintable = 'Mintable',
-    Unlimited = 'Unlimited'
+    Unlimited = 'Unlimited',
+    Undefined = 'Undefined'
 }
 
 export const CODE_IDS = {
     Simulate: 1,
     NETWORK: {
         LOCAL: {
-            [TOKEN_TYPE.Standard]: 1,
-            [TOKEN_TYPE.Burnable]: 1,
-            [TOKEN_TYPE.Mintable]: 1,
-            [TOKEN_TYPE.Unlimited]: 1,
+            [TOKEN_TYPE.Standard]: 3,
+            [TOKEN_TYPE.Burnable]: 2,
+            [TOKEN_TYPE.Mintable]: 7,
+            [TOKEN_TYPE.Unlimited]: 6,
         },
         PRIVATE: {
             [TOKEN_TYPE.Standard]: 13,

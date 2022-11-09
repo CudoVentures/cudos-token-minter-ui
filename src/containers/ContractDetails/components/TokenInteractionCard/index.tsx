@@ -13,6 +13,7 @@ import useSignAndBroadcast from "utils/CustomHooks/useSignAndBroadcastTx"
 import useSimulateTx from "utils/CustomHooks/useSimulateTx"
 import { getDisplayWorthyFee } from "utils/helpers"
 import { SubmitBtn, isAddressRequired, FeeDisplayer, validInput, errorHandler } from "../helpers"
+import { convertPreciseTokenBalanceToFull } from "utils/regexFormatting"
 import { styles } from "./styles"
 
 import {
@@ -67,7 +68,11 @@ const TokenInteractionCard = ({ tokenAction, tooltipText, btnText }: {
             setFee(emptyFeesObject)
 
             const [validatedInput, error] = validInput(
-                tokenAction, value, recipient, Number(assets![selectedAsset?.contractAddress!])
+                tokenAction,
+                value,
+                recipient,
+                assets![selectedAsset?.contractAddress!],
+                selectedAsset?.decimalPrecision!
             )
 
             setValidatedInput(validatedInput)
@@ -76,7 +81,7 @@ const TokenInteractionCard = ({ tokenAction, tooltipText, btnText }: {
             if (validatedInput) {
 
                 const handlerSpecificData = {
-                    value: value,
+                    value: convertPreciseTokenBalanceToFull(value, selectedAsset?.decimalPrecision!),
                     recipient: recipient
                 }
 

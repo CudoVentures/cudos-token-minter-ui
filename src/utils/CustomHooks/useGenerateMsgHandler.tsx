@@ -98,7 +98,7 @@ const useGenerateMsgHandler = () => {
                 selectedAsset?.contractAddress!,
                 {
                     mint: {
-                        recipient: handlerSpecificData.recipient!,
+                        recipient: address!,
                         amount: handlerSpecificData.value!
                     }
                 }

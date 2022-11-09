@@ -51,6 +51,7 @@ declare module CW20 {
         decimalPrecision?: number;
         initialSupply?: string;
         totalSupply?: string;
+        circulatingSupply?: string;
         logoUrl?: string;
         tokenType?: TOKEN_TYPE;
         contractAddress?: string;

@@ -1,0 +1,13 @@
+query getTokenDetails($address: String = "") {
+  cw20token_info_by_pk(address: $address) {
+    address
+    logo
+    name
+    symbol
+    max_supply
+    code_id
+    minter
+    decimals
+    circulating_supply
+  }
+}

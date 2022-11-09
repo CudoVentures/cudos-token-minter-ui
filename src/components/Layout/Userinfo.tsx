@@ -15,6 +15,8 @@ import { CopyAndFollowComponent } from 'components/helpers'
 import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 import { formatAddress } from 'utils/helpers'
 import { initialState as initialAssetsState, updateAssets } from 'store/assets'
+import { initialState as initialAssetsNavigation } from 'store/assetsNavigation'
+import { updateAssetsNavigation } from 'store/assetsNavigation'
 
 import {
   Typography,
@@ -37,6 +39,7 @@ const UserInfo = () => {
     dispatch(updateUser(initialUserState))
     dispatch(updateModalState(initialModalState))
     dispatch(updateAssets(initialAssetsState))
+    dispatch(updateAssetsNavigation(initialAssetsNavigation))
     navigate(NAVIGATION_PATH.Home)
   }
 

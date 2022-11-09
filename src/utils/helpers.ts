@@ -3,9 +3,21 @@ import { Coin, DeliverTxResponse, EncodeObject, StdFee } from "cudosjs"
 import { connectLedgerByType, getQueryClient, getSigningCosmWasmClient } from "./config"
 import { CHAIN_DETAILS } from "./constants"
 import { isValidCudosAddress } from "./validation"
-import { DEFAULT_TOKEN_IMG_URL } from "components/TokenDetails/helpers"
+import { CODE_IDS, DEFAULT_TOKEN_IMG_URL, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { separateDecimals, separateFractions, setDecimalPrecisionTo } from "./regexFormatting"
 import { CW20 } from "types/CW20"
+
+export const getTokenTypeFromCodeId = (chosenNetwork: string, codeId: number): TOKEN_TYPE => {
+  let tokenType: TOKEN_TYPE = TOKEN_TYPE.Undefined
+
+  Object.entries(CODE_IDS.NETWORK[chosenNetwork]).find(([key, value]) => {
+    if (value === codeId) {
+      tokenType = key as TOKEN_TYPE
+    }
+  })
+
+  return tokenType
+}
 
 export const executeMsgs = async (
   signer: string,
