@@ -116,7 +116,7 @@ const TokenInteractionCard = ({ tokenAction, tooltipText, btnText }: {
     useEffect(() => {
 
         setIsDisabled(
-            disabledActions[selectedAsset?.tokenType!].includes(tokenAction)
+            disabledActions[selectedAsset?.tokenType!]?.includes(tokenAction)
         )
 
         //eslint-disable-next-line

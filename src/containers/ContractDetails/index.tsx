@@ -12,10 +12,10 @@ import { TEXT, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "store"
-import { CHAIN_DETAILS } from "utils/constants"
+import { CHAIN_DETAILS, MODAL_MSGS } from "utils/constants"
 import { useLowResCheck, useMidlowResCheck } from "utils/CustomHooks/screenChecks"
 import { ReactComponent as EditIcon } from 'assets/vectors/edit-icon.svg'
-import { updateModalState } from "store/modals"
+import { initialState, updateModalState } from "store/modals"
 import { displayTokenValueWithPrecisionTooltip } from "./components/helpers"
 import { BigNumber } from "bignumber.js"
 import { useGetUserAndContractBalancesSubscription } from "graphql/types"
@@ -35,7 +35,8 @@ const ContractDetails = () => {
     const [isOwner, setIsOwner] = useState<boolean>(false)
     const [isHolder, setIsHolder] = useState<boolean>(false)
     const [userBalance, setUserBalance] = useState<string>('0')
-    const { data, loading, error } = useGetUserAndContractBalancesSubscription({
+    const [dataProcessing, setDataProcessing] = useState<boolean>(true)
+    const { data, error } = useGetUserAndContractBalancesSubscription({
         variables: { address: loggedInUser, token: selectedAsset?.contractAddress }
     })
 
@@ -75,6 +76,7 @@ const ContractDetails = () => {
                 }
             }))
             setIsOwner(selectedAsset?.owner === loggedInUser)
+            setTimeout(() => { setDataProcessing(false) }, 200)
         }
 
         //eslint-disable-next-line
@@ -90,6 +92,13 @@ const ContractDetails = () => {
 
     useEffect(() => {
         if (error) {
+            dispatch(updateModalState({
+                ...initialState,
+                failure: true,
+                msgType: MODAL_MSGS.ERRORS.TYPE.FETCH,
+                title: MODAL_MSGS.ERRORS.TITLES.DEFAULT,
+                message: MODAL_MSGS.ERRORS.MESSAGES.DEFAULT
+            }))
             console.error(error.message)
         }
 
@@ -97,7 +106,7 @@ const ContractDetails = () => {
     }, [error])
 
     return (
-        loading ? <Box style={styles.spinnerHolder}><CircularProgress /></Box> :
+        dataProcessing ? <Box style={styles.spinnerHolder}><CircularProgress /></Box> :
             <Box marginTop={2}>
                 <Dialog />
                 <Box gap={2} style={styles.contentHolder}>

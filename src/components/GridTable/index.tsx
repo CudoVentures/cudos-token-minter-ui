@@ -26,7 +26,6 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
     const maximumTokenNameLength: number = 15
     const maximumTokenSymbolLength: number = 5
     const maxItemsPerPage: number = maxItemPerRow * maxItemPerColumn
-    const dataLength: number = displayData.length
 
     const {
         address,
@@ -51,6 +50,8 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
     const filteredData = displayData
         .slice(page * maxItemsPerPage, page * maxItemsPerPage + maxItemsPerPage)
         .filter(filterBySearchTerms)
+
+    const dataLength: number = filteredData.length
 
     const handleClick = (token: CW20.TokenObject) => {
         const subPath = `/${token.contractAddress}`
@@ -137,9 +138,10 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
                 style={styles.gridHolder}
                 spacing={{ xs: 2 }}
                 columns={{
-                    lg: dataLength < maxItemPerRow ? dataLength : 4,
-                    md: 3,
-                    sm: 2
+                    lg: dataLength < maxItemPerRow ? dataLength : maxItemPerRow,
+                    md: dataLength < 3 ? dataLength : 3,
+                    sm: 2,
+                    xs: 2
                 }}
             >
                 {filteredData.map((TOKEN, idx) => {
