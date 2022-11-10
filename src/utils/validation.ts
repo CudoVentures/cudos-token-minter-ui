@@ -108,6 +108,16 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
       result = false
       break
     }
+
+    // We only accept symbols between 3 and 5 chars
+    if (key === 'symbol') {
+      if (tokenObject[key]!.length < 3 || tokenObject[key]!.length > 5) {
+        informativeError = `Symbol should be between 3 and 5 characters`
+        result = false
+        break
+      }
+    }
+
   }
 
   return [result, informativeError]
