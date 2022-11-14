@@ -9,9 +9,9 @@ export const connectCosmostationLedger = async (chosenNetwork: string): Promise<
 
   try {
     const provider = await cosmos()
-    const activatedChains = await provider.getActivatedChains()
+    const activatedChains = await provider.getActivatedChainIds()
 
-    if (!activatedChains.includes(CHAIN_DETAILS.CHAIN_NAME[chosenNetwork].toLowerCase())) {
+    if (!activatedChains.includes(CHAIN_DETAILS.CHAIN_ID[chosenNetwork].toLowerCase())) {
 
       const chainToAdd: AddChainParams = {
         chainId: CHAIN_DETAILS.CHAIN_ID[chosenNetwork],
@@ -32,7 +32,8 @@ export const connectCosmostationLedger = async (chosenNetwork: string): Promise<
       await provider.addChain(chainToAdd)
     }
 
-    const acccount = await provider.requestAccount(CHAIN_DETAILS.CHAIN_NAME[chosenNetwork])
+    // Although the method asks for CHAIN_NAME, it should receive CHAIN_ID as parameter if getActivatedChainIds is used above!
+    const acccount = await provider.requestAccount(CHAIN_DETAILS.CHAIN_ID[chosenNetwork])
     userAccountAddress = acccount.address
     userAccountName = acccount.name
 
