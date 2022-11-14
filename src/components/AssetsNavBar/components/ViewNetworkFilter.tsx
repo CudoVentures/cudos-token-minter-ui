@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "store"
 import { COLORS_DARK_THEME } from "theme/colors"
 import { CHAIN_DETAILS } from "utils/constants"
-import { chainIDToAlias } from "utils/helpers"
 import { styles } from "../styles"
 import { updateUser } from "store/user"
 import { getConcatenatedText } from ".."
@@ -12,7 +11,7 @@ import { getConcatenatedText } from ".."
 const ViewNetworkFilter = () => {
 
     const { chosenNetwork } = useSelector((state: RootState) => state.userState)
-    const aliasName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork!])
+    const aliasName = CHAIN_DETAILS[chosenNetwork!].ALIAS_NAME
     const dispatch = useDispatch()
 
     const handleChange = (event: SelectChangeEvent<string>) => {

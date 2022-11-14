@@ -139,36 +139,19 @@ export const formatAddress = (text: string, sliceIndex: number): string => {
   return `${text.slice(0, sliceIndex)}...${text.slice(len - 4, len)}`
 }
 
-export const chainIDToAlias = (chainID: string): string => {
-
-  const ID = chainID ? chainID.toLowerCase() : ''
-
-  if (CHAIN_DETAILS.LOCAL.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.LOCAL.ALIAS_NAME
-  }
-
-  if (CHAIN_DETAILS.PRIVATE.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.PRIVATE.ALIAS_NAME
-  }
-
-  if (CHAIN_DETAILS.PUBLIC.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.PUBLIC.ALIAS_NAME
-  }
-
-  if (CHAIN_DETAILS.MAINNET.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.MAINNET.ALIAS_NAME
-  }
-
-  return "Unidentified Network"
-}
-
 export const handleAvailableNetworks = (defaultNetwork: string): networkToDisplay[] => {
 
-  if (CHAIN_DETAILS.LOCAL.SHORT_NAMES.includes(defaultNetwork.toLowerCase())) {
+  if (
+    CHAIN_DETAILS[defaultNetwork].ALIAS_NAME ===
+    CHAIN_DETAILS.LOCAL.ALIAS_NAME
+  ) {
     return [CHAIN_DETAILS.LOCAL]
   }
 
-  if (CHAIN_DETAILS.PRIVATE.SHORT_NAMES.includes(defaultNetwork.toLowerCase())) {
+  if (
+    CHAIN_DETAILS[defaultNetwork].ALIAS_NAME ===
+    CHAIN_DETAILS.PRIVATE.ALIAS_NAME
+  ) {
     return [CHAIN_DETAILS.PRIVATE]
   }
 

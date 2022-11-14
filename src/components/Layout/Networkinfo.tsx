@@ -6,7 +6,7 @@ import { COLORS_DARK_THEME } from 'theme/colors'
 import globusIcon from 'assets/vectors/globus-icon.svg'
 import grayGlobusIcon from 'assets/vectors/gray-globus-icon.svg'
 import { Typography, Box, Collapse } from '@mui/material'
-import { chainIDToAlias, handleAvailableNetworks } from 'utils/helpers'
+import { handleAvailableNetworks } from 'utils/helpers'
 import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from 'store/user'
@@ -48,7 +48,7 @@ const NetworkInfo = ({ componentStyle }: { componentStyle: 'menu' | 'nav' }) => 
   const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
   const { chosenNetwork, address } = useSelector((state: RootState) => state.userState)
-  const aliasChainName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork!])
+  const aliasChainName = CHAIN_DETAILS[chosenNetwork!].ALIAS_NAME
 
   const setChosenNetwork = (selectedNetwork: string) => {
     dispatch(updateUser({ chosenNetwork: selectedNetwork }))

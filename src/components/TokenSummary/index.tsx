@@ -5,7 +5,7 @@ import { StdFee } from "cudosjs"
 import { useSelector } from "react-redux"
 import { RootState } from "store"
 import { CHAIN_DETAILS } from "utils/constants"
-import { chainIDToAlias, getDisplayWorthyFee } from "utils/helpers"
+import { getDisplayWorthyFee } from "utils/helpers"
 import { styles } from "./styles"
 import { BoxWrapper, SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
 import { DEFAULT_TOKEN_IMG_URL, TEXT, TOKEN_TYPE, TOOLTIPS, TOKEN_DESCRIPTION } from "components/TokenDetails/helpers"
@@ -18,7 +18,7 @@ const TokenSummary = ({ tokenObject, tokenType, estimatedFee }: {
 }) => {
 
     const { chosenNetwork } = useSelector((state: RootState) => state.userState)
-    const aliasChainName: string = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork!])
+    const aliasChainName: string = CHAIN_DETAILS[chosenNetwork!].ALIAS_NAME
     const displayWorthyFee: string = getDisplayWorthyFee(estimatedFee, 5)
 
     return (
