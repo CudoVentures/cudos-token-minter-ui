@@ -43,8 +43,6 @@ export const styles = {
             width: 'max-content',
             background: 'transparent',
             height: 'min-content',
-            position: 'absolute',
-            top: '1%',
             overflow: 'hidden',
             borderRadius: '25px'
         }
