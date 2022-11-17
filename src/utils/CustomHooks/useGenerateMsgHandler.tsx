@@ -3,11 +3,12 @@ import { useSelector } from "react-redux"
 import { RootState } from "store"
 import { getSigningCosmWasmClient } from "utils/config"
 import { useCallback } from "react"
-import { CODE_IDS, emptyEncodeObject, TOKEN_ACTION, TOKEN_TYPE } from "components/TokenDetails/helpers"
+import { emptyEncodeObject, TOKEN_ACTION, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { ContractMsgUploadLogo } from "cudosjs/build/cosmwasm-stargate/modules/cw20/contract-messages"
 import { CW20 } from "types/CW20"
 import { getSanitizedTokenObject } from "utils/helpers"
 import useGenerateInstantiateMsg from "./useGenerateInstantiateMsg"
+import { INSTANTIATE_CODE_ID } from "utils/constants"
 
 const useGenerateMsgHandler = () => {
 
@@ -28,13 +29,12 @@ const useGenerateMsgHandler = () => {
 
             const tokenType = handlerSpecificData.tokenType as TOKEN_TYPE
             const tokenObject = getSanitizedTokenObject(handlerSpecificData.tokenObject as CW20.TokenObject)
-            const codeId: number = CODE_IDS.NETWORK[chosenNetwork!][tokenType].at(-1)
             const instantiateMsg = generateInstantiateMsg(tokenType, tokenObject)
 
             tempMsg = client.Cw20Module.msgInstantiate(
                 address!,
-                codeId,
-                instantiateMsg
+                INSTANTIATE_CODE_ID,
+                instantiateMsg!
             )
         }
 

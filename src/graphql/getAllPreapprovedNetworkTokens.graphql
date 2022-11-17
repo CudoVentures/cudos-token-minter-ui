@@ -1,5 +1,5 @@
-query GetAllNetworkTokens {
-  cw20token_info {
+query GetAllPreapprovedNetworkTokens($codeIds: [Int!]) {
+  cw20token_info(where: {code_id: {_in: $codeIds}}) {
     address
     logo
     name

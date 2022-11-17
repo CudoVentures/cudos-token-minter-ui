@@ -125,36 +125,6 @@ export enum TOKEN_TYPE {
     Undefined = 'Undefined'
 }
 
-export const CODE_IDS = {
-    Simulate: 1,
-    NETWORK: {
-        LOCAL: {
-            [TOKEN_TYPE.Standard]: [11, 16, 21],
-            [TOKEN_TYPE.Burnable]: [12, 17, 22],
-            [TOKEN_TYPE.Mintable]: [18, 19, 23],
-            [TOKEN_TYPE.Unlimited]: [6, 14, 15, 24],
-        },
-        PRIVATE: {
-            [TOKEN_TYPE.Standard]: [13],
-            [TOKEN_TYPE.Burnable]: [15],
-            [TOKEN_TYPE.Mintable]: [14],
-            [TOKEN_TYPE.Unlimited]: [16],
-        },
-        PUBLIC: {
-            [TOKEN_TYPE.Standard]: [1],
-            [TOKEN_TYPE.Burnable]: [1],
-            [TOKEN_TYPE.Mintable]: [1],
-            [TOKEN_TYPE.Unlimited]: [1],
-        },
-        MAINNET: {
-            [TOKEN_TYPE.Standard]: [1],
-            [TOKEN_TYPE.Burnable]: [1],
-            [TOKEN_TYPE.Mintable]: [1],
-            [TOKEN_TYPE.Unlimited]: [1],
-        },
-    }
-}
-
 export enum TOKEN_DESCRIPTION {
     Standard = 'Standard type tokens have fixed supply and cannot be burned or minted after initial mint',
     Burnable = 'Burnable type tokens have fixed supply and can be burned or minted after initial mint',

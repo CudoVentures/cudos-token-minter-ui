@@ -38,7 +38,7 @@ const RequireValidContractAddress = () => {
                 name: data.cw20token_info_by_pk?.name,
                 symbol: data.cw20token_info_by_pk?.symbol,
                 tokenType: getTokenTypeFromCodeId(chosenNetwork!, data.cw20token_info_by_pk?.code_id!),
-                totalSupply: data.cw20token_info_by_pk?.max_supply,
+                totalSupply: data.cw20token_info_by_pk?.max_supply || '0',
                 contractAddress: data.cw20token_info_by_pk?.address!,
                 owner: data.cw20token_info_by_pk?.minter!,
             }

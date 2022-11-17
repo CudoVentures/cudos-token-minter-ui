@@ -2810,13 +2810,13 @@ export type Cw20token_Info = {
   balances: Array<Cw20token_Balance>;
   /** An aggregate relationship */
   balances_aggregate: Cw20token_Balance_Aggregate;
-  circulating_supply: Scalars['bigint'];
+  circulating_supply: Scalars['String'];
   code_id: Scalars['Int'];
   decimals: Scalars['Int'];
   description?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   marketing_admin?: Maybe<Scalars['String']>;
-  max_supply: Scalars['bigint'];
+  max_supply?: Maybe<Scalars['String']>;
   minter?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   project_url?: Maybe<Scalars['String']>;
@@ -2876,10 +2876,8 @@ export type Cw20token_Info_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Cw20token_Info_Avg_Fields = {
   __typename?: 'cw20token_info_avg_fields';
-  circulating_supply?: Maybe<Scalars['Float']>;
   code_id?: Maybe<Scalars['Float']>;
   decimals?: Maybe<Scalars['Float']>;
-  max_supply?: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "cw20token_info". All fields are combined with a logical 'AND'. */
@@ -2889,13 +2887,13 @@ export type Cw20token_Info_Bool_Exp = {
   _or?: InputMaybe<Array<Cw20token_Info_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   balances?: InputMaybe<Cw20token_Balance_Bool_Exp>;
-  circulating_supply?: InputMaybe<Bigint_Comparison_Exp>;
+  circulating_supply?: InputMaybe<String_Comparison_Exp>;
   code_id?: InputMaybe<Int_Comparison_Exp>;
   decimals?: InputMaybe<Int_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   logo?: InputMaybe<String_Comparison_Exp>;
   marketing_admin?: InputMaybe<String_Comparison_Exp>;
-  max_supply?: InputMaybe<Bigint_Comparison_Exp>;
+  max_supply?: InputMaybe<String_Comparison_Exp>;
   minter?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   project_url?: InputMaybe<String_Comparison_Exp>;
@@ -2906,13 +2904,13 @@ export type Cw20token_Info_Bool_Exp = {
 export type Cw20token_Info_Max_Fields = {
   __typename?: 'cw20token_info_max_fields';
   address?: Maybe<Scalars['String']>;
-  circulating_supply?: Maybe<Scalars['bigint']>;
+  circulating_supply?: Maybe<Scalars['String']>;
   code_id?: Maybe<Scalars['Int']>;
   decimals?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   marketing_admin?: Maybe<Scalars['String']>;
-  max_supply?: Maybe<Scalars['bigint']>;
+  max_supply?: Maybe<Scalars['String']>;
   minter?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   project_url?: Maybe<Scalars['String']>;
@@ -2923,13 +2921,13 @@ export type Cw20token_Info_Max_Fields = {
 export type Cw20token_Info_Min_Fields = {
   __typename?: 'cw20token_info_min_fields';
   address?: Maybe<Scalars['String']>;
-  circulating_supply?: Maybe<Scalars['bigint']>;
+  circulating_supply?: Maybe<Scalars['String']>;
   code_id?: Maybe<Scalars['Int']>;
   decimals?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   marketing_admin?: Maybe<Scalars['String']>;
-  max_supply?: Maybe<Scalars['bigint']>;
+  max_supply?: Maybe<Scalars['String']>;
   minter?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   project_url?: Maybe<Scalars['String']>;
@@ -2984,64 +2982,50 @@ export enum Cw20token_Info_Select_Column {
 /** aggregate stddev on columns */
 export type Cw20token_Info_Stddev_Fields = {
   __typename?: 'cw20token_info_stddev_fields';
-  circulating_supply?: Maybe<Scalars['Float']>;
   code_id?: Maybe<Scalars['Float']>;
   decimals?: Maybe<Scalars['Float']>;
-  max_supply?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Cw20token_Info_Stddev_Pop_Fields = {
   __typename?: 'cw20token_info_stddev_pop_fields';
-  circulating_supply?: Maybe<Scalars['Float']>;
   code_id?: Maybe<Scalars['Float']>;
   decimals?: Maybe<Scalars['Float']>;
-  max_supply?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Cw20token_Info_Stddev_Samp_Fields = {
   __typename?: 'cw20token_info_stddev_samp_fields';
-  circulating_supply?: Maybe<Scalars['Float']>;
   code_id?: Maybe<Scalars['Float']>;
   decimals?: Maybe<Scalars['Float']>;
-  max_supply?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Cw20token_Info_Sum_Fields = {
   __typename?: 'cw20token_info_sum_fields';
-  circulating_supply?: Maybe<Scalars['bigint']>;
   code_id?: Maybe<Scalars['Int']>;
   decimals?: Maybe<Scalars['Int']>;
-  max_supply?: Maybe<Scalars['bigint']>;
 };
 
 /** aggregate var_pop on columns */
 export type Cw20token_Info_Var_Pop_Fields = {
   __typename?: 'cw20token_info_var_pop_fields';
-  circulating_supply?: Maybe<Scalars['Float']>;
   code_id?: Maybe<Scalars['Float']>;
   decimals?: Maybe<Scalars['Float']>;
-  max_supply?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Cw20token_Info_Var_Samp_Fields = {
   __typename?: 'cw20token_info_var_samp_fields';
-  circulating_supply?: Maybe<Scalars['Float']>;
   code_id?: Maybe<Scalars['Float']>;
   decimals?: Maybe<Scalars['Float']>;
-  max_supply?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Cw20token_Info_Variance_Fields = {
   __typename?: 'cw20token_info_variance_fields';
-  circulating_supply?: Maybe<Scalars['Float']>;
   code_id?: Maybe<Scalars['Float']>;
   decimals?: Maybe<Scalars['Float']>;
-  max_supply?: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "delegation" */
@@ -5939,12 +5923,12 @@ export type Marketplace_Nft = {
   __typename?: 'marketplace_nft';
   creator: Scalars['String'];
   denom_id: Scalars['String'];
-  id: Scalars['bigint'];
+  id?: Maybe<Scalars['bigint']>;
   /** An object relationship */
   nft_denom: Nft_Denom;
   /** An object relationship */
   nft_nft: Nft_Nft;
-  price: Scalars['String'];
+  price?: Maybe<Scalars['numeric']>;
   token_id: Scalars['bigint'];
   /** An object relationship */
   transaction: Transaction;
@@ -5985,6 +5969,7 @@ export type Marketplace_Nft_Aggregate_FieldsCountArgs = {
 export type Marketplace_Nft_Avg_Fields = {
   __typename?: 'marketplace_nft_avg_fields';
   id?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
 };
 
@@ -5998,7 +5983,7 @@ export type Marketplace_Nft_Bool_Exp = {
   id?: InputMaybe<Bigint_Comparison_Exp>;
   nft_denom?: InputMaybe<Nft_Denom_Bool_Exp>;
   nft_nft?: InputMaybe<Nft_Nft_Bool_Exp>;
-  price?: InputMaybe<String_Comparison_Exp>;
+  price?: InputMaybe<Numeric_Comparison_Exp>;
   token_id?: InputMaybe<Bigint_Comparison_Exp>;
   transaction?: InputMaybe<Transaction_Bool_Exp>;
   transaction_hash?: InputMaybe<String_Comparison_Exp>;
@@ -6007,21 +5992,21 @@ export type Marketplace_Nft_Bool_Exp = {
 /** columns and relationships of "marketplace_nft_buy_history" */
 export type Marketplace_Nft_Buy_History = {
   __typename?: 'marketplace_nft_buy_history';
-  btc_price: Scalars['String'];
+  btc_price: Scalars['numeric'];
   buyer: Scalars['String'];
   denom_id: Scalars['String'];
   /** An object relationship */
   nft_denom: Nft_Denom;
   /** An object relationship */
   nft_nft: Nft_Nft;
-  price: Scalars['String'];
+  price: Scalars['numeric'];
   seller: Scalars['String'];
   timestamp: Scalars['bigint'];
   token_id: Scalars['bigint'];
   /** An object relationship */
   transaction: Transaction;
   transaction_hash: Scalars['String'];
-  usd_price: Scalars['String'];
+  usd_price: Scalars['numeric'];
 };
 
 /** aggregated selection of "marketplace_nft_buy_history" */
@@ -6057,8 +6042,11 @@ export type Marketplace_Nft_Buy_History_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Marketplace_Nft_Buy_History_Avg_Fields = {
   __typename?: 'marketplace_nft_buy_history_avg_fields';
+  btc_price?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   timestamp?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
+  usd_price?: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "marketplace_nft_buy_history". All fields are combined with a logical 'AND'. */
@@ -6066,46 +6054,46 @@ export type Marketplace_Nft_Buy_History_Bool_Exp = {
   _and?: InputMaybe<Array<Marketplace_Nft_Buy_History_Bool_Exp>>;
   _not?: InputMaybe<Marketplace_Nft_Buy_History_Bool_Exp>;
   _or?: InputMaybe<Array<Marketplace_Nft_Buy_History_Bool_Exp>>;
-  btc_price?: InputMaybe<String_Comparison_Exp>;
+  btc_price?: InputMaybe<Numeric_Comparison_Exp>;
   buyer?: InputMaybe<String_Comparison_Exp>;
   denom_id?: InputMaybe<String_Comparison_Exp>;
   nft_denom?: InputMaybe<Nft_Denom_Bool_Exp>;
   nft_nft?: InputMaybe<Nft_Nft_Bool_Exp>;
-  price?: InputMaybe<String_Comparison_Exp>;
+  price?: InputMaybe<Numeric_Comparison_Exp>;
   seller?: InputMaybe<String_Comparison_Exp>;
   timestamp?: InputMaybe<Bigint_Comparison_Exp>;
   token_id?: InputMaybe<Bigint_Comparison_Exp>;
   transaction?: InputMaybe<Transaction_Bool_Exp>;
   transaction_hash?: InputMaybe<String_Comparison_Exp>;
-  usd_price?: InputMaybe<String_Comparison_Exp>;
+  usd_price?: InputMaybe<Numeric_Comparison_Exp>;
 };
 
 /** aggregate max on columns */
 export type Marketplace_Nft_Buy_History_Max_Fields = {
   __typename?: 'marketplace_nft_buy_history_max_fields';
-  btc_price?: Maybe<Scalars['String']>;
+  btc_price?: Maybe<Scalars['numeric']>;
   buyer?: Maybe<Scalars['String']>;
   denom_id?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['numeric']>;
   seller?: Maybe<Scalars['String']>;
   timestamp?: Maybe<Scalars['bigint']>;
   token_id?: Maybe<Scalars['bigint']>;
   transaction_hash?: Maybe<Scalars['String']>;
-  usd_price?: Maybe<Scalars['String']>;
+  usd_price?: Maybe<Scalars['numeric']>;
 };
 
 /** aggregate min on columns */
 export type Marketplace_Nft_Buy_History_Min_Fields = {
   __typename?: 'marketplace_nft_buy_history_min_fields';
-  btc_price?: Maybe<Scalars['String']>;
+  btc_price?: Maybe<Scalars['numeric']>;
   buyer?: Maybe<Scalars['String']>;
   denom_id?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['numeric']>;
   seller?: Maybe<Scalars['String']>;
   timestamp?: Maybe<Scalars['bigint']>;
   token_id?: Maybe<Scalars['bigint']>;
   transaction_hash?: Maybe<Scalars['String']>;
-  usd_price?: Maybe<Scalars['String']>;
+  usd_price?: Maybe<Scalars['numeric']>;
 };
 
 /** Ordering options when selecting data from "marketplace_nft_buy_history". */
@@ -6149,50 +6137,71 @@ export enum Marketplace_Nft_Buy_History_Select_Column {
 /** aggregate stddev on columns */
 export type Marketplace_Nft_Buy_History_Stddev_Fields = {
   __typename?: 'marketplace_nft_buy_history_stddev_fields';
+  btc_price?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   timestamp?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
+  usd_price?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Marketplace_Nft_Buy_History_Stddev_Pop_Fields = {
   __typename?: 'marketplace_nft_buy_history_stddev_pop_fields';
+  btc_price?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   timestamp?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
+  usd_price?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Marketplace_Nft_Buy_History_Stddev_Samp_Fields = {
   __typename?: 'marketplace_nft_buy_history_stddev_samp_fields';
+  btc_price?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   timestamp?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
+  usd_price?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Marketplace_Nft_Buy_History_Sum_Fields = {
   __typename?: 'marketplace_nft_buy_history_sum_fields';
+  btc_price?: Maybe<Scalars['numeric']>;
+  price?: Maybe<Scalars['numeric']>;
   timestamp?: Maybe<Scalars['bigint']>;
   token_id?: Maybe<Scalars['bigint']>;
+  usd_price?: Maybe<Scalars['numeric']>;
 };
 
 /** aggregate var_pop on columns */
 export type Marketplace_Nft_Buy_History_Var_Pop_Fields = {
   __typename?: 'marketplace_nft_buy_history_var_pop_fields';
+  btc_price?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   timestamp?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
+  usd_price?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Marketplace_Nft_Buy_History_Var_Samp_Fields = {
   __typename?: 'marketplace_nft_buy_history_var_samp_fields';
+  btc_price?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   timestamp?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
+  usd_price?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Marketplace_Nft_Buy_History_Variance_Fields = {
   __typename?: 'marketplace_nft_buy_history_variance_fields';
+  btc_price?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   timestamp?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
+  usd_price?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate max on columns */
@@ -6201,7 +6210,7 @@ export type Marketplace_Nft_Max_Fields = {
   creator?: Maybe<Scalars['String']>;
   denom_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bigint']>;
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['numeric']>;
   token_id?: Maybe<Scalars['bigint']>;
   transaction_hash?: Maybe<Scalars['String']>;
 };
@@ -6212,7 +6221,7 @@ export type Marketplace_Nft_Min_Fields = {
   creator?: Maybe<Scalars['String']>;
   denom_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bigint']>;
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['numeric']>;
   token_id?: Maybe<Scalars['bigint']>;
   transaction_hash?: Maybe<Scalars['String']>;
 };
@@ -6250,6 +6259,7 @@ export enum Marketplace_Nft_Select_Column {
 export type Marketplace_Nft_Stddev_Fields = {
   __typename?: 'marketplace_nft_stddev_fields';
   id?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
 };
 
@@ -6257,6 +6267,7 @@ export type Marketplace_Nft_Stddev_Fields = {
 export type Marketplace_Nft_Stddev_Pop_Fields = {
   __typename?: 'marketplace_nft_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
 };
 
@@ -6264,6 +6275,7 @@ export type Marketplace_Nft_Stddev_Pop_Fields = {
 export type Marketplace_Nft_Stddev_Samp_Fields = {
   __typename?: 'marketplace_nft_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
 };
 
@@ -6271,6 +6283,7 @@ export type Marketplace_Nft_Stddev_Samp_Fields = {
 export type Marketplace_Nft_Sum_Fields = {
   __typename?: 'marketplace_nft_sum_fields';
   id?: Maybe<Scalars['bigint']>;
+  price?: Maybe<Scalars['numeric']>;
   token_id?: Maybe<Scalars['bigint']>;
 };
 
@@ -6278,6 +6291,7 @@ export type Marketplace_Nft_Sum_Fields = {
 export type Marketplace_Nft_Var_Pop_Fields = {
   __typename?: 'marketplace_nft_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
 };
 
@@ -6285,6 +6299,7 @@ export type Marketplace_Nft_Var_Pop_Fields = {
 export type Marketplace_Nft_Var_Samp_Fields = {
   __typename?: 'marketplace_nft_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
 };
 
@@ -6292,6 +6307,7 @@ export type Marketplace_Nft_Var_Samp_Fields = {
 export type Marketplace_Nft_Variance_Fields = {
   __typename?: 'marketplace_nft_variance_fields';
   id?: Maybe<Scalars['Float']>;
+  price?: Maybe<Scalars['Float']>;
   token_id?: Maybe<Scalars['Float']>;
 };
 
@@ -10503,7 +10519,8 @@ export type Query_RootMarketplace_Nft_Buy_History_AggregateArgs = {
 
 
 export type Query_RootMarketplace_Nft_By_PkArgs = {
-  id: Scalars['bigint'];
+  denom_id: Scalars['String'];
+  token_id: Scalars['bigint'];
 };
 
 
@@ -12809,7 +12826,8 @@ export type Subscription_RootMarketplace_Nft_Buy_History_AggregateArgs = {
 
 
 export type Subscription_RootMarketplace_Nft_By_PkArgs = {
-  id: Scalars['bigint'];
+  denom_id: Scalars['String'];
+  token_id: Scalars['bigint'];
 };
 
 
@@ -16973,24 +16991,26 @@ export type Vote_Option_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['vote_option']>>;
 };
 
-export type GetAllNetworkTokensQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllPreapprovedNetworkTokensQueryVariables = Exact<{
+  codeIds?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
 
 
-export type GetAllNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply: any, code_id: number, minter?: string | null, decimals: number, circulating_supply: any }> };
+export type GetAllPreapprovedNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, minter?: string | null, decimals: number, circulating_supply: string }> };
 
 export type GetContractDetailsSubscriptionVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetContractDetailsSubscription = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', circulating_supply: any, max_supply: any, logo?: string | null } | null };
+export type GetContractDetailsSubscription = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', circulating_supply: string, max_supply?: string | null, logo?: string | null } | null };
 
 export type GetTokenDetailsQueryVariables = Exact<{
   address?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetTokenDetailsQuery = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply: any, code_id: number, minter?: string | null, decimals: number, circulating_supply: any } | null };
+export type GetTokenDetailsQuery = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, minter?: string | null, decimals: number, circulating_supply: string } | null };
 
 export type GetUserBalancesSubscriptionVariables = Exact<{
   address?: InputMaybe<Scalars['String']>;
@@ -17001,9 +17021,9 @@ export type GetUserBalancesSubscriptionVariables = Exact<{
 export type GetUserBalancesSubscription = { cw20token_balance_by_pk?: { __typename?: 'cw20token_balance', balance: any } | null };
 
 
-export const GetAllNetworkTokensDocument = gql`
-    query GetAllNetworkTokens {
-  cw20token_info {
+export const GetAllPreapprovedNetworkTokensDocument = gql`
+    query GetAllPreapprovedNetworkTokens($codeIds: [Int!]) {
+  cw20token_info(where: {code_id: {_in: $codeIds}}) {
     address
     logo
     name
@@ -17018,31 +17038,32 @@ export const GetAllNetworkTokensDocument = gql`
     `;
 
 /**
- * __useGetAllNetworkTokensQuery__
+ * __useGetAllPreapprovedNetworkTokensQuery__
  *
- * To run a query within a React component, call `useGetAllNetworkTokensQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllNetworkTokensQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllPreapprovedNetworkTokensQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllPreapprovedNetworkTokensQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllNetworkTokensQuery({
+ * const { data, loading, error } = useGetAllPreapprovedNetworkTokensQuery({
  *   variables: {
+ *      codeIds: // value for 'codeIds'
  *   },
  * });
  */
-export function useGetAllNetworkTokensQuery(baseOptions?: Apollo.QueryHookOptions<GetAllNetworkTokensQuery, GetAllNetworkTokensQueryVariables>) {
+export function useGetAllPreapprovedNetworkTokensQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPreapprovedNetworkTokensQuery, GetAllPreapprovedNetworkTokensQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllNetworkTokensQuery, GetAllNetworkTokensQueryVariables>(GetAllNetworkTokensDocument, options);
+        return Apollo.useQuery<GetAllPreapprovedNetworkTokensQuery, GetAllPreapprovedNetworkTokensQueryVariables>(GetAllPreapprovedNetworkTokensDocument, options);
       }
-export function useGetAllNetworkTokensLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllNetworkTokensQuery, GetAllNetworkTokensQueryVariables>) {
+export function useGetAllPreapprovedNetworkTokensLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPreapprovedNetworkTokensQuery, GetAllPreapprovedNetworkTokensQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllNetworkTokensQuery, GetAllNetworkTokensQueryVariables>(GetAllNetworkTokensDocument, options);
+          return Apollo.useLazyQuery<GetAllPreapprovedNetworkTokensQuery, GetAllPreapprovedNetworkTokensQueryVariables>(GetAllPreapprovedNetworkTokensDocument, options);
         }
-export type GetAllNetworkTokensQueryHookResult = ReturnType<typeof useGetAllNetworkTokensQuery>;
-export type GetAllNetworkTokensLazyQueryHookResult = ReturnType<typeof useGetAllNetworkTokensLazyQuery>;
-export type GetAllNetworkTokensQueryResult = Apollo.QueryResult<GetAllNetworkTokensQuery, GetAllNetworkTokensQueryVariables>;
+export type GetAllPreapprovedNetworkTokensQueryHookResult = ReturnType<typeof useGetAllPreapprovedNetworkTokensQuery>;
+export type GetAllPreapprovedNetworkTokensLazyQueryHookResult = ReturnType<typeof useGetAllPreapprovedNetworkTokensLazyQuery>;
+export type GetAllPreapprovedNetworkTokensQueryResult = Apollo.QueryResult<GetAllPreapprovedNetworkTokensQuery, GetAllPreapprovedNetworkTokensQueryVariables>;
 export const GetContractDetailsDocument = gql`
     subscription getContractDetails($token: String = "") {
   cw20token_info_by_pk(address: $token) {

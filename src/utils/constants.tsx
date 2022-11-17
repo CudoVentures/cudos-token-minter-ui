@@ -13,6 +13,10 @@ import { ReactComponent as PlusIcon } from 'assets/vectors/plus-icon.svg'
 import { ReactComponent as AllTypesTokenIcon } from 'assets/vectors/tokenTypeIcons/all-types-icon.svg'
 
 // CONFIGURATIONS
+
+export const PREAPPROVED_CODE_IDS = [25].sort()
+export const INSTANTIATE_CODE_ID = PREAPPROVED_CODE_IDS.at(-1) || 0
+
 export const CHAIN_DETAILS = {
     DEFAULT_MEMO: 'Created with CUDOS Token Minter',
     ADMIN_TOKEN_DENOM: 'cudosAdmin',

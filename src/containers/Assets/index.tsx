@@ -11,15 +11,17 @@ import GridTable from 'components/GridTable'
 import { updateAssets } from 'store/assets'
 import { CW20 } from 'types/CW20'
 import { getTokenTypeFromCodeId } from 'utils/helpers'
-import { useGetAllNetworkTokensQuery } from 'graphql/types'
+import { useGetAllPreapprovedNetworkTokensQuery } from 'graphql/types'
 import { updateModalState } from 'store/modals'
-import { MODAL_MSGS } from 'utils/constants'
+import { MODAL_MSGS, PREAPPROVED_CODE_IDS } from 'utils/constants'
 
 const Assets = () => {
 
     const dispatch = useDispatch()
     const [displayData, setDisplayData] = useState<CW20.TokenObject[]>([])
-    const { data, loading, error } = useGetAllNetworkTokensQuery()
+    const { data, loading, error } = useGetAllPreapprovedNetworkTokensQuery({
+        variables: { codeIds: PREAPPROVED_CODE_IDS }
+    })
     const [dataProcessing, setDataProcessing] = useState<boolean>(false)
     const { currentAssetsView } = useSelector((state: RootState) => state.assetsNavState)
     const { allAssets, myAssets } = useSelector((state: RootState) => state.assetsState)
@@ -39,7 +41,7 @@ const Assets = () => {
                     name: item.name,
                     symbol: item.symbol,
                     tokenType: getTokenTypeFromCodeId(chosenNetwork!, item.code_id),
-                    totalSupply: item.max_supply,
+                    totalSupply: item.max_supply || '0',
                     contractAddress: item.address,
                     owner: item.minter!,
                 }

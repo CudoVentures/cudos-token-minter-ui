@@ -86,7 +86,7 @@ const ContractDetails = () => {
             dispatch(updateAssets({
                 selectedAsset: {
                     ...selectedAsset,
-                    totalSupply: fetchedContractData.cw20token_info_by_pk?.max_supply,
+                    totalSupply: fetchedContractData.cw20token_info_by_pk?.max_supply || '0',
                     circulatingSupply: fetchedContractData.cw20token_info_by_pk?.circulating_supply,
                     logoUrl: JSON.parse(fetchedContractData.cw20token_info_by_pk?.logo!).url
                 }

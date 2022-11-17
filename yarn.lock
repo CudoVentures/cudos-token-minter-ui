@@ -1501,6 +1501,11 @@
   resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.1.11.tgz#d6b447cfd9cf7613ec485b57327819b14735cf13"
   integrity sha512-CkmNPmYn07UhP0z3PxGRRpgTcBJ/gS1ay/J2jfYsBi/4gnXvpQ3xOZdMU0qdxhFOjh1Xt7kflYsztk9ljMnJcw==
 
+"@cosmostation/extension-client@^0.1.9":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.1.12.tgz#21430b64c2b62fe795c6c28c794a1af98da0c0c1"
+  integrity sha512-lAZk7a94wsFrdVo98ko3f3r++X8X+xzuv5NR3yq4ioZXV0aTOuMtg7KszP73qrXgiTXbz5hClLAYWc6G3Vyfuw==
+
 "@cosmostation/wc-modal@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@cosmostation/wc-modal/-/wc-modal-0.0.4.tgz#61442b0c51201dda9ee90cfcb3002848eadc7ba2"
@@ -3727,16 +3732,18 @@ csstype@^3.0.2, csstype@^3.1.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
-cudosjs@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.1.2.tgz#5b44b87998dceea222e743d02a158b206f14df9c"
-  integrity sha512-e5zkEnsdO1bMzqjrvVPVDiEt5jJugQqhiEkjHg3U7gqtYaeScKOcduAujFJ3fsLHT0ln9502zR5yIoBMBp8BWw==
+cudosjs@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.2.2.tgz#afec4fa18970d5fff85bc09589c5fd99cb5720f9"
+  integrity sha512-Tq5q/7gawdyi1LtWStBC8ILa9dIkjRvjJep8VgSTgLinrhH2R9VNBR902DNbmHSmpo496Obklcmeptmg+wpS0A==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.28.4"
     "@cosmjs/crypto" "^0.28.4"
     "@cosmjs/proto-signing" "^0.28.4"
     "@cosmjs/stargate" "^0.28.4"
     "@cosmjs/tendermint-rpc" "^0.28.4"
+    "@cosmostation/cosmos-client" "^0.0.4"
+    "@cosmostation/extension-client" "^0.1.9"
     bignumber.js "^9.0.2"
     yarn "^1.22.19"
 
