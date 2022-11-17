@@ -129,10 +129,10 @@ export const CODE_IDS = {
     Simulate: 1,
     NETWORK: {
         LOCAL: {
-            [TOKEN_TYPE.Standard]: [11],
-            [TOKEN_TYPE.Burnable]: [12],
-            [TOKEN_TYPE.Mintable]: [0],
-            [TOKEN_TYPE.Unlimited]: [6, 14],
+            [TOKEN_TYPE.Standard]: [11, 16, 21],
+            [TOKEN_TYPE.Burnable]: [12, 17, 22],
+            [TOKEN_TYPE.Mintable]: [18, 19, 23],
+            [TOKEN_TYPE.Unlimited]: [6, 14, 15, 24],
         },
         PRIVATE: {
             [TOKEN_TYPE.Standard]: [13],

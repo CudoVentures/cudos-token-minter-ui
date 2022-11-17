@@ -3,9 +3,9 @@ import { Box } from "@mui/system"
 import { useEffect, useState } from "react"
 import { NAVIGATION_PATH } from "utils/constants"
 import useNavigateToRoute from "utils/CustomHooks/useNavigateToRoute"
-import {ReactComponent as QuestionMarkIcon} from 'assets/vectors/questionmark-icon.svg'
+import { ReactComponent as QuestionMarkIcon } from 'assets/vectors/questionmark-icon.svg'
 
-const NoResult = ({ queryParam }: { queryParam: string }) => {
+const NoResult = ({ infoMsg }: { infoMsg: string }) => {
 
     const navigateToRoute = useNavigateToRoute()
     const [timer, setTimer] = useState<number>(3)
@@ -23,10 +23,10 @@ const NoResult = ({ queryParam }: { queryParam: string }) => {
     }, [timer])
 
     return (
-        <Box gap={2} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Box gap={2} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <QuestionMarkIcon />
-            <Typography variant="h5">No Result for {queryParam}</Typography>
-            <Box gap={1} style={{display: 'flex', alignItems: 'center'}}>
+            <Typography variant="h5">{infoMsg}</Typography>
+            <Box gap={1} style={{ display: 'flex', alignItems: 'center' }}>
                 <Typography variant="subtitle1" color='text.secondary'>Redirecting in</Typography>
                 <Typography variant="h6">{timer}</Typography>
             </Box>

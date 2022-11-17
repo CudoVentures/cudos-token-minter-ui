@@ -57,7 +57,7 @@ const RequireValidContractAddress = () => {
         data?.cw20token_info_by_pk && !error ? (
             <Outlet />
         ) : (
-            <NoResult queryParam={contractAddress!} />
+            <NoResult infoMsg={`No result for ${contractAddress!}`} />
         )
 }
 

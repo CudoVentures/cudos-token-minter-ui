@@ -68,7 +68,8 @@ const NetworkInfo = ({ componentStyle }: { componentStyle: 'menu' | 'nav' }) => 
       !collapsable || disabledDropDown ? {} : { cursor: 'pointer' }}>
       <Box
         borderRadius={isMenu ? 3 : 5}
-        onMouseEnter={!collapsable || disabledDropDown ? () => { } : () => setOpen(true)}
+        onClick={!isMenu || !collapsable ? () => { } : () => setOpen(true)}
+        onMouseEnter={!collapsable || disabledDropDown || isMenu ? () => { } : () => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         style={styles.userContainer}
       >
