@@ -97,7 +97,7 @@ export const TitleWithTooltip = ({ text, tooltipText, precision, variant, color,
             {
                 tooltipText ?
                     <Tooltip placement={'right'} followCursor={true} arrow={true} title={tooltipText}>
-                        <Box marginTop={0} marginLeft={precision ? '5px' : '0px'}> <TooltipIcon /></Box>
+                        <Box sx={{cursor: 'pointer'}} marginTop={0} marginLeft={precision ? '5px' : '0px'}> <TooltipIcon /></Box>
                     </Tooltip> : null
             }
         </Box>

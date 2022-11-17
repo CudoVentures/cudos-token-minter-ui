@@ -13,7 +13,7 @@ export const styles = {
     justifyContent: 'space-between',
     width: '100%',
     padding: '20px'
-},
+  },
   logoHolder: {
     cursor: 'pointer',
     display: 'flex',
@@ -162,7 +162,10 @@ export const styles = {
   },
   childrenHolder: {
     overflow: 'auto',
-    padding: '0 1rem'
+    padding: '0 1rem',
+    display: 'flex',
+
+    flexDirection: 'column'
   },
   commonMenuStyles: {
     marginLeft: '20px',
@@ -177,7 +180,7 @@ export const styles = {
   },
   selectedMenuItemHolder: {
     color: COLORS_DARK_THEME.PRIMARY_BLUE,
-  }
+  },
 } as const
 
 export const StyledNetwork = styled(Box)(({ theme }) => ({

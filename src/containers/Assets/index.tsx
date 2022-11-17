@@ -3,79 +3,65 @@ import NoAssetsView from 'components/NoAssetsView'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
-import { AssetsView, initialState, updateAssetsNavigation } from 'store/assetsNavigation'
+import { AssetsView } from 'store/assetsNavigation'
 import { styles } from './styles'
 import Dialog from 'components/Dialog'
-import { DEFAULT_TOKEN_IMG_URL, DEFAULT_TOTAL_SUPPLY_VALUE, emptyTokenObject, TOKEN_TYPE } from 'components/TokenDetails/helpers'
+import { emptyTokenObject } from 'components/TokenDetails/helpers'
 import GridTable from 'components/GridTable'
 import { updateAssets } from 'store/assets'
 import { CW20 } from 'types/CW20'
-import { sanitizeString } from 'utils/helpers'
-import { useTestGraphqlSubscription } from 'graphql/types'
+import { getTokenTypeFromCodeId } from 'utils/helpers'
+import { useGetAllPreapprovedNetworkTokensQuery } from 'graphql/types'
 import { updateModalState } from 'store/modals'
-import { MODAL_MSGS } from 'utils/constants'
-
-// DUMMY DATA
-const myData: CW20.TokenObject[] = Array(3).fill(
-    {
-        name: 'Dummy Name',
-        symbol: 'DMY',
-        decimalPrecision: 18,
-        initialSupply: '100',
-        totalSupply: '100',
-        logoUrl: DEFAULT_TOKEN_IMG_URL,
-        tokenType: TOKEN_TYPE.Standard,
-        contractAddress: 'cudos196mtnay5xar0ruaxm46x4nec373mz0ccl43r84dfprd3hyxy9erq27d8zq',
-        owner: 'cudos182gkp7lt5kvahat6dt7yj2n6mfku753y2lac0p'
-    }
-)
-
-// DUMMY DATA
-const allData: CW20.TokenObject[] = Array(29).fill(
-    {
-        name: 'Token Name Two And Two Thirds',
-        symbol: 'WWWWW',
-        decimalPrecision: 18,
-        initialSupply: '123456789',
-        totalSupply: sanitizeString(DEFAULT_TOTAL_SUPPLY_VALUE),
-        logoUrl: DEFAULT_TOKEN_IMG_URL,
-        tokenType: TOKEN_TYPE.Standard,
-        contractAddress: 'cudos1pryug3pp92fhn5qavdt2uxu32j3gv0v7vueuzs3ep8xelqd6exlsdgndla',
-        owner: 'cudos1knf0flyucc2ut40cg8tn48sp70p2e65wse7qec'
-    }
-)
+import { MODAL_MSGS, PREAPPROVED_CODE_IDS } from 'utils/constants'
 
 const Assets = () => {
 
     const dispatch = useDispatch()
     const [displayData, setDisplayData] = useState<CW20.TokenObject[]>([])
-    const { data, loading, error } = useTestGraphqlSubscription()
-
-    const {
-        allAssets,
-        myAssets,
-    } = useSelector((state: RootState) => state.assetsState)
-
-    const {
-        currentAssetsView,
-    } = useSelector((state: RootState) => state.assetsNavState)
+    const { data, loading, error } = useGetAllPreapprovedNetworkTokensQuery({
+        variables: { codeIds: PREAPPROVED_CODE_IDS }
+    })
+    const [dataProcessing, setDataProcessing] = useState<boolean>(false)
+    const { currentAssetsView } = useSelector((state: RootState) => state.assetsNavState)
+    const { allAssets, myAssets } = useSelector((state: RootState) => state.assetsState)
+    const { address: loggedInUser, chosenNetwork } = useSelector((state: RootState) => state.userState)
 
     useEffect(() => {
 
-        const lastView = currentAssetsView
-        dispatch(updateAssetsNavigation({
-            ...initialState,
-            currentAssetsView: lastView
-        }))
+        if (data) {
+            setDataProcessing(true)
+            const allData: CW20.TokenObject[] = []
+            const myData: CW20.TokenObject[] = []
+            data.cw20token_info.forEach((item) => {
+                const fetchedItem: CW20.TokenObject = {
+                    logoUrl: JSON.parse(item.logo!).url!,
+                    decimalPrecision: item.decimals,
+                    circulatingSupply: item.circulating_supply,
+                    name: item.name,
+                    symbol: item.symbol,
+                    tokenType: getTokenTypeFromCodeId(chosenNetwork!, item.code_id),
+                    totalSupply: item.max_supply || '0',
+                    contractAddress: item.address,
+                    owner: item.minter!,
+                }
+                allData.push(fetchedItem)
+                if (fetchedItem.owner === loggedInUser) {
+                    myData.push(fetchedItem)
+                }
+            })
 
-        dispatch(updateAssets({
-            allAssets: allData,
-            myAssets: myData,
-            selectedAsset: emptyTokenObject
-        }))
+            dispatch(updateAssets({
+                allAssets: allData,
+                myAssets: myData,
+                selectedAsset: emptyTokenObject
+            }))
+
+            setDataProcessing(false)
+        }
 
         //eslint-disable-next-line
-    }, [])
+    }, [data, loggedInUser])
 
     useEffect(() => {
 
@@ -89,7 +75,7 @@ const Assets = () => {
         }
 
         //eslint-disable-next-line
-    }, [currentAssetsView])
+    }, [currentAssetsView, allAssets, myAssets])
 
     useEffect(() => {
 
@@ -111,7 +97,7 @@ const Assets = () => {
             <Dialog />
             {!error ?
                 <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100px' }} display={'flex'} gap={2} flexDirection={'column'}>
-                    {loading ? <CircularProgress /> :
+                    {loading || dataProcessing ? <CircularProgress /> :
                         displayData.length > 0 ? <GridTable displayData={displayData} /> :
                             <NoAssetsView />
                     }

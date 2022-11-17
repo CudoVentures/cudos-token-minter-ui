@@ -29,8 +29,8 @@ const AVAILABLE_TOKENS: TOKEN_TYPE[] = [
 
 export const getTokenTypeWithlogo = (tokenType: TOKEN_TYPE, color?: string): JSX.Element => {
     return (
-        <Box marginTop={0.6} display={'flex'} gap={1}>
-            <Box color={color}>
+        <Box marginTop={0.6} display={'flex'} alignItems={'center'} gap={1}>
+            <Box height={'20px'} color={color}>
                 {TOKEN_ICON_TYPE_MAPPER[tokenType]}
             </Box>
             <Box color={color === COLORS_DARK_THEME.SECONDARY_TEXT ? color : 'inherit'}>

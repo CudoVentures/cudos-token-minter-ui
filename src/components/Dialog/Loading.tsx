@@ -32,7 +32,6 @@ const Loading = () => {
       open={loading!}
       onClose={closeModal}
       PaperProps={loadingType ? styles.loadingProps : styles.defaultPaperProps}
-      style={{ top: '25%' }}
     >
       <ModalContainer sx={{
         backgroundColor: loadingType ? 'transparent' : "default",

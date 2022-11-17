@@ -15,6 +15,9 @@ import { CopyAndFollowComponent } from 'components/helpers'
 import { LEDGERS, NAVIGATION_PATH } from 'utils/constants'
 import { formatAddress } from 'utils/helpers'
 import { initialState as initialAssetsState, updateAssets } from 'store/assets'
+import { initialState as initialAssetsNavigation } from 'store/assetsNavigation'
+import { updateAssetsNavigation } from 'store/assetsNavigation'
+import Card from 'components/Card/Card'
 
 import {
   Typography,
@@ -37,42 +40,46 @@ const UserInfo = () => {
     dispatch(updateUser(initialUserState))
     dispatch(updateModalState(initialModalState))
     dispatch(updateAssets(initialAssetsState))
+    dispatch(updateAssetsNavigation(initialAssetsNavigation))
     navigate(NAVIGATION_PATH.Home)
   }
 
   return (
     <StyledUser>
-      <Box borderRadius={5} style={styles.userContainer}>
-        <Box style={styles.userInnerContainer}>
+      <Box borderRadius={5} style={styles.userContainer} sx={{ cursor: 'pointer' }}>
+        <Box
+          style={styles.userInnerContainer}
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+        >
           {/* <AccountBalance />
           <hr style={styles.fancyLine}></hr> */}
-          <div onClick={() => setOpen(!open)} style={{ cursor: 'pointer', display: 'contents' }}>
-            <Box sx={{ marginRight: '10px' }}>
-              <Avatar
-                style={styles.avatarStyling}
-                src={
-                  connectedLedger === LEDGERS.KEPLR ? KeplrLogo :
-                    connectedLedger === LEDGERS.COSMOSTATION ? CosmostationLogo :
-                      WalletIcon
-                }
-                alt="Wallet Logo"
-              />
-            </Box>
-            <Typography>
-              {`Hi, ${accountName}`}
-            </Typography>
-            <Box style={{ marginLeft: '15px' }}>
-              <ArrowIcon style={{ transform: open ? 'rotate(180deg)' : 'rotate(360deg)' }} />
-            </Box>
-          </div>
+          <Box sx={{ marginRight: '10px' }}>
+            <Avatar
+              style={styles.avatarStyling}
+              src={
+                connectedLedger === LEDGERS.KEPLR ? KeplrLogo :
+                  connectedLedger === LEDGERS.COSMOSTATION ? CosmostationLogo :
+                    WalletIcon
+              }
+              alt="Wallet Logo"
+            />
+          </Box>
+          <Typography>
+            {`Hi, ${accountName}`}
+          </Typography>
+          <Box style={{ marginLeft: '15px' }}>
+            <ArrowIcon style={{ transform: open ? 'rotate(180deg)' : 'rotate(360deg)' }} />
+          </Box>
         </Box>
       </Box>
       <Collapse
+        onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         style={{ marginTop: '-28px', zIndex: '-1' }}
         in={open}
       >
-        <Box style={styles.dropdownMenuContainer} sx={{ height: isAdmin ? '250px' : '220px' }}>
+        <Card elevation={3} style={styles.dropdownMenuContainer} sx={{ height: isAdmin ? '250px' : '220px' }}>
           <Box style={{ marginTop: '40px' }}>
             <Box sx={styles.userAddressHolder}>
               {isAdmin ?
@@ -94,7 +101,7 @@ const UserInfo = () => {
                 onClick={() => handleDisconnect()}>Disconnect</Button>
             </Box>
           </Box>
-        </Box>
+        </Card>
       </Collapse>
     </StyledUser>
   )

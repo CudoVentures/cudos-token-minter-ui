@@ -3,9 +3,22 @@ import { Coin, DeliverTxResponse, EncodeObject, StdFee } from "cudosjs"
 import { connectLedgerByType, getQueryClient, getSigningCosmWasmClient } from "./config"
 import { CHAIN_DETAILS } from "./constants"
 import { isValidCudosAddress } from "./validation"
-import { DEFAULT_TOKEN_IMG_URL } from "components/TokenDetails/helpers"
+import { DEFAULT_TOKEN_IMG_URL, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { separateDecimals, separateFractions, setDecimalPrecisionTo } from "./regexFormatting"
 import { CW20 } from "types/CW20"
+
+export const getTokenTypeFromCodeId = (chosenNetwork: string, codeId: number): TOKEN_TYPE => {
+  let tokenType: TOKEN_TYPE = TOKEN_TYPE.Undefined
+
+  //TODO: Do we need this with updated one contract way of handling?
+  // Object.entries(CODE_IDS.NETWORK[chosenNetwork]).forEach(([key, value]) => {
+  //   if ((value as number[]).includes(codeId)) {
+  //     tokenType = key as TOKEN_TYPE
+  //   }
+  // })
+
+  return tokenType
+}
 
 export const executeMsgs = async (
   signer: string,
@@ -127,36 +140,19 @@ export const formatAddress = (text: string, sliceIndex: number): string => {
   return `${text.slice(0, sliceIndex)}...${text.slice(len - 4, len)}`
 }
 
-export const chainIDToAlias = (chainID: string): string => {
-
-  const ID = chainID ? chainID.toLowerCase() : ''
-
-  if (CHAIN_DETAILS.LOCAL.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.LOCAL.ALIAS_NAME
-  }
-
-  if (CHAIN_DETAILS.PRIVATE.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.PRIVATE.ALIAS_NAME
-  }
-
-  if (CHAIN_DETAILS.PUBLIC.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.PUBLIC.ALIAS_NAME
-  }
-
-  if (CHAIN_DETAILS.MAINNET.SHORT_NAMES.some(shortName => ID.includes(shortName))) {
-    return CHAIN_DETAILS.MAINNET.ALIAS_NAME
-  }
-
-  return "Unidentified Network"
-}
-
 export const handleAvailableNetworks = (defaultNetwork: string): networkToDisplay[] => {
 
-  if (CHAIN_DETAILS.LOCAL.SHORT_NAMES.includes(defaultNetwork.toLowerCase())) {
+  if (
+    CHAIN_DETAILS[defaultNetwork].ALIAS_NAME ===
+    CHAIN_DETAILS.LOCAL.ALIAS_NAME
+  ) {
     return [CHAIN_DETAILS.LOCAL]
   }
 
-  if (CHAIN_DETAILS.PRIVATE.SHORT_NAMES.includes(defaultNetwork.toLowerCase())) {
+  if (
+    CHAIN_DETAILS[defaultNetwork].ALIAS_NAME ===
+    CHAIN_DETAILS.PRIVATE.ALIAS_NAME
+  ) {
     return [CHAIN_DETAILS.PRIVATE]
   }
 

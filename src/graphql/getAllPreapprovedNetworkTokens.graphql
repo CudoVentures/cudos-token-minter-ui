@@ -1,0 +1,13 @@
+query GetAllPreapprovedNetworkTokens($codeIds: [Int!]) {
+  cw20token_info(where: {code_id: {_in: $codeIds}}) {
+    address
+    logo
+    name
+    symbol
+    max_supply
+    code_id
+    minter
+    decimals
+    circulating_supply
+  }
+}

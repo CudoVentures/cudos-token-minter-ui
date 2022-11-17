@@ -20,7 +20,6 @@ import { ApolloProvider, NormalizedCacheObject, ApolloClient } from '@apollo/cli
 import { useApollo } from './graphql/client'
 import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
 import RequireConnectedWallet from 'components/RequireConnectedWallet'
-import { updateAssets } from 'store/assets'
 
 import '@fontsource/poppins'
 
@@ -44,9 +43,6 @@ const App = () => {
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
       dispatch(updateUser(connectedUser))
-      dispatch(updateAssets({
-        selectedAsset: {}
-      }))
 
     } catch (error) {
       console.error((error as Error).message)
