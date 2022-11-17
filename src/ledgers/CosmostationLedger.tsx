@@ -9,7 +9,7 @@ export const connectCosmostationLedger = async (chosenNetwork: string): Promise<
 
   try {
     const provider = await cosmos()
-    const activatedChains = await provider.getActivatedChains()
+    const activatedChains = await provider.getActivatedChainIds()
 
     if (!activatedChains.includes(CHAIN_DETAILS.CHAIN_ID[chosenNetwork].toLowerCase())) {
 
