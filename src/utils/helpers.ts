@@ -61,6 +61,7 @@ export const getSanitizedTokenObject = (oldObject: CW20.TokenObject): CW20.Token
 
   return {
     ...oldObject,
+    name: oldObject.name?.trim(),
     initialSupply: addPrecision(sanitizeString(oldObject.initialSupply!), oldObject.decimalPrecision!),
     totalSupply: addPrecision(sanitizeString(oldObject.totalSupply!), oldObject.decimalPrecision!)
   }

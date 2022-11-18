@@ -22,13 +22,13 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
 
         //TokenName
         if (fieldObject.name === TEXT.TokenName) {
-            if (event.target.value.length > 50) {
+            if (event.target.value.trim().length > 50) {
                 event!.preventDefault()
                 return
             }
             setValue({
                 ...fieldObject.oldState,
-                name: event.target.value.trim()
+                name: event.target.value
             })
             return
         }
