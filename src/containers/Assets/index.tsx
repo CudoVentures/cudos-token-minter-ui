@@ -19,13 +19,15 @@ const Assets = () => {
 
     const dispatch = useDispatch()
     const [displayData, setDisplayData] = useState<CW20.TokenObject[]>([])
-    const { data, loading, error } = useGetAllPreapprovedNetworkTokensQuery({
-        variables: { codeIds: PREAPPROVED_CODE_IDS }
-    })
     const [dataProcessing, setDataProcessing] = useState<boolean>(false)
     const { currentAssetsView } = useSelector((state: RootState) => state.assetsNavState)
     const { allAssets, myAssets } = useSelector((state: RootState) => state.assetsState)
     const { address: loggedInUser, chosenNetwork } = useSelector((state: RootState) => state.userState)
+
+    const preapprovedCodeIds = PREAPPROVED_CODE_IDS.NETWORK[chosenNetwork!] as number[]
+    const { data, loading, error } = useGetAllPreapprovedNetworkTokensQuery({
+        variables: { codeIds: preapprovedCodeIds }
+    })
 
     useEffect(() => {
 
@@ -43,7 +45,7 @@ const Assets = () => {
                     tokenType: getTokenTypeFromCodeId(chosenNetwork!, item.code_id),
                     totalSupply: item.max_supply || '0',
                     contractAddress: item.address,
-                    owner: item.minter!,
+                    owner: item.marketing_admin!,
                 }
                 allData.push(fetchedItem)
                 if (fetchedItem.owner === loggedInUser) {
@@ -96,7 +98,9 @@ const Assets = () => {
         <Box style={styles.contentHolder}>
             <Dialog />
             {!error ?
-                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100px' }} display={'flex'} gap={2} flexDirection={'column'}>
+                <Box
+                    sx={styles.innerComponentHolder}
+                    gap={2}>
                     {loading || dataProcessing ? <CircularProgress /> :
                         displayData.length > 0 ? <GridTable displayData={displayData} /> :
                             <NoAssetsView />

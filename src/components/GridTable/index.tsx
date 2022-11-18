@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { getTokenTypeWithlogo } from 'components/AssetsNavBar/components/ViewTokenTypeFilter'
 import { CW20 } from 'types/CW20'
 import { COLORS_DARK_THEME } from 'theme/colors'
-import { TruncatedTextWithTooltip } from 'components/helpers'
+import { ImgComponent, TruncatedTextWithTooltip } from 'components/helpers'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import NoAssetsView from 'components/NoAssetsView'
@@ -67,10 +67,10 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
                 onClick={connectedUser ? () => handleClick(token) : undefined}
                 sx={connectedUser ? styles.connectedUserCard : styles.tokenCard}
             >
-                <img
-                    style={styles.img}
-                    src={token.logoUrl}
-                    alt="Token Logo"
+                <ImgComponent
+                    UID={token.contractAddress!}
+                    size={80}
+                    src={token.logoUrl!}
                 />
                 <Box gap={2} style={styles.typeHolder}>
                     <Box gap={1} style={styles.nameSymbolHolder}>

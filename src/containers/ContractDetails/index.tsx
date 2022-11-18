@@ -7,7 +7,7 @@ import { Box, CircularProgress, Divider } from "@mui/material"
 import { getTokenTypeWithlogo } from "components/AssetsNavBar/components/ViewTokenTypeFilter"
 import Card from "components/Card/Card"
 import { SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
-import { TruncatedTextWithTooltip } from "components/helpers"
+import { ImgComponent, TruncatedTextWithTooltip } from "components/helpers"
 import { TEXT, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -144,13 +144,16 @@ const ContractDetails = () => {
                                 style={styles.leftContentHolder}
                             >
                                 <Box style={styles.imgHolder}>
-                                    <img
+                                    <Box
                                         onMouseOver={() => isOwner ? setDisplayEditIcon(true) : null}
                                         onMouseOut={() => displayEditIcon ? setDisplayEditIcon(false) : null}
-                                        style={isLowRes ? styles.smallerIgm : styles.img}
-                                        src={selectedAsset!.logoUrl}
-                                        alt="Token Logo"
-                                    />
+                                    >
+                                        <ImgComponent
+                                            UID={selectedAsset!.contractAddress!}
+                                            size={isLowRes ? 80 : 145}
+                                            src={selectedAsset!.logoUrl!}
+                                        />
+                                    </Box>
                                     {isOwner ?
                                         <Box
                                             style={styles.editIconHolder}

@@ -1,9 +1,10 @@
 import { bech32 } from "bech32"
-import { getExtension } from "./helpers"
+import { getExtension, sanitizeString } from "./helpers"
 import reactImageSize from 'react-image-size'
 import { TEXT, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { CHAIN_DETAILS, RESOLUTIONS } from "./constants"
 import { CW20 } from "types/CW20"
+import BigNumber from "bignumber.js"
 
 export const isValidCudosAddress = (addr: string) => {
   if (addr === '' || addr === undefined) return false
@@ -69,6 +70,11 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
       continue
     }
 
+    // User should be able to use 0 as valid decimal precision
+    if (key === 'decimalPrecision' && tokenObject[key]! === 0) {
+      continue
+    }
+
     if (key === 'logoUrl') {
 
       //Having an image URL is optional field
@@ -109,10 +115,30 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
       break
     }
 
-    // We only accept symbols between 3 and 5 chars
+    // Only accept symbol between 3 and 5 chars
     if (key === 'symbol') {
       if (tokenObject[key]!.length < 3 || tokenObject[key]!.length > 5) {
         informativeError = `Symbol should be between 3 and 5 characters`
+        result = false
+        break
+      }
+    }
+
+    // Only accept name between 3 and 50 chars
+    if (key === 'name') {
+      if (tokenObject[key]!.length < 3 || tokenObject[key]!.length > 50) {
+        informativeError = `Name should be between 3 and 50 characters`
+        result = false
+        break
+      }
+    }
+
+    if (tokenType === TOKEN_TYPE.Mintable) {
+      if (new BigNumber(sanitizeString(tokenObject.initialSupply!))
+        .isGreaterThan(
+          new BigNumber(sanitizeString(tokenObject.totalSupply!)))
+      ) {
+        informativeError = `Initial supply cannot be greater than total supply`
         result = false
         break
       }

@@ -19,9 +19,9 @@ import useSimulateTx from 'utils/CustomHooks/useSimulateTx'
 import { getDisplayWorthyFee } from 'utils/helpers'
 
 import {
-    DEFAULT_TOKEN_IMG_URL,
     emptyEncodeObject,
     emptyFeesObject,
+    emptyTokenObject,
     PLACEHOLDERS,
     TEXT,
     TOKEN_ACTION,
@@ -36,7 +36,7 @@ const EditLogo = () => {
     const simulateTx = useSimulateTx()
     const { openEditLogo } = useSelector((state: RootState) => state.modalState)
     const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
-    const [newTokenObject, setNewTokenObject] = useState<CW20.TokenObject>(selectedAsset!)
+    const [newTokenObject, setNewTokenObject] = useState<CW20.TokenObject>(emptyTokenObject!)
     const [validatedLogo, setValidatedLogo] = useState<boolean>(false)
     const [msg, setMsg] = useState<EncodeObject>(emptyEncodeObject)
     const [fee, setFee] = useState<StdFee>(emptyFeesObject)
@@ -149,8 +149,8 @@ const EditLogo = () => {
 
     const urlInput: CW20.INPUT_FIELD = {
         name: TEXT.LogoUrl,
-        value: newTokenObject!.logoUrl === DEFAULT_TOKEN_IMG_URL ? '' : newTokenObject!.logoUrl || '',
-        placeholder: PLACEHOLDERS.LogoUrl,
+        value: newTokenObject!.logoUrl!,
+        placeholder: selectedAsset?.logoUrl || PLACEHOLDERS.LogoUrl,
         tooltip: TOOLTIPS.LogoUrl,
         inputType: TEXT.Text,
         oldState: newTokenObject!,

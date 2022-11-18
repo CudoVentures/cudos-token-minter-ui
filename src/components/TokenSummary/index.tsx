@@ -1,6 +1,6 @@
 import { Box, Input } from "@mui/material"
 import Card from "components/Card/Card"
-import { TitleWithTooltip } from "components/helpers"
+import { ImgComponent, TitleWithTooltip } from "components/helpers"
 import { StdFee } from "cudosjs"
 import { useSelector } from "react-redux"
 import { RootState } from "store"
@@ -8,7 +8,7 @@ import { CHAIN_DETAILS } from "utils/constants"
 import { getDisplayWorthyFee } from "utils/helpers"
 import { styles } from "./styles"
 import { BoxWrapper, SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
-import { DEFAULT_TOKEN_IMG_URL, TEXT, TOKEN_TYPE, TOOLTIPS, TOKEN_DESCRIPTION } from "components/TokenDetails/helpers"
+import { TEXT, TOKEN_TYPE, TOOLTIPS, TOKEN_DESCRIPTION } from "components/TokenDetails/helpers"
 import { CW20 } from "types/CW20"
 
 const TokenSummary = ({ tokenObject, tokenType, estimatedFee }: {
@@ -74,15 +74,17 @@ const TokenSummary = ({ tokenObject, tokenType, estimatedFee }: {
                         </BoxWrapper>
                     </Box>
                     <Box style={styles.input}>
-                        {<img
-                            style={styles.img}
-                            src={tokenObject.logoUrl ? tokenObject.logoUrl : DEFAULT_TOKEN_IMG_URL}
-                            alt="Token Logo"
-                        />}
+                        <Box margin={2}>
+                            <ImgComponent
+                                UID={tokenObject.contractAddress!}
+                                size={90}
+                                src={tokenObject.logoUrl!}
+                            />
+                        </Box>
                         <Input
                             disabled={true}
                             sx={{ width: '100%' }}
-                            value={tokenObject.logoUrl ? tokenObject.logoUrl : 'Default Logo'}
+                            value={tokenObject.logoUrl ? tokenObject.logoUrl : `Random ${TEXT.DefaultLogo}`}
                         />
                     </Box>
                 </Card>

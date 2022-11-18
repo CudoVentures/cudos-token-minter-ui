@@ -6,9 +6,8 @@ import { useCallback } from "react"
 import { emptyEncodeObject, TOKEN_ACTION, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { ContractMsgUploadLogo } from "cudosjs/build/cosmwasm-stargate/modules/cw20/contract-messages"
 import { CW20 } from "types/CW20"
-import { getSanitizedTokenObject } from "utils/helpers"
+import { getInstantiateCodeId, getSanitizedTokenObject } from "utils/helpers"
 import useGenerateInstantiateMsg from "./useGenerateInstantiateMsg"
-import { INSTANTIATE_CODE_ID } from "utils/constants"
 
 const useGenerateMsgHandler = () => {
 
@@ -30,10 +29,11 @@ const useGenerateMsgHandler = () => {
             const tokenType = handlerSpecificData.tokenType as TOKEN_TYPE
             const tokenObject = getSanitizedTokenObject(handlerSpecificData.tokenObject as CW20.TokenObject)
             const instantiateMsg = generateInstantiateMsg(tokenType, tokenObject)
+            const contractCodeId = getInstantiateCodeId(chosenNetwork!)
 
             tempMsg = client.Cw20Module.msgInstantiate(
                 address!,
-                INSTANTIATE_CODE_ID,
+                contractCodeId,
                 instantiateMsg!
             )
         }

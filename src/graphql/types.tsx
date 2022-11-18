@@ -16996,7 +16996,7 @@ export type GetAllPreapprovedNetworkTokensQueryVariables = Exact<{
 }>;
 
 
-export type GetAllPreapprovedNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, minter?: string | null, decimals: number, circulating_supply: string }> };
+export type GetAllPreapprovedNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, marketing_admin?: string | null, decimals: number, circulating_supply: string }> };
 
 export type GetContractDetailsSubscriptionVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
@@ -17010,7 +17010,7 @@ export type GetTokenDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetTokenDetailsQuery = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, minter?: string | null, decimals: number, circulating_supply: string } | null };
+export type GetTokenDetailsQuery = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, marketing_admin?: string | null, decimals: number, circulating_supply: string } | null };
 
 export type GetUserBalancesSubscriptionVariables = Exact<{
   address?: InputMaybe<Scalars['String']>;
@@ -17030,7 +17030,7 @@ export const GetAllPreapprovedNetworkTokensDocument = gql`
     symbol
     max_supply
     code_id
-    minter
+    marketing_admin
     decimals
     circulating_supply
   }
@@ -17105,7 +17105,7 @@ export const GetTokenDetailsDocument = gql`
     symbol
     max_supply
     code_id
-    minter
+    marketing_admin
     decimals
     circulating_supply
   }

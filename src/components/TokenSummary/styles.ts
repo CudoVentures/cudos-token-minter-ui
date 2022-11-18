@@ -27,11 +27,5 @@ export const styles = {
         padding: '0px 20px',
         borderRadius: '10px',
         alignItems: 'center'
-    },
-    img: {
-        margin: '20px', 
-        width: '104px', 
-        height: '104px', 
-        borderRadius: '50%'
     }
 } as const

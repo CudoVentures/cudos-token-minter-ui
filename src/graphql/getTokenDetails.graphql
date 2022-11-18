@@ -6,7 +6,7 @@ query getTokenDetails($address: String = "") {
     symbol
     max_supply
     code_id
-    minter
+    marketing_admin
     decimals
     circulating_supply
   }

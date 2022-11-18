@@ -1,11 +1,15 @@
 import { BigNumber } from "bignumber.js"
 import { Coin, DeliverTxResponse, EncodeObject, StdFee } from "cudosjs"
 import { connectLedgerByType, getQueryClient, getSigningCosmWasmClient } from "./config"
-import { CHAIN_DETAILS } from "./constants"
+import { CHAIN_DETAILS, PREAPPROVED_CODE_IDS } from "./constants"
 import { isValidCudosAddress } from "./validation"
-import { DEFAULT_TOKEN_IMG_URL, TOKEN_TYPE } from "components/TokenDetails/helpers"
+import { TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { separateDecimals, separateFractions, setDecimalPrecisionTo } from "./regexFormatting"
 import { CW20 } from "types/CW20"
+
+export const getInstantiateCodeId = (chosenNetwork: string,): number => {
+  return PREAPPROVED_CODE_IDS.NETWORK[chosenNetwork].at(-1) || 0
+}
 
 export const getTokenTypeFromCodeId = (chosenNetwork: string, codeId: number): TOKEN_TYPE => {
   let tokenType: TOKEN_TYPE = TOKEN_TYPE.Undefined
@@ -57,7 +61,6 @@ export const getSanitizedTokenObject = (oldObject: CW20.TokenObject): CW20.Token
 
   return {
     ...oldObject,
-    logoUrl: oldObject.logoUrl ? oldObject.logoUrl : DEFAULT_TOKEN_IMG_URL,
     initialSupply: addPrecision(sanitizeString(oldObject.initialSupply!), oldObject.decimalPrecision!),
     totalSupply: addPrecision(sanitizeString(oldObject.totalSupply!), oldObject.decimalPrecision!)
   }

@@ -6,7 +6,6 @@ export const FORBIDDEN_SYMBOLS = {
 }
 
 export const DEFAULT_TOTAL_SUPPLY_VALUE = '100,000,000,000'
-export const DEFAULT_TOKEN_IMG_URL = 'https://www.cudos.org/wp-content/uploads/2022/05/Token-front@300x.png'
 
 export enum TOKEN_OBJECT {
     name = 'name',
@@ -20,7 +19,7 @@ export enum TOKEN_OBJECT {
 export const emptyTokenObject: CW20.TokenObject = {
     name: '',
     symbol: '',
-    decimalPrecision: 0,
+    decimalPrecision: undefined,
     initialSupply: '',
     totalSupply: '',
     logoUrl: ''
@@ -57,6 +56,7 @@ export enum TEXT {
     SupplyType = 'Supply Type',
     DeploymentNetwork = 'Deployment network',
     TokenName = 'Token Name',
+    TokenLogo = 'Token Logo',
     TokenSymbol = 'Token Symbol',
     GasFeeEstimate = 'Gas Fee Estimate',
     TransactionDetails = 'Transaction Details',
@@ -102,12 +102,12 @@ export enum TOOLTIPS {
     DecreaseAllowance = 'Decrease or clear the allowance such that spender may access up to current_allowance - amount tokens from the owner account',
     TokenType = 'The specific details for your CW20 tokens',
     DeploymentNetwork = 'The network where your token will be deployed',
-    TokenName = 'Choose a name for your token.',
-    TokenSymbol = 'Choose a symbol for your token (usually 3-5 chars).',
-    DecimalPrecision = "The decimal precision of your token. (0 to 18). If you don't know what to insert, use 18.",
-    InitialSupply = 'The initial number of tokens available. Maximum (100,000,000,000) Will be put in your account.',
+    TokenName = 'Choose a name for your token',
+    TokenSymbol = 'Choose a symbol for your token (usually 3-5 chars)',
+    DecimalPrecision = "The decimal precision of your token. (0 to 18). If you don't know what to insert, use 18",
+    InitialSupply = 'The initial number of tokens available. Maximum (100,000,000,000) Will be put in your account',
     TotalSupply = 'The maximum number of tokens available. Maximum (100,000,000,000)',
-    LogoUrl = 'The URL of the logo. Max (512x512 pixels). Only PNG and SVG formats are supported and must be hosted with https protocol (i.e. https://).'
+    LogoUrl = 'The URL of the logo. Max (512x512 pixels). Only PNG and SVG formats are supported and must be hosted with https protocol (i.e. https://)'
 }
 
 export enum SUPPLY_TYPE {
