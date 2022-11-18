@@ -1,5 +1,5 @@
 import { bech32 } from "bech32"
-import { getExtension, getSanitizedTokenObject, sanitizeString } from "./helpers"
+import { getExtension, getSanitizedTokenObject } from "./helpers"
 import reactImageSize from 'react-image-size'
 import { TEXT, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { CHAIN_DETAILS, RESOLUTIONS } from "./constants"
