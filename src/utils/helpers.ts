@@ -7,6 +7,11 @@ import { TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { separateDecimals, separateFractions, setDecimalPrecisionTo } from "./regexFormatting"
 import { CW20 } from "types/CW20"
 
+//Imporving UX at certain screen transitions
+export const delay = (ms: number) => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 export const getInstantiateCodeId = (chosenNetwork: string,): number => {
   return PREAPPROVED_CODE_IDS.NETWORK[chosenNetwork].at(-1) || 0
 }
