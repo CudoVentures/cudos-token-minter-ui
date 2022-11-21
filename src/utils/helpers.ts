@@ -16,17 +16,15 @@ export const getInstantiateCodeId = (chosenNetwork: string,): number => {
   return PREAPPROVED_CODE_IDS.NETWORK[chosenNetwork].at(-1) || 0
 }
 
-export const getTokenTypeFromCodeId = (chosenNetwork: string, codeId: number): TOKEN_TYPE => {
-  let tokenType: TOKEN_TYPE = TOKEN_TYPE.Undefined
+export const getSanitizedTokenType = (fetchedType: string): TOKEN_TYPE => {
 
-  //TODO: Do we need this with updated one contract way of handling?
-  // Object.entries(CODE_IDS.NETWORK[chosenNetwork]).forEach(([key, value]) => {
-  //   if ((value as number[]).includes(codeId)) {
-  //     tokenType = key as TOKEN_TYPE
-  //   }
-  // })
+  for (const [predefinedType] of Object.entries(TOKEN_TYPE)) {
+    if ((predefinedType.toLowerCase() as string) === fetchedType.toLowerCase()) {
+      return TOKEN_TYPE[predefinedType]
+    }
+  }
 
-  return tokenType
+  return TOKEN_TYPE.Undefined
 }
 
 export const executeMsgs = async (

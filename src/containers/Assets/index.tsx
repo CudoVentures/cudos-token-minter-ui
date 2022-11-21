@@ -10,7 +10,7 @@ import { emptyTokenObject } from 'components/TokenDetails/helpers'
 import GridTable from 'components/GridTable'
 import { updateAssets } from 'store/assets'
 import { CW20 } from 'types/CW20'
-import { getTokenTypeFromCodeId } from 'utils/helpers'
+import { getSanitizedTokenType } from 'utils/helpers'
 import { useGetAllPreapprovedNetworkTokensQuery } from 'graphql/types'
 import { updateModalState } from 'store/modals'
 import { MODAL_MSGS, PREAPPROVED_CODE_IDS } from 'utils/constants'
@@ -42,10 +42,10 @@ const Assets = () => {
                     circulatingSupply: item.circulating_supply,
                     name: item.name,
                     symbol: item.symbol,
-                    tokenType: getTokenTypeFromCodeId(chosenNetwork!, item.code_id),
-                    totalSupply: item.max_supply || '0',
+                    tokenType: getSanitizedTokenType(item.type!),
+                    totalSupply: item.max_supply || undefined,
                     contractAddress: item.address,
-                    owner: item.marketing_admin!,
+                    owner: item.creator!,
                 }
                 allData.push(fetchedItem)
                 if (fetchedItem.owner === loggedInUser) {

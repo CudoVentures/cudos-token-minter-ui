@@ -31,16 +31,17 @@ const useGenerateMsgHandler = () => {
             const instantiateMsg = generateInstantiateMsg(tokenType, tokenObject)
             const contractCodeId = getInstantiateCodeId(chosenNetwork!)
 
-            tempMsg = client.Cw20Module.msgInstantiate(
+            return client.Cw20Module.msgInstantiate(
                 address!,
                 contractCodeId,
                 instantiateMsg!
             )
+
         }
 
         // EDIT LOGO
         if (type === TOKEN_ACTION.EditLogo) {
-            tempMsg = client.Cw20Module.msgUploadLogo(
+            return client.Cw20Module.msgUploadLogo(
                 address!,
                 selectedAsset?.contractAddress!,
                 handlerSpecificData as ContractMsgUploadLogo
@@ -49,7 +50,7 @@ const useGenerateMsgHandler = () => {
 
         // TRANSFER
         if (type === TOKEN_ACTION.Transfer) {
-            tempMsg = client.Cw20Module.msgTransfer(
+            return client.Cw20Module.msgTransfer(
                 address!,
                 selectedAsset?.contractAddress!,
                 {
@@ -63,7 +64,7 @@ const useGenerateMsgHandler = () => {
 
         // INCREASE ALLOWANCE
         if (type === TOKEN_ACTION.IncreaseAllowance) {
-            tempMsg = client.Cw20Module.msgIncreaseAllowance(
+            return client.Cw20Module.msgIncreaseAllowance(
                 address!,
                 selectedAsset?.contractAddress!,
                 {
@@ -78,7 +79,7 @@ const useGenerateMsgHandler = () => {
 
         // DECREASE ALLOWANCE
         if (type === TOKEN_ACTION.DecreaseAllowance) {
-            tempMsg = client.Cw20Module.msgDecreaseAllowance(
+            return client.Cw20Module.msgDecreaseAllowance(
                 address!,
                 selectedAsset?.contractAddress!,
                 {
@@ -93,7 +94,7 @@ const useGenerateMsgHandler = () => {
 
         // MINT
         if (type === TOKEN_ACTION.Mint) {
-            tempMsg = client.Cw20Module.msgMint(
+            return client.Cw20Module.msgMint(
                 address!,
                 selectedAsset?.contractAddress!,
                 {
@@ -107,7 +108,7 @@ const useGenerateMsgHandler = () => {
 
         // BURN
         if (type === TOKEN_ACTION.Burn) {
-            tempMsg = client.Cw20Module.msgBurn(
+            return client.Cw20Module.msgBurn(
                 address!,
                 selectedAsset?.contractAddress!,
                 {

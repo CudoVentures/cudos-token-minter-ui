@@ -1,8 +1,7 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material"
 import BigNumber from "bignumber.js"
-import { SubTitle } from "components/Dialog/ModalComponents/helpers"
-import { AdvancedTooltip, TitleWithTooltip } from "components/helpers"
-import { TEXT, TOOLTIPS, TOKEN_ACTION } from "components/TokenDetails/helpers"
+import { AdvancedTooltip, TitleWithTooltip, TruncatedTextWithTooltip } from "components/helpers"
+import { TEXT, TOOLTIPS, TOKEN_ACTION, DEFAULT_TOTAL_SUPPLY_VALUE } from "components/TokenDetails/helpers"
 import { convertFullTokenBalanceToPrecision, convertPreciseTokenBalanceToFull } from "utils/regexFormatting"
 import { isValidCudosAddress } from "utils/validation"
 import TokenInteractionCard from "./TokenInteractionCard"
@@ -141,6 +140,21 @@ export const displayTokenValueWithPrecisionTooltip = (
     weight: number
 ) => {
 
+    if (tokenPrecision === 0) {
+        return (
+            <Box gap={0.01} style={{ alignItems: 'center', display: 'flex' }}>
+                <Typography display='flex'>
+                    <TruncatedTextWithTooltip
+                        text={Number(tokenFullBalance).toLocaleString()}
+                        maxAllowed={DEFAULT_TOTAL_SUPPLY_VALUE.length}
+                        variant={'subtitle1'}
+                        weight={weight}
+                    />
+                </Typography>
+            </Box>
+        )
+    }
+
     const preciseValue = convertFullTokenBalanceToPrecision(tokenFullBalance || '0', tokenPrecision, displayPrecision)
     const shortValue = tokenFullBalance?.toString().slice(0, -tokenPrecision) || '0'
     let trailValue = tokenFullBalance?.toString().slice(-tokenPrecision) || '0'
@@ -174,9 +188,10 @@ export const displayTokenValueWithPrecisionTooltip = (
             children={
                 <Box gap={0.01} style={{ alignItems: 'center', display: 'flex' }}>
                     <Typography display='flex'>
-                        <SubTitle
+                        <TruncatedTextWithTooltip
                             text={Number(preciseValue).toLocaleString()}
-                            color={'text.primary'}
+                            maxAllowed={DEFAULT_TOTAL_SUPPLY_VALUE.length}
+                            variant={'subtitle1'}
                             weight={weight}
                         />
                     </Typography>

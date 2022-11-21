@@ -6,7 +6,8 @@ query GetAllPreapprovedNetworkTokens($codeIds: [Int!]) {
     symbol
     max_supply
     code_id
-    marketing_admin
+    creator
+    type
     decimals
     circulating_supply
   }

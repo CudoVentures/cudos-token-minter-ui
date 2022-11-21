@@ -2579,7 +2579,7 @@ export type Cosmwasm_Update_Admin_Variance_Fields = {
 export type Cw20token_Balance = {
   __typename?: 'cw20token_balance';
   address: Scalars['String'];
-  balance: Scalars['bigint'];
+  balance: Scalars['String'];
   /** An object relationship */
   cw20token_info: Cw20token_Info;
   token: Scalars['String'];
@@ -2595,17 +2595,9 @@ export type Cw20token_Balance_Aggregate = {
 /** aggregate fields of "cw20token_balance" */
 export type Cw20token_Balance_Aggregate_Fields = {
   __typename?: 'cw20token_balance_aggregate_fields';
-  avg?: Maybe<Cw20token_Balance_Avg_Fields>;
   count: Scalars['Int'];
   max?: Maybe<Cw20token_Balance_Max_Fields>;
   min?: Maybe<Cw20token_Balance_Min_Fields>;
-  stddev?: Maybe<Cw20token_Balance_Stddev_Fields>;
-  stddev_pop?: Maybe<Cw20token_Balance_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Cw20token_Balance_Stddev_Samp_Fields>;
-  sum?: Maybe<Cw20token_Balance_Sum_Fields>;
-  var_pop?: Maybe<Cw20token_Balance_Var_Pop_Fields>;
-  var_samp?: Maybe<Cw20token_Balance_Var_Samp_Fields>;
-  variance?: Maybe<Cw20token_Balance_Variance_Fields>;
 };
 
 
@@ -2617,28 +2609,9 @@ export type Cw20token_Balance_Aggregate_FieldsCountArgs = {
 
 /** order by aggregate values of table "cw20token_balance" */
 export type Cw20token_Balance_Aggregate_Order_By = {
-  avg?: InputMaybe<Cw20token_Balance_Avg_Order_By>;
   count?: InputMaybe<Order_By>;
   max?: InputMaybe<Cw20token_Balance_Max_Order_By>;
   min?: InputMaybe<Cw20token_Balance_Min_Order_By>;
-  stddev?: InputMaybe<Cw20token_Balance_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<Cw20token_Balance_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<Cw20token_Balance_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<Cw20token_Balance_Sum_Order_By>;
-  var_pop?: InputMaybe<Cw20token_Balance_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<Cw20token_Balance_Var_Samp_Order_By>;
-  variance?: InputMaybe<Cw20token_Balance_Variance_Order_By>;
-};
-
-/** aggregate avg on columns */
-export type Cw20token_Balance_Avg_Fields = {
-  __typename?: 'cw20token_balance_avg_fields';
-  balance?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Avg_Order_By = {
-  balance?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "cw20token_balance". All fields are combined with a logical 'AND'. */
@@ -2647,7 +2620,7 @@ export type Cw20token_Balance_Bool_Exp = {
   _not?: InputMaybe<Cw20token_Balance_Bool_Exp>;
   _or?: InputMaybe<Array<Cw20token_Balance_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
-  balance?: InputMaybe<Bigint_Comparison_Exp>;
+  balance?: InputMaybe<String_Comparison_Exp>;
   cw20token_info?: InputMaybe<Cw20token_Info_Bool_Exp>;
   token?: InputMaybe<String_Comparison_Exp>;
 };
@@ -2656,7 +2629,7 @@ export type Cw20token_Balance_Bool_Exp = {
 export type Cw20token_Balance_Max_Fields = {
   __typename?: 'cw20token_balance_max_fields';
   address?: Maybe<Scalars['String']>;
-  balance?: Maybe<Scalars['bigint']>;
+  balance?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
 };
 
@@ -2671,7 +2644,7 @@ export type Cw20token_Balance_Max_Order_By = {
 export type Cw20token_Balance_Min_Fields = {
   __typename?: 'cw20token_balance_min_fields';
   address?: Maybe<Scalars['String']>;
-  balance?: Maybe<Scalars['bigint']>;
+  balance?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
 };
 
@@ -2699,83 +2672,6 @@ export enum Cw20token_Balance_Select_Column {
   /** column name */
   Token = 'token'
 }
-
-/** aggregate stddev on columns */
-export type Cw20token_Balance_Stddev_Fields = {
-  __typename?: 'cw20token_balance_stddev_fields';
-  balance?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Stddev_Order_By = {
-  balance?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Cw20token_Balance_Stddev_Pop_Fields = {
-  __typename?: 'cw20token_balance_stddev_pop_fields';
-  balance?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Stddev_Pop_Order_By = {
-  balance?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Cw20token_Balance_Stddev_Samp_Fields = {
-  __typename?: 'cw20token_balance_stddev_samp_fields';
-  balance?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Stddev_Samp_Order_By = {
-  balance?: InputMaybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type Cw20token_Balance_Sum_Fields = {
-  __typename?: 'cw20token_balance_sum_fields';
-  balance?: Maybe<Scalars['bigint']>;
-};
-
-/** order by sum() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Sum_Order_By = {
-  balance?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_pop on columns */
-export type Cw20token_Balance_Var_Pop_Fields = {
-  __typename?: 'cw20token_balance_var_pop_fields';
-  balance?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Var_Pop_Order_By = {
-  balance?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Cw20token_Balance_Var_Samp_Fields = {
-  __typename?: 'cw20token_balance_var_samp_fields';
-  balance?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Var_Samp_Order_By = {
-  balance?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Cw20token_Balance_Variance_Fields = {
-  __typename?: 'cw20token_balance_variance_fields';
-  balance?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "cw20token_balance" */
-export type Cw20token_Balance_Variance_Order_By = {
-  balance?: InputMaybe<Order_By>;
-};
 
 /** columns and relationships of "cw20token_code_id" */
 export type Cw20token_Code_Id = {
@@ -2812,8 +2708,10 @@ export type Cw20token_Info = {
   balances_aggregate: Cw20token_Balance_Aggregate;
   circulating_supply: Scalars['String'];
   code_id: Scalars['Int'];
+  creator: Scalars['String'];
   decimals: Scalars['Int'];
   description?: Maybe<Scalars['String']>;
+  initial_supply: Scalars['String'];
   logo?: Maybe<Scalars['String']>;
   marketing_admin?: Maybe<Scalars['String']>;
   max_supply?: Maybe<Scalars['String']>;
@@ -2821,6 +2719,7 @@ export type Cw20token_Info = {
   name: Scalars['String'];
   project_url?: Maybe<Scalars['String']>;
   symbol: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
 };
 
 
@@ -2889,8 +2788,10 @@ export type Cw20token_Info_Bool_Exp = {
   balances?: InputMaybe<Cw20token_Balance_Bool_Exp>;
   circulating_supply?: InputMaybe<String_Comparison_Exp>;
   code_id?: InputMaybe<Int_Comparison_Exp>;
+  creator?: InputMaybe<String_Comparison_Exp>;
   decimals?: InputMaybe<Int_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
+  initial_supply?: InputMaybe<String_Comparison_Exp>;
   logo?: InputMaybe<String_Comparison_Exp>;
   marketing_admin?: InputMaybe<String_Comparison_Exp>;
   max_supply?: InputMaybe<String_Comparison_Exp>;
@@ -2898,6 +2799,7 @@ export type Cw20token_Info_Bool_Exp = {
   name?: InputMaybe<String_Comparison_Exp>;
   project_url?: InputMaybe<String_Comparison_Exp>;
   symbol?: InputMaybe<String_Comparison_Exp>;
+  type?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** aggregate max on columns */
@@ -2906,8 +2808,10 @@ export type Cw20token_Info_Max_Fields = {
   address?: Maybe<Scalars['String']>;
   circulating_supply?: Maybe<Scalars['String']>;
   code_id?: Maybe<Scalars['Int']>;
+  creator?: Maybe<Scalars['String']>;
   decimals?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
+  initial_supply?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   marketing_admin?: Maybe<Scalars['String']>;
   max_supply?: Maybe<Scalars['String']>;
@@ -2915,6 +2819,7 @@ export type Cw20token_Info_Max_Fields = {
   name?: Maybe<Scalars['String']>;
   project_url?: Maybe<Scalars['String']>;
   symbol?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -2923,8 +2828,10 @@ export type Cw20token_Info_Min_Fields = {
   address?: Maybe<Scalars['String']>;
   circulating_supply?: Maybe<Scalars['String']>;
   code_id?: Maybe<Scalars['Int']>;
+  creator?: Maybe<Scalars['String']>;
   decimals?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
+  initial_supply?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   marketing_admin?: Maybe<Scalars['String']>;
   max_supply?: Maybe<Scalars['String']>;
@@ -2932,6 +2839,7 @@ export type Cw20token_Info_Min_Fields = {
   name?: Maybe<Scalars['String']>;
   project_url?: Maybe<Scalars['String']>;
   symbol?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
 };
 
 /** Ordering options when selecting data from "cw20token_info". */
@@ -2940,8 +2848,10 @@ export type Cw20token_Info_Order_By = {
   balances_aggregate?: InputMaybe<Cw20token_Balance_Aggregate_Order_By>;
   circulating_supply?: InputMaybe<Order_By>;
   code_id?: InputMaybe<Order_By>;
+  creator?: InputMaybe<Order_By>;
   decimals?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
+  initial_supply?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   marketing_admin?: InputMaybe<Order_By>;
   max_supply?: InputMaybe<Order_By>;
@@ -2949,6 +2859,7 @@ export type Cw20token_Info_Order_By = {
   name?: InputMaybe<Order_By>;
   project_url?: InputMaybe<Order_By>;
   symbol?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "cw20token_info" */
@@ -2960,9 +2871,13 @@ export enum Cw20token_Info_Select_Column {
   /** column name */
   CodeId = 'code_id',
   /** column name */
+  Creator = 'creator',
+  /** column name */
   Decimals = 'decimals',
   /** column name */
   Description = 'description',
+  /** column name */
+  InitialSupply = 'initial_supply',
   /** column name */
   Logo = 'logo',
   /** column name */
@@ -2976,7 +2891,9 @@ export enum Cw20token_Info_Select_Column {
   /** column name */
   ProjectUrl = 'project_url',
   /** column name */
-  Symbol = 'symbol'
+  Symbol = 'symbol',
+  /** column name */
+  Type = 'type'
 }
 
 /** aggregate stddev on columns */
@@ -5933,6 +5850,7 @@ export type Marketplace_Nft = {
   /** An object relationship */
   transaction: Transaction;
   transaction_hash: Scalars['String'];
+  uid?: Maybe<Scalars['String']>;
 };
 
 /** aggregated selection of "marketplace_nft" */
@@ -5987,6 +5905,7 @@ export type Marketplace_Nft_Bool_Exp = {
   token_id?: InputMaybe<Bigint_Comparison_Exp>;
   transaction?: InputMaybe<Transaction_Bool_Exp>;
   transaction_hash?: InputMaybe<String_Comparison_Exp>;
+  uid?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** columns and relationships of "marketplace_nft_buy_history" */
@@ -6213,6 +6132,7 @@ export type Marketplace_Nft_Max_Fields = {
   price?: Maybe<Scalars['numeric']>;
   token_id?: Maybe<Scalars['bigint']>;
   transaction_hash?: Maybe<Scalars['String']>;
+  uid?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -6224,6 +6144,7 @@ export type Marketplace_Nft_Min_Fields = {
   price?: Maybe<Scalars['numeric']>;
   token_id?: Maybe<Scalars['bigint']>;
   transaction_hash?: Maybe<Scalars['String']>;
+  uid?: Maybe<Scalars['String']>;
 };
 
 /** Ordering options when selecting data from "marketplace_nft". */
@@ -6237,6 +6158,7 @@ export type Marketplace_Nft_Order_By = {
   token_id?: InputMaybe<Order_By>;
   transaction?: InputMaybe<Transaction_Order_By>;
   transaction_hash?: InputMaybe<Order_By>;
+  uid?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "marketplace_nft" */
@@ -6252,7 +6174,9 @@ export enum Marketplace_Nft_Select_Column {
   /** column name */
   TokenId = 'token_id',
   /** column name */
-  TransactionHash = 'transaction_hash'
+  TransactionHash = 'transaction_hash',
+  /** column name */
+  Uid = 'uid'
 }
 
 /** aggregate stddev on columns */
@@ -16996,7 +16920,7 @@ export type GetAllPreapprovedNetworkTokensQueryVariables = Exact<{
 }>;
 
 
-export type GetAllPreapprovedNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, marketing_admin?: string | null, decimals: number, circulating_supply: string }> };
+export type GetAllPreapprovedNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, creator: string, type?: string | null, decimals: number, circulating_supply: string }> };
 
 export type GetContractDetailsSubscriptionVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
@@ -17006,11 +16930,12 @@ export type GetContractDetailsSubscriptionVariables = Exact<{
 export type GetContractDetailsSubscription = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', circulating_supply: string, max_supply?: string | null, logo?: string | null } | null };
 
 export type GetTokenDetailsQueryVariables = Exact<{
+  codeIds?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
   address?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetTokenDetailsQuery = { cw20token_info_by_pk?: { __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, marketing_admin?: string | null, decimals: number, circulating_supply: string } | null };
+export type GetTokenDetailsQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, creator: string, type?: string | null, max_supply?: string | null, code_id: number, decimals: number, circulating_supply: string, initial_supply: string }> };
 
 export type GetUserBalancesSubscriptionVariables = Exact<{
   address?: InputMaybe<Scalars['String']>;
@@ -17018,7 +16943,7 @@ export type GetUserBalancesSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetUserBalancesSubscription = { cw20token_balance_by_pk?: { __typename?: 'cw20token_balance', balance: any } | null };
+export type GetUserBalancesSubscription = { cw20token_balance_by_pk?: { __typename?: 'cw20token_balance', balance: string } | null };
 
 
 export const GetAllPreapprovedNetworkTokensDocument = gql`
@@ -17030,7 +16955,8 @@ export const GetAllPreapprovedNetworkTokensDocument = gql`
     symbol
     max_supply
     code_id
-    marketing_admin
+    creator
+    type
     decimals
     circulating_supply
   }
@@ -17097,17 +17023,21 @@ export function useGetContractDetailsSubscription(baseOptions?: Apollo.Subscript
 export type GetContractDetailsSubscriptionHookResult = ReturnType<typeof useGetContractDetailsSubscription>;
 export type GetContractDetailsSubscriptionResult = Apollo.SubscriptionResult<GetContractDetailsSubscription>;
 export const GetTokenDetailsDocument = gql`
-    query getTokenDetails($address: String = "") {
-  cw20token_info_by_pk(address: $address) {
+    query getTokenDetails($codeIds: [Int!], $address: String) {
+  cw20token_info(
+    where: {code_id: {_in: $codeIds}, _and: {address: {_eq: $address}}}
+  ) {
     address
     logo
     name
     symbol
+    creator
+    type
     max_supply
     code_id
-    marketing_admin
     decimals
     circulating_supply
+    initial_supply
   }
 }
     `;
@@ -17124,6 +17054,7 @@ export const GetTokenDetailsDocument = gql`
  * @example
  * const { data, loading, error } = useGetTokenDetailsQuery({
  *   variables: {
+ *      codeIds: // value for 'codeIds'
  *      address: // value for 'address'
  *   },
  * });

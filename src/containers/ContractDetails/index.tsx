@@ -71,11 +71,11 @@ const ContractDetails = () => {
 
     useEffect(() => {
         if (fetchedUserData) {
-            setUserBalance(fetchedUserData.cw20token_balance_by_pk?.balance)
+            setUserBalance(fetchedUserData.cw20token_balance_by_pk?.balance || '0')
             dispatch(updateUser({
                 assets: {
                     ...assets,
-                    [selectedAsset?.contractAddress!]: fetchedUserData.cw20token_balance_by_pk?.balance
+                    [selectedAsset?.contractAddress!]: fetchedUserData.cw20token_balance_by_pk?.balance || '0'
                 }
             }))
 
@@ -86,7 +86,7 @@ const ContractDetails = () => {
             dispatch(updateAssets({
                 selectedAsset: {
                     ...selectedAsset,
-                    totalSupply: fetchedContractData.cw20token_info_by_pk?.max_supply || '0',
+                    totalSupply: fetchedContractData.cw20token_info_by_pk?.max_supply || undefined,
                     circulatingSupply: fetchedContractData.cw20token_info_by_pk?.circulating_supply,
                     logoUrl: JSON.parse(fetchedContractData.cw20token_info_by_pk?.logo!).url
                 }
@@ -203,7 +203,7 @@ const ContractDetails = () => {
                                 <SubTitle text={TEXT.TotalSupply} />
                                 {selectedAsset?.tokenType === TOKEN_TYPE.Unlimited ? 'Not Limited' :
                                     displayTokenValueWithPrecisionTooltip(
-                                        selectedAsset?.initialSupply!,
+                                        selectedAsset?.totalSupply!,
                                         selectedAsset?.decimalPrecision!,
                                         2,
                                         400
