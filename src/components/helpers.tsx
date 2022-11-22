@@ -27,7 +27,12 @@ export const ImgComponent = ({
 }): JSX.Element => {
 
     return (
-        <Box sx={styles.imgHolder}>
+        <Box sx={{
+            ...styles.imgHolder,
+            minWidth: `${size}px`,
+            minHeight: `${size}px`
+        }}
+        >
             {src ?
                 <img
                     height={size}
