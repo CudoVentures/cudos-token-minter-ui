@@ -22,6 +22,10 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
 
         //TokenName
         if (fieldObject.name === TEXT.TokenName) {
+            if (event.target.value.trim().length > 50) {
+                event!.preventDefault()
+                return
+            }
             setValue({
                 ...fieldObject.oldState,
                 name: event.target.value
@@ -120,7 +124,7 @@ export const FieldHandler = ({ fieldObject, setValue, }: {
                     onKeyDown={preventForbiddenKeys}
                     onPaste={e => isImgUrlInput ? null : e.preventDefault()}
                     onChange={handleFieldChange}
-                    value={fieldObject.value ? fieldObject.value : ''}
+                    value={fieldObject.value || fieldObject.value === 0 ? fieldObject.value : ''}
                 />
             </Box>
         </Box>

@@ -14,6 +14,8 @@ import { LEDGERS, MODAL_MSGS } from 'utils/constants'
 import { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { connectUser } from 'utils/config'
+import { ThreeDots as ThreeDotsLoading } from 'svg-loaders-react'
+import { delay } from 'utils/helpers'
 
 const WalletSelector = () => {
 
@@ -26,6 +28,7 @@ const WalletSelector = () => {
 
     try {
       setLoading(new Map(loading.set(ledgerType, true)))
+      await delay(1000)
       dispatch(updateModalState({
         selectWallet: false,
         loading: true,
@@ -52,6 +55,14 @@ const WalletSelector = () => {
     dispatch(updateModalState({ ...initialModalState }))
   }
 
+  const LoadingButtonComponent = (): JSX.Element => {
+    return (
+      <ThreeDotsLoading
+        style={{ width: '30px', height: '30px' }}
+      />
+    )
+  }
+
   return (
     <MuiDialog
       BackdropProps={defaultStyles.defaultBackDrop}
@@ -75,6 +86,7 @@ const WalletSelector = () => {
           </Typography>
           <Box gap={3} style={styles.btnsHolder}>
             <LoadingButton
+              loadingIndicator={<LoadingButtonComponent />}
               disabled={!window.keplr || loading.get(LEDGERS.COSMOSTATION)}
               loading={loading.get(LEDGERS.KEPLR)}
               variant="contained"
@@ -91,6 +103,7 @@ const WalletSelector = () => {
               {`Connect ${LEDGERS.KEPLR.toUpperCase()}`}
             </LoadingButton>
             <LoadingButton
+              loadingIndicator={<LoadingButtonComponent />}
               disabled={!window.cosmostation || loading.get(LEDGERS.KEPLR)}
               loading={loading.get(LEDGERS.COSMOSTATION)}
               variant="contained"

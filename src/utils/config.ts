@@ -4,8 +4,8 @@ import { getOfflineSigner as cosmostationSigner } from "@cosmostation/cosmos-cli
 import { connectKeplrLedger } from "ledgers/KeplrLedger"
 import { userState } from "store/user"
 import { CHAIN_DETAILS, LEDGERS } from "./constants"
-import { CW20Token } from "@cosmostation/extension-client/types/message"
-import { cosmos } from "@cosmostation/extension-client"
+// import { CW20Token } from "@cosmostation/extension-client/types/message"
+// import { cosmos } from "@cosmostation/extension-client"
 import { CW20 } from "types/CW20"
 
 import {
@@ -43,16 +43,16 @@ export const addTokenByLedgerType = async (addToWalletObject: CW20.AddToWalletOb
     return
 
     //The following is not working. Currently in touch with Cosmostation for further information.
-    if (addToWalletObject.connectedLedger === LEDGERS.COSMOSTATION) {
+    // if (addToWalletObject.connectedLedger === LEDGERS.COSMOSTATION) {
 
-        const tokenToAdd: CW20Token[] = [{
-            contractAddress: addToWalletObject.contractAddress,
-            imageURL: addToWalletObject.tokenobject.logoUrl
-        }]
+    //     const tokenToAdd: CW20Token[] = [{
+    //         contractAddress: addToWalletObject.contractAddress,
+    //         imageURL: addToWalletObject.tokenobject.logoUrl
+    //     }]
 
-        const provider = await cosmos()
-        await provider.addCW20Tokens(addToWalletObject.chainName, tokenToAdd)
-    }
+    //     const provider = await cosmos()
+    //     await provider.addCW20Tokens(addToWalletObject.chainName, tokenToAdd)
+    // }
 }
 
 export const getSigningCosmWasmClient = async (ledgerType: string, chosenNetwork: string): Promise<SigningCosmWasmClient> => {

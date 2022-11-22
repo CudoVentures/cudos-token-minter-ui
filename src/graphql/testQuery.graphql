@@ -1,5 +1,0 @@
-subscription testGraphql {
-  staking_pool {
-    height
-  }
-}

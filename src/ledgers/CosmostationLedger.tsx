@@ -32,7 +32,7 @@ export const connectCosmostationLedger = async (chosenNetwork: string): Promise<
       await provider.addChain(chainToAdd)
     }
 
-    // Although the method asks for CHAIN_NAME, it should receive CHAIN_ID as parameter if getActivatedChainIds is used above!
+    // Although the method suggests CHAIN_NAME as parameter only, it can work with CHAIN_ID too!
     const acccount = await provider.requestAccount(CHAIN_DETAILS.CHAIN_ID[chosenNetwork])
     userAccountAddress = acccount.address
     userAccountName = acccount.name

@@ -5,6 +5,11 @@ import { useSelector } from "react-redux"
 import { RootState } from "store"
 import { CW20 } from "types/CW20"
 
+interface BasicMsg {
+    msg: Omit<ContractMsgInstantiate, 'token_type'>,
+    extendedWith: (chosenType: Record<string, unknown>) => void
+}
+
 const useGenerateInstantiateMsg = () => {
 
     const { address } = useSelector((state: RootState) => state.userState)
@@ -12,46 +17,57 @@ const useGenerateInstantiateMsg = () => {
     const generateInstantiateMsg = useCallback((
         tokenType: TOKEN_TYPE,
         tokenObject: CW20.TokenObject
-    ): ContractMsgInstantiate => {
+    ): ContractMsgInstantiate | void => {
 
-        // default msg complying with Standard and Burnable types
-        let msg: ContractMsgInstantiate = {
-            name: tokenObject.name!,
-            symbol: tokenObject.symbol!,
-            decimals: tokenObject.decimalPrecision!,
-            initial_balances: [{
-                address: address!,
-                amount: tokenObject.initialSupply!
-            }],
-            marketing: {
-                logo: {
-                    url: tokenObject.logoUrl!
+        const basicMsg: BasicMsg = {
+            msg: {
+                name: tokenObject.name!,
+                symbol: tokenObject.symbol!,
+                decimals: tokenObject.decimalPrecision!,
+                initial_balances: [{
+                    address: address!,
+                    amount: tokenObject.initialSupply!
+                }],
+                marketing: {
+                    logo: {
+                        url: tokenObject.logoUrl!
+                    }
+                },
+            },
+            extendedWith(chosenType: Record<string, unknown>) {
+                return {
+                    ...this.msg,
+                    token_type: chosenType
                 }
             }
         }
 
-        // Amend msg if Mintable type
+        if (tokenType === TOKEN_TYPE.Standard) {
+            return basicMsg.extendedWith({ standard: {} })
+        }
+
+        if (tokenType === TOKEN_TYPE.Burnable) {
+            return basicMsg.extendedWith({ burnable: {} })
+        }
+
         if (tokenType === TOKEN_TYPE.Mintable) {
-            return {
-                ...msg,
-                mint: {
+            return basicMsg.extendedWith({
+                mintable: {
                     minter: address!,
                     cap: tokenObject.totalSupply!
                 }
-            }
+            })
         }
 
-        // Amend msg if Unlimited type
         if (tokenType === TOKEN_TYPE.Unlimited) {
-            return {
-                ...msg,
-                mint: {
+            return basicMsg.extendedWith({
+                unlimited: {
                     minter: address!
                 }
-            }
+            })
         }
 
-        return msg
+        return undefined
 
         //eslint-disable-next-line
     }, [])

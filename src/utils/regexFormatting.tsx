@@ -1,6 +1,7 @@
 // Makes token amounts human readable (by adding decimals) while keeps precision
 // For instance: if we have 990099.000364464662179907 denoms on the chain =>
 
+import BigNumber from "bignumber.js";
 import { Coin } from "cudosjs";
 import { checkForAdminToken } from "./helpers";
 
@@ -41,14 +42,28 @@ export const setDecimalPrecisionTo = (amount: string, precision: number): string
     return "0"
 }
 
-// TODO: handleFullBalanceToPrecision, handleBalanceToFullBalance and dependant functions 
-// should be revised to be able to handle CW20 tokens with custom decimal precisions
-export const handleFullBalanceToPrecision = (balance: Coin, precision: number): string => {
-    const isAdmin = checkForAdminToken([balance])
-    const tempDenom = balance.denom?.toLowerCase() === 'acudos' ? 'CUDOS' : balance.denom
-    const tempAmount = isAdmin ? balance.amount : separateDecimals(separateFractions(balance.amount))
-    const formatedAmount = isAdmin ? tempAmount : setDecimalPrecisionTo(tempAmount, precision)
-    return tempDenom ? `${formatedAmount} ${tempDenom.toUpperCase()}` : formatedAmount
+export const convertPreciseTokenBalanceToFull = (
+    balance: string,
+    tokenPrecision: number): string => {
+
+    const tempResult = new BigNumber(balance)
+        .multipliedBy(1 * 10 ** tokenPrecision)
+
+    return tempResult.toString(10)
+}
+
+export const convertFullTokenBalanceToPrecision = (
+    balance: string,
+    tokenPrecision: number,
+    displayPrecision: number | 'fullWide'
+): string => {
+
+    const tempResult = new BigNumber(balance)
+        .dividedBy(1 * 10 ** tokenPrecision)
+
+    return displayPrecision === 'fullWide' ?
+        tempResult.toString(10) :
+        tempResult.toFixed(displayPrecision)
 }
 
 export const handleBalanceToFullBalance = (balance: Coin): string => {

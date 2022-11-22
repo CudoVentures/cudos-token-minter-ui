@@ -7,4 +7,9 @@ export const styles = {
         transition: 'opacity .3s ease-in-out',
         opacity: '1'
     },
+    innerComponentHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100px'
+    }
 } as const

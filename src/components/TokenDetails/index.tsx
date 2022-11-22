@@ -61,7 +61,7 @@ const TokenDetails = ({
         {
             //DecimalPrecision
             name: TEXT.DecimalPrecision,
-            value: localObject.decimalPrecision || 0,
+            value: localObject.decimalPrecision!,
             placeholder: PLACEHOLDERS.DecimalPrecision,
             tooltip: TOOLTIPS.DecimalPrecision,
             inputType: TEXT.Number,
@@ -81,7 +81,7 @@ const TokenDetails = ({
         {
             //TotalSupply
             name: TEXT.TotalSupply,
-            value: tokenType === TOKEN_TYPE.Standard ?
+            value: tokenType === TOKEN_TYPE.Standard || tokenType === TOKEN_TYPE.Burnable ?
                 localObject.initialSupply! :
                 localObject.totalSupply || '',
             placeholder: PLACEHOLDERS.TotalSupply,

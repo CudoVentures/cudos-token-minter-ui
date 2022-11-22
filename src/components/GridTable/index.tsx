@@ -3,31 +3,29 @@ import Card from 'components/Card/Card'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import { RootState } from 'store'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getTokenTypeWithlogo } from 'components/AssetsNavBar/components/ViewTokenTypeFilter'
 import { CW20 } from 'types/CW20'
 import { COLORS_DARK_THEME } from 'theme/colors'
-import { AdvancedTooltip, TitleWithTooltip, TruncatedTextWithTooltip } from 'components/helpers'
+import { ImgComponent, TruncatedTextWithTooltip } from 'components/helpers'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import NoAssetsView from 'components/NoAssetsView'
 import { TOKEN_TYPE } from 'components/TokenDetails/helpers'
-import { updateAssets } from 'store/assets'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
 import { NAVIGATION_PATH } from 'utils/constants'
+import { displayTokenValueWithPrecisionTooltip } from 'containers/ContractDetails/components/helpers'
 
-const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
+const GridTable = ({ displayData }: { displayData: any[] }) => {
 
-    const dispatch = useDispatch()
     const navigateToRoute = useNavigateToRoute()
     const [page, setPage] = useState<number>(0)
     const contentHolder = useRef<HTMLDivElement>(null)
     const maxItemPerRow: number = 4
     const maxItemPerColumn: number = 5
-    const maximumTokenNameLength: number = 10
-    const maximumTokenSymbolLength: number = 3
+    const maximumTokenNameLength: number = 15
+    const maximumTokenSymbolLength: number = 5
     const maxItemsPerPage: number = maxItemPerRow * maxItemPerColumn
-    const dataLength: number = displayData.length
 
     const {
         address,
@@ -53,8 +51,9 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
         .slice(page * maxItemsPerPage, page * maxItemsPerPage + maxItemsPerPage)
         .filter(filterBySearchTerms)
 
+    const dataLength: number = filteredData.length
+
     const handleClick = (token: CW20.TokenObject) => {
-        dispatch(updateAssets({ selectedAsset: token }))
         const subPath = `/${token.contractAddress}`
         navigateToRoute(NAVIGATION_PATH.Assets + subPath)
     }
@@ -68,10 +67,10 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
                 onClick={connectedUser ? () => handleClick(token) : undefined}
                 sx={connectedUser ? styles.connectedUserCard : styles.tokenCard}
             >
-                <img
-                    style={styles.img}
-                    src={token.logoUrl}
-                    alt="Token Logo"
+                <ImgComponent
+                    UID={token.contractAddress!}
+                    size={80}
+                    src={token.logoUrl!}
                 />
                 <Box gap={2} style={styles.typeHolder}>
                     <Box gap={1} style={styles.nameSymbolHolder}>
@@ -95,19 +94,15 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
                     <Typography variant='subtitle2' color='text.secondary'>
                         Max Supply:
                     </Typography>
-                    <AdvancedTooltip
-                        tooltipComponent={
-                            <TitleWithTooltip
-                                text={Number(token.totalSupply!).toLocaleString()}
-                                tooltipText={''}
-                                variant={'subtitle2'}
-                                precision={token.decimalPrecision!}
-                            />}
-                        children={
-                            <Typography>
-                                {Number(token.totalSupply!).toLocaleString()}
-                            </Typography>}
-                    />
+                    {
+                        token.tokenType === TOKEN_TYPE.Unlimited ? 'No Limit' :
+                            displayTokenValueWithPrecisionTooltip(
+                                token?.totalSupply!,
+                                token?.decimalPrecision!,
+                                2,
+                                400
+                            )
+                    }
                 </Box>
 
             </Card >
@@ -143,9 +138,10 @@ const GridTable = ({ displayData }: { displayData: CW20.TokenObject[] }) => {
                 style={styles.gridHolder}
                 spacing={{ xs: 2 }}
                 columns={{
-                    lg: dataLength < maxItemPerRow ? dataLength : 4,
-                    md: 3,
-                    sm: 2
+                    lg: dataLength < maxItemPerRow ? dataLength : maxItemPerRow,
+                    md: dataLength < 3 ? dataLength : 3,
+                    sm: 2,
+                    xs: 2
                 }}
             >
                 {filteredData.map((TOKEN, idx) => {

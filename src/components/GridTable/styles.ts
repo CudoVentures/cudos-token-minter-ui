@@ -62,10 +62,5 @@ export const styles = {
         width: '100%',
         display: 'flex',
         justifyContent: 'center'
-    },
-    img: {
-        width: '95px',
-        height: '95px',
-        borderRadius: '50%'
     }
 } as const

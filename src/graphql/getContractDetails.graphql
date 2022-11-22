@@ -1,0 +1,7 @@
+subscription getContractDetails($token: String = "") {
+  cw20token_info_by_pk(address: $token) {
+    circulating_supply
+    max_supply
+    logo
+  }
+}

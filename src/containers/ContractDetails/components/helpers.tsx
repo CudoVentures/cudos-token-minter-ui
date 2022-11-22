@@ -1,7 +1,8 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material"
-import { SubTitle } from "components/Dialog/ModalComponents/helpers"
-import { AdvancedTooltip, TitleWithTooltip } from "components/helpers"
-import { TEXT, TOOLTIPS, TOKEN_ACTION } from "components/TokenDetails/helpers"
+import BigNumber from "bignumber.js"
+import { AdvancedTooltip, TitleWithTooltip, TruncatedTextWithTooltip } from "components/helpers"
+import { TEXT, TOOLTIPS, TOKEN_ACTION, DEFAULT_TOTAL_SUPPLY_VALUE } from "components/TokenDetails/helpers"
+import { convertFullTokenBalanceToPrecision, convertPreciseTokenBalanceToFull } from "utils/regexFormatting"
 import { isValidCudosAddress } from "utils/validation"
 import TokenInteractionCard from "./TokenInteractionCard"
 
@@ -105,7 +106,8 @@ export const validInput = (
     type: TOKEN_ACTION,
     value: string,
     recipient: string,
-    senderTokenBalance: number
+    senderTokenBalance: string,
+    precision: number
 ): [boolean, string] => {
 
     const amount = parseFloat(value)
@@ -118,32 +120,82 @@ export const validInput = (
         return [false, TEXT.InvalidAddress]
     }
 
-    if (type === TOKEN_ACTION.Transfer && amount > senderTokenBalance) {
-        return [false, TEXT.InsufficientBalance]
+    if (type === TOKEN_ACTION.Transfer || type === TOKEN_ACTION.Burn) {
+
+        const amountToUse = new BigNumber(convertPreciseTokenBalanceToFull(amount.toString(), precision))
+        const balanceValue = new BigNumber(senderTokenBalance.toString())
+
+        if (amountToUse.isGreaterThan(balanceValue)) {
+            return [false, TEXT.InsufficientBalance]
+        }
     }
 
     return [true, '']
 }
 
-export const displayTooltipedValue = (value: string, weight?: number, precision?: number): JSX.Element => {
+export const displayTokenValueWithPrecisionTooltip = (
+    tokenFullBalance: string,
+    tokenPrecision: number,
+    displayPrecision: number,
+    weight: number
+) => {
+
+    if (tokenPrecision === 0) {
+        return (
+            <Box gap={0.01} style={{ alignItems: 'center', display: 'flex' }}>
+                <Typography display='flex'>
+                    <TruncatedTextWithTooltip
+                        text={Number(tokenFullBalance).toLocaleString()}
+                        maxAllowed={DEFAULT_TOTAL_SUPPLY_VALUE.length}
+                        variant={'subtitle1'}
+                        weight={weight}
+                    />
+                </Typography>
+            </Box>
+        )
+    }
+
+    const preciseValue = convertFullTokenBalanceToPrecision(tokenFullBalance || '0', tokenPrecision, displayPrecision)
+    const shortValue = tokenFullBalance?.toString().slice(0, -tokenPrecision) || '0'
+    let trailValue = tokenFullBalance?.toString().slice(-tokenPrecision) || '0'
+
+    if (trailValue.length < tokenPrecision) {
+        const zero = "0";
+        const zeroTimes = tokenPrecision - trailValue.length;
+        trailValue = zero.repeat(zeroTimes) + trailValue;
+    }
 
     return (
         <AdvancedTooltip
             tooltipComponent={
-                <TitleWithTooltip
-                    text={Number(value).toLocaleString()}
-                    tooltipText={''}
-                    variant={'subtitle2'}
-                    precision={precision}
-                />}
+                <Box style={{ display: 'flex' }}>
+                    <Typography
+                        color={'black'}
+                        variant={"subtitle2"}
+                        fontWeight={700}
+                    >
+                        {Number(shortValue).toLocaleString()}.
+                    </Typography>
+                    <Typography
+                        variant={"subtitle2"}
+                        color={'text.secondary'}
+                        fontWeight={700}
+                    >
+                        {trailValue}
+                    </Typography>
+                </Box>
+            }
             children={
-                <Typography>
-                    <SubTitle
-                        text={Number(value).toLocaleString()}
-                        color={'text.primary'}
-                        weight={weight}
-                    />
-                </Typography>
+                <Box gap={0.01} style={{ alignItems: 'center', display: 'flex' }}>
+                    <Typography display='flex'>
+                        <TruncatedTextWithTooltip
+                            text={Number(preciseValue).toLocaleString()}
+                            maxAllowed={DEFAULT_TOTAL_SUPPLY_VALUE.length}
+                            variant={'subtitle1'}
+                            weight={weight}
+                        />
+                    </Typography>
+                </Box>
             }
         />
     )

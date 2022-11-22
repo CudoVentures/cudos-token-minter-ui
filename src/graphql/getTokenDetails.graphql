@@ -1,0 +1,15 @@
+query getTokenDetails($codeIds: [Int!], $address: String) {
+  cw20token_info(where: {code_id: {_in: $codeIds}, _and: {address: {_eq: $address}}}) {
+    address
+    logo
+    name
+    symbol
+    creator
+    type
+    max_supply
+    code_id
+    decimals
+    circulating_supply
+    initial_supply
+  }
+}

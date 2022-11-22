@@ -1501,6 +1501,11 @@
   resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.1.11.tgz#d6b447cfd9cf7613ec485b57327819b14735cf13"
   integrity sha512-CkmNPmYn07UhP0z3PxGRRpgTcBJ/gS1ay/J2jfYsBi/4gnXvpQ3xOZdMU0qdxhFOjh1Xt7kflYsztk9ljMnJcw==
 
+"@cosmostation/extension-client@^0.1.9":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.1.12.tgz#21430b64c2b62fe795c6c28c794a1af98da0c0c1"
+  integrity sha512-lAZk7a94wsFrdVo98ko3f3r++X8X+xzuv5NR3yq4ioZXV0aTOuMtg7KszP73qrXgiTXbz5hClLAYWc6G3Vyfuw==
+
 "@cosmostation/wc-modal@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@cosmostation/wc-modal/-/wc-modal-0.0.4.tgz#61442b0c51201dda9ee90cfcb3002848eadc7ba2"
@@ -3400,6 +3405,13 @@ caniuse-lite@^1.0.30001400:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001407.tgz#92281a6ee67cb90bfd8a6a1201fcc2dc19b60a15"
   integrity sha512-4ydV+t4P7X3zH83fQWNDX/mQEzYomossfpViCOx9zHBSMV+rIe3LFqglHHtVyvNl1FhTNxPxs3jei82iqOW04w==
 
+canvas-renderer@~2.2.0:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/canvas-renderer/-/canvas-renderer-2.2.1.tgz#c1d131f78a9799aca8af9679ad0a005052b65550"
+  integrity sha512-RrBgVL5qCEDIXpJ6NrzyRNoTnXxYarqm/cS/W6ERhUJts5UQtt/XPEosGN3rqUkZ4fjBArlnCbsISJ+KCFnIAg==
+  dependencies:
+    "@types/node" "*"
+
 capital-case@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/capital-case/-/capital-case-1.0.4.tgz#9d130292353c9249f6b00fa5852bee38a717e669"
@@ -3727,16 +3739,18 @@ csstype@^3.0.2, csstype@^3.1.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
-cudosjs@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.1.2.tgz#5b44b87998dceea222e743d02a158b206f14df9c"
-  integrity sha512-e5zkEnsdO1bMzqjrvVPVDiEt5jJugQqhiEkjHg3U7gqtYaeScKOcduAujFJ3fsLHT0ln9502zR5yIoBMBp8BWw==
+cudosjs@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.2.2.tgz#afec4fa18970d5fff85bc09589c5fd99cb5720f9"
+  integrity sha512-Tq5q/7gawdyi1LtWStBC8ILa9dIkjRvjJep8VgSTgLinrhH2R9VNBR902DNbmHSmpo496Obklcmeptmg+wpS0A==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.28.4"
     "@cosmjs/crypto" "^0.28.4"
     "@cosmjs/proto-signing" "^0.28.4"
     "@cosmjs/stargate" "^0.28.4"
     "@cosmjs/tendermint-rpc" "^0.28.4"
+    "@cosmostation/cosmos-client" "^0.0.4"
+    "@cosmostation/extension-client" "^0.1.9"
     bignumber.js "^9.0.2"
     yarn "^1.22.19"
 
@@ -4369,6 +4383,11 @@ event-target-shim@^5.0.0:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
+
+exenv@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+  integrity sha512-Z+ktTxTwv9ILfgKCk32OX3n/doe+OcLTRtqK9pcL+JsP3J1/VW8Uvl4ZjLlKqeW4rzK4oesDOGMEMRIZqtP4Iw==
 
 external-editor@^3.0.3:
   version "3.1.0"
@@ -5126,6 +5145,13 @@ isomorphic-ws@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-5.0.0.tgz#e5529148912ecb9b451b46ed44d53dae1ce04bbf"
   integrity sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==
+
+jdenticon@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/jdenticon/-/jdenticon-3.2.0.tgz#b5b9ef413cb66f70c600d6e69a764c977f248a46"
+  integrity sha512-z6Iq3fTODUMSOiR2nNYrqigS6Y0GvdXfyQWrUby7htDHvX7GNEwaWR4hcaL+FmhEgBe08Xkup/BKxXQhDJByPA==
+  dependencies:
+    canvas-renderer "~2.2.0"
 
 js-crypto-env@^0.3.2:
   version "0.3.2"
@@ -6072,10 +6098,23 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-from-dom@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.6.2.tgz#9da903a508c91c013b55afcd59348b8b0a39bdb4"
+  integrity sha512-qvWWTL/4xw4k/Dywd41RBpLQUSq97csuv15qrxN+izNeLYlD9wn5W8LspbfYe5CWbaSdkZ72BsaYBPQf2x4VbQ==
+
 react-image-size@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-image-size/-/react-image-size-1.0.5.tgz#0b29897b84f3953d7ee5beb3f358d8ea111bb25a"
   integrity sha512-Tnf4MjqIlilHsNkaeKJKno9hbQR0axWeFAFFNiOPZp+ReXCtaOuuvfBeJ/VXn5LCwG2dV/Rd6e8abgtA1ay2nw==
+
+react-inlinesvg@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-3.0.1.tgz#2133f5d2c770ac405060db2ce1c13eed30e7e83b"
+  integrity sha512-cBfoyfseNI2PkDA7ZKIlDoHq0eMfpoC3DhKBQNC+/X1M4ZQB+aXW+YiNPUDDDKXUsGDUIZWWiZWNFeauDIVdoA==
+  dependencies:
+    exenv "^1.2.2"
+    react-from-dom "^0.6.2"
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
@@ -6733,6 +6772,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+svg-loaders-react@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/svg-loaders-react/-/svg-loaders-react-2.2.1.tgz#d546cea2a895144cfd652e1bd846166d8a07d2ed"
+  integrity sha512-ATfg5pAMOla2GqPcwGRDrNTLlTQzl2fMvfW290j20qH7qpB61C3SQAnu+T9t8Z+V4IKKN2Bm1d/SaCv5IR1DDA==
 
 svg-parser@^2.0.4:
   version "2.0.4"

@@ -11,8 +11,19 @@ import { ReactComponent as FacebookIcon } from 'assets/vectors/facebook.svg'
 import { ReactComponent as SpotifyIcon } from 'assets/vectors/spotify.svg'
 import { ReactComponent as PlusIcon } from 'assets/vectors/plus-icon.svg'
 import { ReactComponent as AllTypesTokenIcon } from 'assets/vectors/tokenTypeIcons/all-types-icon.svg'
+import { JdenticonConfig } from "jdenticon"
 
 // CONFIGURATIONS
+
+export const PREAPPROVED_CODE_IDS = {
+    NETWORK: {
+        LOCAL: [25].sort(),
+        PRIVATE: [18].sort(),
+        PUBLIC: [].sort(),
+        MAINNET: [].sort(),
+    }
+}
+
 export const CHAIN_DETAILS = {
     DEFAULT_MEMO: 'Created with CUDOS Token Minter',
     ADMIN_TOKEN_DENOM: 'cudosAdmin',
@@ -22,15 +33,15 @@ export const CHAIN_DETAILS = {
     GAS_PRICE: import.meta.env.VITE_APP_GAS_PRICE || process.env.VITE_APP_GAS_PRICE || "",
     GRAPHQL_URL: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_GRAPHQL_URL || process.env.VITE_APP_LOCAL_GRAPHQL_URL || "",
-        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_URL  || process.env.VITE_APP_PRIVATE_GRAPHQL_URL  || "",
-        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_URL  || process.env.VITE_APP_PUBLIC_GRAPHQL_URL  || "",
-        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_URL  || process.env.VITE_APP_MAINNET_GRAPHQL_URL  || ""
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_URL || process.env.VITE_APP_PRIVATE_GRAPHQL_URL || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_URL || process.env.VITE_APP_PUBLIC_GRAPHQL_URL || "",
+        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_URL || process.env.VITE_APP_MAINNET_GRAPHQL_URL || ""
     },
     GRAPHQL_WS: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_GRAPHQL_WS || process.env.VITE_APP_LOCAL_GRAPHQL_WS || "",
-        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_WS  || process.env.VITE_APP_PRIVATE_GRAPHQL_WS  || "",
-        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_WS  || process.env.VITE_APP_PUBLIC_GRAPHQL_WS  || "",
-        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_WS || process.env.VITE_APP_MAINNET_GRAPHQL_WS  || ""
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_WS || process.env.VITE_APP_PRIVATE_GRAPHQL_WS || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_WS || process.env.VITE_APP_PUBLIC_GRAPHQL_WS || "",
+        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_WS || process.env.VITE_APP_MAINNET_GRAPHQL_WS || ""
     },
     RPC_ADDRESS: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_RPC || process.env.VITE_APP_LOCAL_RPC || "",
@@ -103,6 +114,20 @@ export const LEDGERS = {
 }
 
 //APP CONFIG
+
+export const JD_CONFIG: JdenticonConfig = {
+    hues: [204],
+    lightness: {
+        color: [0.28, 0.59],
+        grayscale: [0.26, 0.90]
+    },
+    saturation: {
+        color: 1.00,
+        grayscale: 0.42
+    },
+    backColor: "#0000"
+}
+
 export const RESOLUTIONS = {
     MAX_IMG: {
         height: 512,

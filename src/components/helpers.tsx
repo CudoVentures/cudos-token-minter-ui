@@ -11,6 +11,42 @@ import { RootState } from "store"
 import { ReactComponent as TooltipIcon } from 'assets/vectors/tooltip.svg'
 import { Variant } from "@mui/material/styles/createTypography"
 import styled from "@emotion/styled"
+import SVG from 'react-inlinesvg'
+import { toSvg } from "jdenticon"
+import { JD_CONFIG } from "utils/constants"
+import { TEXT } from "./TokenDetails/helpers"
+
+export const ImgComponent = ({
+    UID,
+    size,
+    src
+}: {
+    UID: string,
+    size: number,
+    src: string
+}): JSX.Element => {
+
+    return (
+        <Box sx={{
+            ...styles.imgHolder,
+            minWidth: `${size}px`,
+            minHeight: `${size}px`
+        }}
+        >
+            {src ?
+                <img
+                    height={size}
+                    src={src}
+                    alt={TEXT.TokenLogo}
+                />
+                :
+                <SVG
+                    title={TEXT.TokenLogo}
+                    src={toSvg(UID || TEXT.DefaultLogo, size, JD_CONFIG)}
+                />}
+        </Box>
+    )
+}
 
 export const AddressWithCopyAndFollowComponent = ({ address }: { address: string }): JSX.Element => {
     return (
@@ -96,9 +132,20 @@ export const TitleWithTooltip = ({ text, tooltipText, precision, variant, color,
             }
             {
                 tooltipText ?
-                    <Tooltip placement={'right'} followCursor={true} arrow={true} title={tooltipText}>
-                        <Box marginTop={0} marginLeft={precision ? '5px' : '0px'}> <TooltipIcon /></Box>
-                    </Tooltip> : null
+                    <AdvancedTooltip tooltipComponent={
+                        <Box style={{ maxWidth: '500px' }}>
+                            <Typography
+                                textAlign={'justify'}
+                                color={'black'}
+                                variant={"subtitle2"}
+                                fontWeight={700}
+                            >
+                                {tooltipText}
+                            </Typography>
+                        </Box>
+                    } children={
+                        <Box sx={{ cursor: 'pointer' }} marginTop={0} marginLeft={precision ? '5px' : '0px'}> <TooltipIcon /></Box>
+                    } /> : null
             }
         </Box>
     )
@@ -151,6 +198,13 @@ export const TruncatedTextWithTooltip = ({ text, maxAllowed, variant, weight, sy
 export const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+        color: 'white',
+        "&::before": {
+            backgroundColor: 'white',
+            border: "1px solid #999"
+        }
+    },
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: '#F6F6F6',
         color: 'black',
@@ -164,10 +218,14 @@ export const AdvancedTooltip = ({ tooltipComponent, children }: {
 }) => {
 
     return (
-        <HtmlTooltip title={
-            <Fragment>
-                {tooltipComponent}
-            </Fragment>}
+        <HtmlTooltip
+            placement="right"
+            followCursor={true}
+            arrow={true}
+            title={
+                <Fragment>
+                    {tooltipComponent}
+                </Fragment>}
         >
             {children}
         </HtmlTooltip>

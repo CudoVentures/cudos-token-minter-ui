@@ -1,9 +1,11 @@
-import { CircularProgress, Typography, Dialog as MuiDialog } from '@mui/material'
+import { Typography, Dialog as MuiDialog } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { updateModalState } from 'store/modals'
 import { ModalContainer, styles } from './styles'
 import { initialState as initialModalState } from 'store/modals'
+import { Circles as CirclesSpinner } from 'svg-loaders-react'
+import { COLORS_DARK_THEME } from 'theme/colors'
 
 const Loading = () => {
 
@@ -32,13 +34,15 @@ const Loading = () => {
       open={loading!}
       onClose={closeModal}
       PaperProps={loadingType ? styles.loadingProps : styles.defaultPaperProps}
-      style={{ top: '25%' }}
     >
       <ModalContainer sx={{
         backgroundColor: loadingType ? 'transparent' : "default",
         ...styles.loadingModalContainer
       }}>
-        <CircularProgress thickness={5} sx={{ borderRadius: '20px' }} />
+        <CirclesSpinner
+          style={{ width: '80px', height: '80px' }}
+          fill={COLORS_DARK_THEME.PRIMARY_BLUE}
+        />
         <Typography
           style={{ margin: '20px 0 20px 0' }}
           variant="h4"
