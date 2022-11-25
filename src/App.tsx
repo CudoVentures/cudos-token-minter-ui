@@ -38,7 +38,8 @@ const App = () => {
     try {
       dispatch(updateModalState({
         loading: true,
-        loadingType: true
+        loadingType: true,
+        changingNetwork: true,
       }))
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
@@ -50,9 +51,11 @@ const App = () => {
     } finally {
       dispatch(updateModalState({
         loading: false,
-        loadingType: false
+        loadingType: false,
+        changingNetwork: false,
       }))
     }
+
     //eslint-disable-next-line
   }, []);
 

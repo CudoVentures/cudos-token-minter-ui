@@ -11,7 +11,7 @@ import { updateModalState } from 'store/modals'
 import { useCallback } from 'react'
 import { useLowResCheck, useMidlowResCheck } from 'utils/CustomHooks/screenChecks'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
-import { NAVIGATION_PATH } from 'utils/constants'
+import { CHAIN_DETAILS, NAVIGATION_PATH } from 'utils/constants'
 import AssetsNavBar, { DetailedViewNav } from 'components/AssetsNavBar'
 import { useLocation, matchPath } from 'react-router-dom'
 
@@ -22,13 +22,23 @@ const Header = () => {
   const navigateToRoute = useNavigateToRoute()
   const isLowRes = useLowResCheck()
   const isMidLowRes = useMidlowResCheck()
-  const { address, accountName, connectedLedger } = useSelector((state: RootState) => state.userState)
   const isDetailedViewPath = matchPath(`${NAVIGATION_PATH.Assets}/*`, location.pathname)
+  const { changingNetwork } = useSelector((state: RootState) => state.modalState)
+  const {
+    address,
+    accountName,
+    connectedLedger,
+    chosenNetwork
+  } = useSelector((state: RootState) => state.userState)
 
   const handleLogIn = () => {
     dispatch(updateModalState({
       selectWallet: true
     }))
+  }
+
+  const isMainnetInstance = (): boolean => {
+    return CHAIN_DETAILS.CHAIN_ID[chosenNetwork!] === CHAIN_DETAILS.CHAIN_ID.MAINNET
   }
 
   const isUserLoggedIn = (): boolean => {
@@ -77,6 +87,17 @@ const Header = () => {
           <img src={LogoHeader} alt="logo" />
           <Typography fontWeight={900} marginLeft={1} variant="h6" color="text.primary">
             | Token Minter
+            {isUserLoggedIn() && !isMainnetInstance() && !changingNetwork ?
+              <Typography
+                marginLeft={1}
+                color='#E89518'
+                fontWeight={300}
+                component="span"
+                fontSize={18}
+              >
+                Testnet
+              </Typography> :
+              null}
           </Typography>
         </Box>
         <Box
@@ -95,7 +116,7 @@ const Header = () => {
       </Box>
       {
         location.pathname === NAVIGATION_PATH.Assets ? <AssetsNavBar /> :
-        isDetailedViewPath ? <DetailedViewNav /> : null
+          isDetailedViewPath ? <DetailedViewNav /> : null
       }
     </Box>
   )
