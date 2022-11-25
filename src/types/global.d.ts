@@ -8,7 +8,7 @@ declare global {
 
     interface Window extends KeplrWindow {
         cosmostation: any
-      }
+    }
 
     interface networkToDisplay {
         ALIAS_NAME: string;
@@ -25,24 +25,32 @@ declare global {
     }
 
     interface ImportMetaEnv {
+        VITE_APP_LOCAL_GRAPHQL_URL: string
+        VITE_APP_LOCAL_GRAPHQL_WS: string
         VITE_APP_LOCAL_RPC: string
         VITE_APP_LOCAL_API: string
         VITE_APP_LOCAL_EXPLORER_URL: string
         VITE_APP_LOCAL_STAKING_URL: string
         VITE_APP_LOCAL_CHAIN_NAME: string
         VITE_APP_LOCAL_CHAIN_ID: string
+        VITE_APP_PRIVATE_GRAPHQL_URL: string
+        VITE_APP_PRIVATE_GRAPHQL_WS: string
         VITE_APP_PRIVATE_RPC: string
         VITE_APP_PRIVATE_API: string
         VITE_APP_PRIVATE_EXPLORER_URL: string
         VITE_APP_PRIVATE_STAKING_URL: string
         VITE_APP_PRIVATE_CHAIN_NAME: string
         VITE_APP_PRIVATE_CHAIN_ID: string
+        VITE_APP_PUBLIC_GRAPHQL_URL: string
+        VITE_APP_PUBLIC_GRAPHQL_WS: string
         VITE_APP_PUBLIC_RPC: string
         VITE_APP_PUBLIC_API: string
         VITE_APP_PUBLIC_EXPLORER_URL: string
         VITE_APP_PUBLIC_STAKING_URL: string
         VITE_APP_PUBLIC_CHAIN_NAME: string
         VITE_APP_PUBLIC_CHAIN_ID: string
+        VITE_APP_MAINNET_GRAPHQL_URL: string
+        VITE_APP_MAINNET_GRAPHQL_WS: string
         VITE_APP_MAINNET_RPC: string
         VITE_APP_MAINNET_API: string
         VITE_APP_MAINNET_EXPLORER_URL: string
