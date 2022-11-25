@@ -8,6 +8,9 @@ import svgr from 'vite-plugin-svgr'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [alias(), react(), tsconfigPaths(), eslint(), svgr()],
+  define: {
+    'process.env': {}
+  },
   resolve: {
     preserveSymlinks: true
   },
