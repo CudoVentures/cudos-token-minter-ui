@@ -69,7 +69,7 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
             >
                 <ImgComponent
                     UID={token.contractAddress!}
-                    size={80}
+                    size={100}
                     src={token.logoUrl!}
                 />
                 <Box gap={2} style={styles.typeHolder}>

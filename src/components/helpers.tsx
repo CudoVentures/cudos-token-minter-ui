@@ -15,6 +15,7 @@ import SVG from 'react-inlinesvg'
 import { toSvg } from "jdenticon"
 import { JD_CONFIG } from "utils/constants"
 import { TEXT } from "./TokenDetails/helpers"
+import { COLORS_DARK_THEME } from "theme/colors"
 
 export const ImgComponent = ({
     UID,
@@ -29,13 +30,19 @@ export const ImgComponent = ({
     return (
         <Box sx={{
             ...styles.imgHolder,
-            minWidth: `${size}px`,
-            minHeight: `${size}px`
+            bgcolor: src ? 'none' : COLORS_DARK_THEME.DARK_BACKGROUND,
+            padding: src ? '0px' : '15px',
+            width: `${size}px`,
+            height: `${size}px`,
         }}
         >
             {src ?
                 <img
-                    height={size}
+                    style={{
+                        objectFit: 'cover',
+                        height: '100%',
+                        width: '100%'
+                    }}
                     src={src}
                     alt={TEXT.TokenLogo}
                 />
