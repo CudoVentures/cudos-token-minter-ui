@@ -19,6 +19,7 @@ export interface modalState {
   selectWallet?: boolean
   dataObject?: SuccessModalDataObject
   openEditLogo?: boolean
+  changingNetwork?: boolean
 }
 
 export const initialState: modalState = {
@@ -31,11 +32,12 @@ export const initialState: modalState = {
   failure: false,
   changeChosenBalance: false,
   selectWallet: false,
-  dataObject: { 
-    result: { height: 0, code: 0, transactionHash: '', gasUsed: 0, gasWanted: 0 }, 
-    txFee: '' 
+  dataObject: {
+    result: { height: 0, code: 0, transactionHash: '', gasUsed: 0, gasWanted: 0 },
+    txFee: ''
   },
-  openEditLogo: false
+  openEditLogo: false,
+  changingNetwork: false
 }
 
 export const modalStateSlice = createSlice({
