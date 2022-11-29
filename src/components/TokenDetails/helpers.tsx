@@ -75,11 +75,11 @@ export enum TEXT {
     Mint = 'Mint',
     Increase = 'Increase',
     Decrease = 'Decrease',
-    InvalidImgUrl = 'Invalid IMG URL',
+    InvalidImgUrl = 'Invalid URL',
     InvalidAddress = 'Invalid Address',
     InsufficientBalance = 'Insufficient Balance',
     ResolutionExceedsLimit = 'Resolution Exceeds Limit',
-    InvalidImgSource = 'Invalid IMG Source',
+    InvalidImgSource = 'Invalid Source',
     DefaultLogo = 'Default Logo'
 }
 
@@ -128,7 +128,7 @@ export enum TOKEN_TYPE {
 export enum TOKEN_DESCRIPTION {
     Standard = 'Standard type tokens have fixed supply and cannot be burned or minted after initial mint',
     Burnable = 'Burnable type tokens have fixed supply and can be burned or minted after initial mint',
-    Mintable = 'Mintable type tokens have a capped total sypply and can be minted but not burned after initial mint',
+    Mintable = 'Mintable type tokens have a capped total supply and can be minted but not burned after initial mint',
     Unlimited = 'Unlimited type tokens have an unlimited total supply and can be burned and minted after initial mint'
 }
 

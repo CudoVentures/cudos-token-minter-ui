@@ -1,4 +1,4 @@
-import { Box, Button, Dialog as MuiDialog, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Dialog as MuiDialog, Input, Tooltip, Typography } from '@mui/material'
 import { CancelRoundedIcon, ModalContainer } from 'components/Dialog/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
@@ -6,10 +6,9 @@ import { initialState, updateModalState } from 'store/modals'
 import { styles } from './styles'
 import { CW20 } from "types/CW20"
 import { styles as defaultStyles } from 'components/Dialog/styles'
-import { FieldHandler } from 'components/InputComponents'
 import { useCallback, useEffect, useState } from 'react'
-import { isValidImgRes, isValidImgUrl } from 'utils/validation'
-import { MODAL_MSGS, RESOLUTIONS } from 'utils/constants'
+import { isValidLogo } from 'utils/validation'
+import { MODAL_MSGS } from 'utils/constants'
 import { FeeDisplayer } from 'containers/ContractDetails/components/helpers'
 import { EncodeObject, StdFee } from 'cudosjs'
 import useSignAndBroadcast from 'utils/CustomHooks/useSignAndBroadcastTx'
@@ -17,6 +16,7 @@ import useGenerateMsgHandler from 'utils/CustomHooks/useGenerateMsgHandler'
 import { ContractMsgUploadLogo } from 'cudosjs/build/cosmwasm-stargate/modules/cw20/contract-messages'
 import useSimulateTx from 'utils/CustomHooks/useSimulateTx'
 import { getDisplayWorthyFee } from 'utils/helpers'
+import { ImgComponent, TitleWithTooltip } from 'components/helpers'
 
 import {
     emptyEncodeObject,
@@ -42,6 +42,11 @@ const EditLogo = () => {
     const [fee, setFee] = useState<StdFee>(emptyFeesObject)
     const [loading, setLoading] = useState<boolean>(false)
     const [validatedBroadcastData, setValidatedBroadcastData] = useState<boolean>(false)
+    const [fieldError, setFieldError] = useState<string>('')
+
+    const handleFieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        setNewTokenObject({ ...newTokenObject, logoUrl: event.target.value })
+    }
 
     const broadcast = async () => {
 
@@ -60,33 +65,27 @@ const EditLogo = () => {
 
     const validNewLogo = async (newUrl: string) => {
 
-        if (
-            newUrl === selectedAsset?.logoUrl ||
-            !isValidImgUrl(newUrl)
-        ) {
+        if (newUrl === selectedAsset?.logoUrl) {
             return false
         }
 
-        const validRes = await isValidImgRes(
-            newUrl,
-            {
-                width: RESOLUTIONS.MAX_IMG.width,
-                height: RESOLUTIONS.MAX_IMG.height
-            }
-        )
+        const { valid, error } = await isValidLogo(newUrl)
 
-        if (!validRes) {
-            return false
-        }
-
-        return true
+        setFieldError(error)
+        return valid
     }
 
     const validateData = useCallback(async (newUrl: string) => {
 
+        setMsg(emptyEncodeObject)
+
+        if (!newTokenObject.logoUrl) {
+            setFieldError('')
+            return
+        }
+
         const validLogo = await validNewLogo(newUrl)
         setValidatedLogo(validLogo)
-        setMsg(emptyEncodeObject)
 
         //eslint-disable-next-line
     }, [newTokenObject.logoUrl])
@@ -147,16 +146,6 @@ const EditLogo = () => {
         dispatch(updateModalState(initialState))
     }
 
-    const urlInput: CW20.INPUT_FIELD = {
-        name: TEXT.LogoUrl,
-        value: newTokenObject!.logoUrl!,
-        placeholder: selectedAsset?.logoUrl || PLACEHOLDERS.LogoUrl,
-        tooltip: TOOLTIPS.LogoUrl,
-        inputType: TEXT.Text,
-        oldState: newTokenObject!,
-        isDisabled: false
-    }
-
     return (
         <MuiDialog
             BackdropProps={defaultStyles.defaultBackDrop}
@@ -181,21 +170,40 @@ const EditLogo = () => {
                     </Box>
                     <Box gap={6} sx={styles.inputHolder}>
                         <Box sx={{ width: '100%' }}>
-                            <FieldHandler
-                                fieldObject={urlInput}
-                                setValue={setNewTokenObject}
-                            />
+                            <Box>
+                                <TitleWithTooltip text={TEXT.LogoUrl} tooltipText={TOOLTIPS.LogoUrl} />
+                                <Box style={styles.input}>
+                                    <Box sx={{ margin: '20px 20px 20px 0' }}>
+                                        <ImgComponent
+                                            UID={selectedAsset?.contractAddress || TEXT.DefaultLogo}
+                                            size={80}
+                                            src={(newTokenObject.logoUrl && validatedLogo && !fieldError) ? newTokenObject.logoUrl : selectedAsset?.logoUrl || ''}
+                                        />
+                                    </Box>
+                                    <Input
+                                        sx={{ width: '100%', height: '50px' }}
+                                        type={TEXT.Text}
+                                        placeholder={selectedAsset?.logoUrl || PLACEHOLDERS.LogoUrl}
+                                        onChange={handleFieldChange}
+                                        value={newTokenObject.logoUrl}
+                                    />
+                                </Box>
+                            </Box>
                             <Box sx={styles.estimatorHolder}>
                                 {validatedLogo ?
                                     <FeeDisplayer
                                         fee={getDisplayWorthyFee(fee, 4)}
                                         loading={loading}
-                                    /> : null
+                                    /> : fieldError ? <Typography
+                                        variant='subtitle2'
+                                        color='text.secondary'>
+                                        {fieldError}
+                                    </Typography> : null
                                 }
                             </Box>
                         </Box>
                         <Tooltip
-                            title={!validatedLogo ? `${TEXT.InvalidImgSource} or ${TEXT.ResolutionExceedsLimit}` :
+                            title={!validatedLogo ? fieldError :
                                 !validatedBroadcastData ? MODAL_MSGS.ERRORS.TYPE.CONNECTION : ''}>
                             <Box>
                                 <Button

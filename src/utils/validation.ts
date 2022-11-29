@@ -84,28 +84,9 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
       }
 
       //But if URL is provided, it should be validated
-      const validImgUrl = isValidImgUrl(sanitizedTokenObject[key]!)
-
-      if (!validImgUrl) {
-        informativeError = TEXT.InvalidImgUrl
-        result = validImgUrl
-        break
-      }
-
-      const validRes = await isValidImgRes(
-        sanitizedTokenObject[key]!,
-        {
-          width: RESOLUTIONS.MAX_IMG.width,
-          height: RESOLUTIONS.MAX_IMG.height
-        }
-      )
-
-      if (!validRes) {
-        informativeError = `${TEXT.InvalidImgSource} or ${TEXT.ResolutionExceedsLimit}`
-        result = validRes
-        break
-      }
-
+      const { valid, error } = await isValidLogo(sanitizedTokenObject[key]!)
+      informativeError = error
+      result = valid
       break
     }
 
@@ -118,7 +99,7 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
 
     // Only accept symbol between 3 and 5 chars
     if (key === 'symbol') {
-      if (sanitizedTokenObject[key]!.length < 3 || sanitizedTokenObject[key]!.length > 5) {
+      if (!isValidSymbol(sanitizedTokenObject[key]!)) {
         informativeError = `Symbol should be between 3 and 5 characters`
         result = false
         break
@@ -148,4 +129,32 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
   }
 
   return [result, informativeError]
+}
+
+export const isValidSymbol = (value: string) => {
+  if (value.length < 3 || value.length > 5) {
+    return false
+  }
+  return true
+}
+
+export const isValidLogo = async (url: string): Promise<{ valid: boolean, error: string }> => {
+
+  if (!isValidImgUrl(url)) {
+    return { valid: false, error: TEXT.InvalidImgUrl }
+  }
+
+  const validRes = await isValidImgRes(
+    url,
+    {
+      width: RESOLUTIONS.MAX_IMG.width,
+      height: RESOLUTIONS.MAX_IMG.height
+    }
+  )
+
+  if (!validRes) {
+    return { valid: false, error: `${TEXT.InvalidImgSource} or ${TEXT.ResolutionExceedsLimit}` }
+  }
+
+  return { valid: true, error: '' }
 }

@@ -150,7 +150,7 @@ const ContractDetails = () => {
                                     >
                                         <ImgComponent
                                             UID={selectedAsset!.contractAddress!}
-                                            size={isLowRes ? 80 : 145}
+                                            size={isLowRes ? 100 : 165}
                                             src={selectedAsset!.logoUrl!}
                                         />
                                     </Box>
