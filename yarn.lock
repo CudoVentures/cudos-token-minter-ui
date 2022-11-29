@@ -3739,10 +3739,10 @@ csstype@^3.0.2, csstype@^3.1.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
-cudosjs@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.2.2.tgz#afec4fa18970d5fff85bc09589c5fd99cb5720f9"
-  integrity sha512-Tq5q/7gawdyi1LtWStBC8ILa9dIkjRvjJep8VgSTgLinrhH2R9VNBR902DNbmHSmpo496Obklcmeptmg+wpS0A==
+cudosjs@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.2.4.tgz#f65d6b8d935985a9ccfe83884fbf67061fc5d764"
+  integrity sha512-Hq+sWfUDx7qk0BhFMqYXjQsKp8Sri7XVAffCdWdg79GhnpDTEDUj0U3zDHUlo9vmfI9lwosyDT1fJeF8T4zH6g==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.28.4"
     "@cosmjs/crypto" "^0.28.4"
@@ -3752,6 +3752,7 @@ cudosjs@^1.2.2:
     "@cosmostation/cosmos-client" "^0.0.4"
     "@cosmostation/extension-client" "^0.1.9"
     bignumber.js "^9.0.2"
+    tslib "^2.4.1"
     yarn "^1.22.19"
 
 curve25519-js@0.0.4:
@@ -6905,6 +6906,11 @@ tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.4.0, tslib@~2.4
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
+
+tslib@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.1.tgz#0d0bfbaac2880b91e22df0768e55be9753a5b17e"
+  integrity sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==
 
 tsutils@^3.21.0:
   version "3.21.0"
