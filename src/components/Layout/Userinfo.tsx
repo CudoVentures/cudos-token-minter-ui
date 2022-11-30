@@ -17,6 +17,7 @@ import { formatAddress } from 'utils/helpers'
 import { initialState as initialAssetsState, updateAssets } from 'store/assets'
 import { initialState as initialAssetsNavigation } from 'store/assetsNavigation'
 import { updateAssetsNavigation } from 'store/assetsNavigation'
+import { disconnectLedgerByType } from 'utils/config'
 import Card from 'components/Card/Card'
 
 import {
@@ -34,13 +35,14 @@ const UserInfo = () => {
 
   const [open, setOpen] = useState(false)
 
-  const handleDisconnect = () => {
+  const handleDisconnect = async () => {
     sessionStorage.clear()
     localStorage.clear()
     dispatch(updateUser(initialUserState))
     dispatch(updateModalState(initialModalState))
     dispatch(updateAssets(initialAssetsState))
     dispatch(updateAssetsNavigation(initialAssetsNavigation))
+    await disconnectLedgerByType(connectedLedger!)
     navigate(NAVIGATION_PATH.Home)
   }
 

@@ -46,6 +46,8 @@ export enum TOKEN_ACTION {
 }
 
 export enum TEXT {
+    Address = "Address",
+    AddToKeplr = 'Add to Keplr',
     HTTPS_Prefix = 'https://',
     OK = 'OK',
     YES = 'Yes',
@@ -54,6 +56,7 @@ export enum TEXT {
     Text = 'text',
     Number = 'number',
     SupplyType = 'Supply Type',
+    EditLogo = 'Edit Logo',
     DeploymentNetwork = 'Deployment network',
     TokenName = 'Token Name',
     TokenLogo = 'Token Logo',

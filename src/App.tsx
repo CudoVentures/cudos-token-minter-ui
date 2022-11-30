@@ -20,6 +20,7 @@ import { ApolloProvider, NormalizedCacheObject, ApolloClient } from '@apollo/cli
 import { useApollo } from './graphql/client'
 import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
 import RequireConnectedWallet from 'components/RequireConnectedWallet'
+import { isCosmostationInstalled, isKeplrInstalled } from 'utils/helpers'
 
 import '@fontsource/poppins'
 
@@ -77,7 +78,7 @@ const App = () => {
 
   useEffect(() => {
 
-    if (window.keplr) {
+    if (isKeplrInstalled()) {
       window.addEventListener("keplr_keystorechange",
         async () => {
           await connectAccount(chosenNetwork!, LEDGERS.KEPLR)
@@ -85,7 +86,7 @@ const App = () => {
         });
     }
 
-    if (window.cosmostation) {
+    if (isCosmostationInstalled()) {
       window.cosmostation.cosmos.on("accountChanged",
         async () => {
           await connectAccount(chosenNetwork!, LEDGERS.COSMOSTATION)

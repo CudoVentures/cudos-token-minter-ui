@@ -15,7 +15,7 @@ import { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { connectUser } from 'utils/config'
 import { ThreeDots as ThreeDotsLoading } from 'svg-loaders-react'
-import { delay } from 'utils/helpers'
+import { delay, isCosmostationInstalled, isKeplrInstalled } from 'utils/helpers'
 
 const WalletSelector = () => {
 
@@ -87,7 +87,7 @@ const WalletSelector = () => {
           <Box gap={3} style={styles.btnsHolder}>
             <LoadingButton
               loadingIndicator={<LoadingButtonComponent />}
-              disabled={!window.keplr || loading.get(LEDGERS.COSMOSTATION)}
+              disabled={!isKeplrInstalled() || loading.get(LEDGERS.COSMOSTATION)}
               loading={loading.get(LEDGERS.KEPLR)}
               variant="contained"
               color="primary"
@@ -104,7 +104,7 @@ const WalletSelector = () => {
             </LoadingButton>
             <LoadingButton
               loadingIndicator={<LoadingButtonComponent />}
-              disabled={!window.cosmostation || loading.get(LEDGERS.KEPLR)}
+              disabled={!isCosmostationInstalled() || loading.get(LEDGERS.KEPLR)}
               loading={loading.get(LEDGERS.COSMOSTATION)}
               variant="contained"
               color="primary"
