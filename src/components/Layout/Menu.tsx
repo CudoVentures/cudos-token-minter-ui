@@ -27,9 +27,14 @@ const Menu = () => {
             return false
         }
 
-        if (currentAssetsView === AssetsView.MyAssets && route === NAVIGATION_PATH.AllAssets) {
+        if ((
+            currentAssetsView === AssetsView.MyAssets ||
+            currentAssetsView === AssetsView.Others ||
+            currentAssetsView === AssetsView.Owned
+        ) && route === NAVIGATION_PATH.AllAssets) {
             return true
         }
+        
         if (location.pathname.includes(route)) {
             return true
         }
