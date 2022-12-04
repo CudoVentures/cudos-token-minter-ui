@@ -22,7 +22,7 @@ const Header = () => {
   const navigateToRoute = useNavigateToRoute()
   const isLowRes = useLowResCheck()
   const isMidLowRes = useMidlowResCheck()
-  const isDetailedViewPath = matchPath(`${NAVIGATION_PATH.Assets}/*`, location.pathname)
+  const isDetailedViewPath = matchPath(`${NAVIGATION_PATH.AllAssets}/*`, location.pathname) || matchPath(`${NAVIGATION_PATH.MyAssets}/*`, location.pathname)
   const { changingNetwork } = useSelector((state: RootState) => state.modalState)
   const {
     address,
@@ -115,7 +115,9 @@ const Header = () => {
         </Box>
       </Box>
       {
-        location.pathname === NAVIGATION_PATH.Assets ? <AssetsNavBar /> :
+        location.pathname === NAVIGATION_PATH.AllAssets ||
+          location.pathname === NAVIGATION_PATH.MyAssets
+          ? <AssetsNavBar /> :
           isDetailedViewPath ? <DetailedViewNav /> : null
       }
     </Box>

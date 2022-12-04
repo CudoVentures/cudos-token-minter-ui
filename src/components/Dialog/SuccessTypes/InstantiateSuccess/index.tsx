@@ -65,7 +65,7 @@ const InstantiateSuccess = ({ data }: { data: SuccessModalDataObject }) => {
                 />
                 <NavigateToBtn
                     btnText={"Go to My Assets"}
-                    route={NAVIGATION_PATH.Assets}
+                    route={NAVIGATION_PATH.MyAssets}
                     type={"secondary"}
                 />
             </Box>

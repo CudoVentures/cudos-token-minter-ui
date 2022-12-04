@@ -18,7 +18,7 @@ const AddTokenToWalletBtn = ({ addToWalletObject }: { addToWalletObject: CW20.Ad
             loading: true,
         }))
         await addTokenByLedgerType(addToWalletObject)
-        navigate(NAVIGATION_PATH.Assets)
+        navigate(NAVIGATION_PATH.MyAssets)
         setTimeout(() => {
             dispatch(updateModalState({
                 loading: false,

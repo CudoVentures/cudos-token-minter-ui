@@ -1,4 +1,4 @@
-query GetAllPreapprovedNetworkTokens($codeIds: [Int!]) {
+query GetAllPreapprovedNetworkTokens($codeIds: [Int!], $_loggedUser: String = "") {
   cw20token_info(where: {code_id: {_in: $codeIds}}) {
     address
     logo
@@ -10,5 +10,8 @@ query GetAllPreapprovedNetworkTokens($codeIds: [Int!]) {
     type
     decimals
     circulating_supply
+    balances(where: {address: {_eq: $_loggedUser}}) {
+      balance
+    }
   }
 }

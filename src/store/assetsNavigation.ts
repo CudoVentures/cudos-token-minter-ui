@@ -4,7 +4,9 @@ import { CHAIN_DETAILS } from 'utils/constants'
 
 export enum AssetsView {
   AllAssets = 'All Assets',
-  MyAssets = 'My Assets'
+  MyAssets = 'My Assets',
+  Owned = 'Owned by me',
+  Others = 'Others'
 }
 
 export interface assetsNavigationState {

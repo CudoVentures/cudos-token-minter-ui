@@ -1,9 +1,9 @@
 import { Box, Typography } from "@mui/material"
 import { SubTitle } from "components/Dialog/ModalComponents/helpers"
-import { useEffect, useRef, useState } from "react"
-import { useSelector } from "react-redux"
+import { Fragment, useEffect, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "store"
-import { AssetsView } from "store/assetsNavigation"
+import { AssetsView, updateAssetsNavigation } from "store/assetsNavigation"
 import { NAVIGATION_PATH } from "utils/constants"
 import { useMidlowResCheck } from "utils/CustomHooks/screenChecks"
 import useNavigateToRoute from "utils/CustomHooks/useNavigateToRoute"
@@ -15,6 +15,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { styles } from "./styles"
 import { COLORS_DARK_THEME } from "theme/colors"
 import ViewConnectedNetwork from "./components/ViewConnectedNetwork"
+import { CollapsableSubMenu } from "./helpers"
 
 export const getConcatenatedText = (text: string): string => {
     return `${text} ${"Tokens"}`
@@ -22,14 +23,43 @@ export const getConcatenatedText = (text: string): string => {
 
 export const DetailedViewNav = () => {
 
+    const dispatch = useDispatch()
     const { currentAssetsView } = useSelector((state: RootState) => state.assetsNavState)
     const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
     const navigateToRoute = useNavigateToRoute()
 
+    const isSubMenu = currentAssetsView === AssetsView.Others ||
+        currentAssetsView === AssetsView.Owned
+
+    const handleClick = (setView: AssetsView) => {
+
+        if (setView !== currentAssetsView) {
+            setTimeout(() => {
+                dispatch(updateAssetsNavigation({
+                    currentAssetsView: setView
+                }))
+            }, 300)
+        }
+
+        if (setView === AssetsView.AllAssets) {
+            navigateToRoute(NAVIGATION_PATH.AllAssets)
+            return
+        }
+
+        navigateToRoute(NAVIGATION_PATH.MyAssets)
+    }
+
     return (
         <Box sx={styles.headerContainer}>
             <Box gap={0.3} display={'flex'} alignItems={'center'}>
-                <Box sx={{ cursor: 'pointer' }} onClick={() => navigateToRoute(NAVIGATION_PATH.Assets)}>
+                {isSubMenu ? <Fragment>
+                    <Box sx={{ cursor: 'pointer' }} onClick={() => handleClick(AssetsView.MyAssets!)}>
+                        <SubTitle text={AssetsView.MyAssets!} />
+                    </Box>
+                    <KeyboardArrowRightIcon sx={{ color: COLORS_DARK_THEME.PRIMARY_BLUE }} />
+                </Fragment>
+                    : null}
+                <Box sx={{ cursor: 'pointer' }} onClick={() => handleClick(currentAssetsView!)}>
                     <SubTitle text={currentAssetsView!} />
                 </Box>
                 <KeyboardArrowRightIcon sx={{ color: COLORS_DARK_THEME.PRIMARY_BLUE }} />
@@ -61,17 +91,28 @@ const AssetsNavBar = () => {
     }, [activeSearch])
 
     return (
-        <Box sx={isMidLowRes ? styles.smallerScreenHeaderContainer : styles.headerContainer}>
-            <Box id='left-menu' gap={4} display={'flex'} alignItems={'center'}>
+        <Box
+            gap={isMidLowRes ? 2.2 : 0}
+            sx={isMidLowRes ?
+                styles.smallerScreenHeaderContainer :
+                styles.headerContainer
+            }
+        >
+            <Box id='left-menu' gap={3} display={'flex'} alignItems={'center'}>
                 <Typography variant="h4" fontWeight={700}>
                     Assets
                 </Typography>
-                <ViewAssets assetsView={AssetsView.AllAssets} assetsCount={allAssets!.length} />
-                {
-                    address && connectedLedger ?
-                        <ViewAssets assetsView={AssetsView.MyAssets} assetsCount={myAssets!.length} /> :
-                        null
-                }
+                <Box gap={4} display={'flex'} alignItems={'center'}>
+                    <ViewAssets assetsView={AssetsView.AllAssets} assetsCount={allAssets!.length} />
+                    {address && connectedLedger ?
+                        <ViewAssets
+                            assetsView={AssetsView.MyAssets}
+                            assetsCount={
+                                myAssets?.owned?.length! + myAssets?.haveBalanceFrom?.length!
+                            }
+                        /> : null}
+                </Box>
+                <CollapsableSubMenu />
             </Box>
             <Box id='right-menu' gap={2} display={'flex'} alignItems={'center'}>
                 {

@@ -26,7 +26,10 @@ const Assets = () => {
 
     const preapprovedCodeIds = PREAPPROVED_CODE_IDS.NETWORK[chosenNetwork!] as number[]
     const { data, loading, error } = useGetAllPreapprovedNetworkTokensQuery({
-        variables: { codeIds: preapprovedCodeIds }
+        variables: {
+            codeIds: preapprovedCodeIds,
+            _loggedUser: loggedInUser
+        }
     })
 
     useEffect(() => {
@@ -34,7 +37,10 @@ const Assets = () => {
         if (data) {
             setDataProcessing(true)
             const allData: CW20.TokenObject[] = []
-            const myData: CW20.TokenObject[] = []
+            const myData: CW20.MyTokensData = {
+                owned: [],
+                haveBalanceFrom: []
+            }
             data.cw20token_info.forEach((item) => {
                 const fetchedItem: CW20.TokenObject = {
                     logoUrl: JSON.parse(item.logo!).url!,
@@ -48,8 +54,13 @@ const Assets = () => {
                     owner: item.creator!,
                 }
                 allData.push(fetchedItem)
+                
                 if (fetchedItem.owner === loggedInUser) {
-                    myData.push(fetchedItem)
+                    myData.owned.push(fetchedItem)
+                }
+
+                if (item.balances.length) {
+                    myData.haveBalanceFrom.push(fetchedItem)
                 }
             })
 
@@ -68,7 +79,20 @@ const Assets = () => {
     useEffect(() => {
 
         if (currentAssetsView === AssetsView.MyAssets) {
-            setDisplayData(myAssets!)
+            setDisplayData([
+                ...myAssets?.haveBalanceFrom!,
+                ...myAssets?.owned!,
+            ])
+            return
+        }
+
+        if (currentAssetsView === AssetsView.Owned) {
+            setDisplayData(myAssets?.owned!)
+            return
+        }
+
+        if (currentAssetsView === AssetsView.Others) {
+            setDisplayData(myAssets?.haveBalanceFrom!)
             return
         }
 

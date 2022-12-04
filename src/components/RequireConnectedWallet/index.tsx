@@ -9,10 +9,10 @@ const RequireConnectedWallet = () => {
   const validLedgers = [LEDGERS.KEPLR, LEDGERS.COSMOSTATION]
   const location = useLocation()
 
-  return isValidCudosAddress(address!) && validLedgers.includes(connectedLedger!) ? (
+  return location.pathname === NAVIGATION_PATH.AllAssets || (isValidCudosAddress(address!) && validLedgers.includes(connectedLedger!)) ? (
     <Outlet />
   ) : (
-    <Navigate to={NAVIGATION_PATH.Assets} state={{ from: location }} replace />
+    <Navigate to={NAVIGATION_PATH.AllAssets} state={{ from: location }} replace />
   )
 }
 
