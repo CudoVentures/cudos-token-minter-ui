@@ -145,13 +145,14 @@ export const RESOLUTIONS = {
 export enum NAVIGATION_PATH {
     Home = '/',
     MintTokens = '/mint-tokens',
-    Assets = '/assets'
+    AllAssets = '/all-assets',
+    MyAssets = '/my-assets',
 }
 
 export const APP_MENU = {
     ITEMS: [
         { icon: <PlusIcon />, text: 'Mint Tokens', route: NAVIGATION_PATH.MintTokens, disabled: false },
-        { icon: <AllTypesTokenIcon />, text: 'Assets', route: NAVIGATION_PATH.Assets, disabled: false }
+        { icon: <AllTypesTokenIcon />, text: 'Assets', route: NAVIGATION_PATH.AllAssets, disabled: false }
     ]
 }
 

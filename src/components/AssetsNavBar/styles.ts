@@ -7,13 +7,13 @@ export const styles = {
         height: '20px', color: COLORS_DARK_THEME.SECONDARY_TEXT
     },
     squareBox: {
-         cursor: 'pointer', 
-         display: 'flex', 
-         borderRadius: '5px', 
-         padding: '10px', 
-         backgroundColor: COLORS_DARK_THEME.PRIMARY_BACKGROUND, 
-         transition: 'width .4s ease-in-out',
-        },
+        cursor: 'pointer',
+        display: 'flex',
+        borderRadius: '5px',
+        padding: '10px',
+        backgroundColor: COLORS_DARK_THEME.PRIMARY_BACKGROUND,
+        transition: 'width .4s ease-in-out',
+    },
     searchBar: {
         width: '100%',
         height: '100%'
@@ -22,7 +22,7 @@ export const styles = {
         border: "none",
         borderLeft: `2px solid ${COLORS_DARK_THEME.PRIMARY_BLUE_DISABLED}`,
         height: "30px"
-      },
+    },
     removableContentHolder: {
         display: 'flex',
         alignItems: 'center',
@@ -33,9 +33,16 @@ export const styles = {
         borderTop: "1px solid rgba(65, 73, 99, 0.3)",
         padding: '0.8rem 1rem',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         display: 'flex',
         flex: '1'
+    },
+    subMenuHolder: {
+        alignItems: 'center',
+        width: '140px',
+        justifyContent: 'center',
+        display: 'flex',
+        height: '100%'
     },
     smallerScreenHeaderContainer: {
         borderTop: "1px solid rgba(65, 73, 99, 0.3)",

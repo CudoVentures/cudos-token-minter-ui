@@ -112,3 +112,18 @@ export const connectLedgerByType = async (chosenNetwork: string, ledgerType: str
 
     return { address: '', accountName: '' }
 }
+
+export const disconnectLedgerByType = async (ledgerType: string) => {
+
+    if (ledgerType === LEDGERS.KEPLR) {
+        // Keplr seems to not offer a particular disconnect method
+        return
+    }
+
+    if (ledgerType === LEDGERS.COSMOSTATION) {
+        await window.cosmostation.cosmos.request({
+            method: "cos_disconnect",
+          });
+          return
+    }
+}

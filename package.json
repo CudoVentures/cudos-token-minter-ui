@@ -14,7 +14,7 @@
     "@apollo/client": "^3.7.0",
     "@babel/core": "^7.19.1",
     "@cosmostation/cosmos-client": "^0.0.4",
-    "@cosmostation/extension-client": "^0.1.11",
+    "@cosmostation/extension-client": "^0.1.15",
     "@emotion/cache": "^11.10.3",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",

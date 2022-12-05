@@ -3,16 +3,16 @@ import HolderView from "./components/HolderView"
 import OwnerView from "./components/OwnerView"
 import PublicView from "./components/PublicView"
 import { styles } from "./styles"
-import { Box, CircularProgress, Divider } from "@mui/material"
+import { Box, CircularProgress, Divider, Typography } from "@mui/material"
 import { getTokenTypeWithlogo } from "components/AssetsNavBar/components/ViewTokenTypeFilter"
 import Card from "components/Card/Card"
 import { SubTitle, Title } from "components/Dialog/ModalComponents/helpers"
-import { ImgComponent, TruncatedTextWithTooltip } from "components/helpers"
+import { AdvancedTooltip, ClickAndCopyToClipboard, ImgComponent, TruncatedTextWithTooltip } from "components/helpers"
 import { TEXT, TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "store"
-import { CHAIN_DETAILS, MODAL_MSGS } from "utils/constants"
+import { CHAIN_DETAILS, LEDGERS, MODAL_MSGS } from "utils/constants"
 import { useLowResCheck, useMidlowResCheck } from "utils/CustomHooks/screenChecks"
 import { ReactComponent as EditIcon } from 'assets/vectors/edit-icon.svg'
 import { initialState, updateModalState } from "store/modals"
@@ -21,6 +21,8 @@ import { BigNumber } from "bignumber.js"
 import { useGetContractDetailsSubscription, useGetUserBalancesSubscription } from "graphql/types"
 import { updateUser } from "store/user"
 import { updateAssets } from "store/assets"
+import { formatAddress } from "utils/helpers"
+import { ReactComponent as AddIcon } from 'assets/vectors/add-icon.svg'
 
 const ContractDetails = () => {
 
@@ -28,11 +30,14 @@ const ContractDetails = () => {
     const isMidLowRes = useMidlowResCheck()
     const isLowRes = useLowResCheck()
     const editIcon = useRef<HTMLDivElement>()
+    const addToWalletIcon = useRef<HTMLDivElement>()
     const [displayEditIcon, setDisplayEditIcon] = useState<boolean>(false)
+    const [displayAddToWalletIcon, setDisplayAddToWalletIcon] = useState<boolean>(false)
     const { selectedAsset } = useSelector((state: RootState) => state.assetsState)
     const { networkView } = useSelector((state: RootState) => state.assetsNavState)
-    const { address: loggedInUser, assets } = useSelector((state: RootState) => state.userState)
+    const { address: loggedInUser, assets, connectedLedger, chosenNetwork } = useSelector((state: RootState) => state.userState)
     const [isOwner, setIsOwner] = useState<boolean>(false)
+    const [isKeplr, setIsKeplr] = useState<boolean>(false)
     const [isHolder, setIsHolder] = useState<boolean>(false)
     const [userBalance, setUserBalance] = useState<string>('0')
     const [dataProcessing, setDataProcessing] = useState<boolean>(true)
@@ -51,9 +56,63 @@ const ContractDetails = () => {
         variables: { token: selectedAsset?.contractAddress }
     })
 
+    // FUNCTIONS
+    const handleMouseOver = () => {
+
+        if (isOwner) {
+            setDisplayEditIcon(true)
+        }
+
+        if (isKeplr) {
+            setDisplayAddToWalletIcon(true)
+        }
+    }
+
+    const handleMouseOut = () => {
+
+        setDisplayEditIcon(false)
+        setDisplayAddToWalletIcon(false)
+    }
+
+    const handleAddToken = async (tokenAddress: string) => {
+
+        dispatch(updateModalState({
+            loading: true,
+        }))
+
+        try {
+            await window.keplr?.suggestToken(
+                CHAIN_DETAILS.CHAIN_ID[chosenNetwork!],
+                tokenAddress,
+            )
+
+        } catch (error) {
+            console.error((error as Error).message)
+
+        } finally {
+            setTimeout(() => {
+                dispatch(updateModalState({
+                    loading: false,
+                }))
+            }, 200)
+        }
+    }
+
     const handleEditLogo = () => {
         dispatch(updateModalState({ openEditLogo: true }))
     }
+
+    // EFFECTS
+    useEffect(() => {
+
+        if (connectedLedger === LEDGERS.KEPLR) {
+            setIsKeplr(true)
+            return
+        }
+        setIsKeplr(false)
+
+        //eslint-disable-next-line
+    }, [connectedLedger])
 
     useEffect(() => {
         if (displayEditIcon) {
@@ -68,6 +127,21 @@ const ContractDetails = () => {
 
         //eslint-disable-next-line
     }, [displayEditIcon])
+
+    useEffect(() => {
+        
+        if (displayAddToWalletIcon) {
+            addToWalletIcon.current!.style.visibility = 'visible'
+            addToWalletIcon.current!.style.opacity = '1'
+            return
+        }
+
+        if (addToWalletIcon.current) {
+            addToWalletIcon.current!.style.opacity = '0'
+        }
+
+        //eslint-disable-next-line
+    }, [displayAddToWalletIcon])
 
     useEffect(() => {
         if (fetchedUserData) {
@@ -132,7 +206,6 @@ const ContractDetails = () => {
                 <Box gap={2} style={styles.contentHolder}>
 
                     <Card style={styles.contentCard} sx={{ minWidth: 'max-content' }}>
-                        <Dialog />
                         <Box
                             gap={isLowRes ? 1 : 3}
                             style={styles.boxHolder}
@@ -145,8 +218,8 @@ const ContractDetails = () => {
                             >
                                 <Box style={styles.imgHolder}>
                                     <Box
-                                        onMouseOver={() => isOwner ? setDisplayEditIcon(true) : null}
-                                        onMouseOut={() => displayEditIcon ? setDisplayEditIcon(false) : null}
+                                        onMouseOver={handleMouseOver}
+                                        onMouseOut={handleMouseOut}
                                     >
                                         <ImgComponent
                                             UID={selectedAsset!.contractAddress!}
@@ -154,20 +227,48 @@ const ContractDetails = () => {
                                             src={selectedAsset!.logoUrl!}
                                         />
                                     </Box>
+                                    {isKeplr ?
+                                        <AdvancedTooltip
+                                            tooltipComponent={
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    fontWeight={900}>{TEXT.AddToKeplr}
+                                                </Typography>
+                                            }
+                                            children={<Box
+                                                style={styles.addToWalletIconHolder}
+                                                ref={addToWalletIcon}
+                                            >
+                                                <AddIcon
+                                                    style={isLowRes ? styles.smallerAdd : styles.add}
+                                                    onClick={() => handleAddToken(selectedAsset?.contractAddress!)}
+                                                    onMouseOver={() => setDisplayAddToWalletIcon(true)}
+                                                    onMouseOut={() => setDisplayAddToWalletIcon(false)}
+                                                />
+                                            </Box>} />
+                                        : null}
                                     {isOwner ?
-                                        <Box
-                                            style={styles.editIconHolder}
-                                            ref={editIcon}
-                                        >
-                                            <EditIcon
-                                                style={isLowRes ? styles.smallerEdit : styles.edit}
-                                                onClick={() => handleEditLogo()}
-                                                onMouseOver={() => setDisplayEditIcon(true)}
-                                                onMouseOut={() => setDisplayEditIcon(false)}
-                                            />
-                                        </Box> : null}
+                                        <AdvancedTooltip
+                                            tooltipComponent={
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    fontWeight={900}>{TEXT.EditLogo}
+                                                </Typography>
+                                            }
+                                            children={<Box
+                                                style={styles.editIconHolder}
+                                                ref={editIcon}
+                                            >
+                                                <EditIcon
+                                                    style={isLowRes ? styles.smallerEdit : styles.edit}
+                                                    onClick={() => handleEditLogo()}
+                                                    onMouseOver={() => setDisplayEditIcon(true)}
+                                                    onMouseOut={() => setDisplayEditIcon(false)}
+                                                />
+                                            </Box>} />
+                                        : null}
                                 </Box>
-                                <Box gap={2} display={'flex'} flexDirection={'column'}>
+                                <Box gap={1.5} display={'flex'} flexDirection={'column'}>
                                     <TruncatedTextWithTooltip
                                         text={selectedAsset?.name! || ''}
                                         maxAllowed={20}
@@ -177,10 +278,24 @@ const ContractDetails = () => {
                                     <Title text={`(${selectedAsset?.symbol!})`} variant={isLowRes ? 'subtitle1' : 'h5'} />
                                     <Box gap={3} display={'flex'} alignItems='center'>
                                         <Box height={'25px'}>
-                                            <SubTitle text={TEXT.TokenType} /></Box>
+                                            <SubTitle text={TEXT.TokenType} />
+                                        </Box>
                                         {getTokenTypeWithlogo(selectedAsset?.tokenType!)}
+
+                                    </Box>
+                                    <Box gap={3} display={'flex'} alignItems='center'>
+                                        <Box>
+                                            <SubTitle text={TEXT.Address} />
+                                        </Box>
+                                        <ClickAndCopyToClipboard
+                                            children={<SubTitle color='text.primary'
+                                                text={formatAddress(selectedAsset?.contractAddress || '', 15)} />}
+                                            textToCopy={selectedAsset?.contractAddress || ''}
+                                        />
                                     </Box>
                                 </Box>
+
+
                             </Box>
                             <Box
                                 id='right-content'

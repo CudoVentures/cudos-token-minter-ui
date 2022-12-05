@@ -12,8 +12,19 @@ const NoAssetsView = ({ failedSearch }: { failedSearch?: boolean }) => {
     const { currentAssetsView } = useSelector((state: RootState) => state.assetsNavState)
 
     const handleTextToDisplay = (view: AssetsView): string => {
-        let concatText = view === AssetsView.AllAssets ?
-            'there are no' : 'you don’t have any'
+
+        let concatText = 'there are no'
+
+        if (view === AssetsView.MyAssets ||
+            view === AssetsView.Owned
+        ) {
+            concatText = 'you don’t have any'
+        }
+
+        if (view === AssetsView.Others) {
+            return 'You hold no balances'
+        }
+
 
         return `Seems like ${concatText} minted tokens yet`
     }

@@ -165,3 +165,15 @@ export const handleAvailableNetworks = (defaultNetwork: string): networkToDispla
 
   return [CHAIN_DETAILS.PUBLIC, CHAIN_DETAILS.MAINNET]
 }
+
+export const isKeplrInstalled = () => {
+  return window.keplr?.enable?.length! > 0
+}
+
+export const isCosmostationInstalled = () => {
+  if (window.cosmostation) {
+    return true
+  }
+
+  return false
+}

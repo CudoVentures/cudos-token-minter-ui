@@ -1,5 +1,5 @@
 import { Box, Tooltip, Typography, TooltipProps, tooltipClasses } from "@mui/material"
-import { Fragment, useState } from "react"
+import { Fragment, ReactNode, useState } from "react"
 import { EXPLORER_ADDRESS_DETAILS } from "api/endpoints"
 import copy from "copy-to-clipboard"
 import LinkIcon from 'assets/vectors/link-icon.svg'
@@ -67,6 +67,31 @@ export const AddressWithCopyAndFollowComponent = ({ address }: { address: string
             </Typography>
             <CopyAndFollowComponent address={address} />
         </Box>
+    )
+}
+
+export const ClickAndCopyToClipboard = ({ children, textToCopy }: { children: ReactNode, textToCopy: string }) => {
+
+    const [copied, setCopied] = useState<boolean>(false)
+
+    const handleCopy = (value: string) => {
+        copy(value)
+        setCopied(true)
+
+        setTimeout(() => {
+            setCopied(false)
+        }, 1000)
+    }
+
+    return (
+        <Tooltip
+        onClick={() => handleCopy(textToCopy)}
+        title={copied ? 'Copied' : 'Copy to clipboard'}
+    >
+        <Box sx={{cursor: 'pointer'}}>
+            {children}
+        </Box>
+    </Tooltip>
     )
 }
 

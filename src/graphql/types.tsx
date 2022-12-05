@@ -16917,10 +16917,11 @@ export type Vote_Option_Comparison_Exp = {
 
 export type GetAllPreapprovedNetworkTokensQueryVariables = Exact<{
   codeIds?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+  _loggedUser?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetAllPreapprovedNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, creator: string, type?: string | null, decimals: number, circulating_supply: string }> };
+export type GetAllPreapprovedNetworkTokensQuery = { cw20token_info: Array<{ __typename?: 'cw20token_info', address: string, logo?: string | null, name: string, symbol: string, max_supply?: string | null, code_id: number, creator: string, type?: string | null, decimals: number, circulating_supply: string, balances: Array<{ __typename?: 'cw20token_balance', balance: string }> }> };
 
 export type GetContractDetailsSubscriptionVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
@@ -16947,7 +16948,7 @@ export type GetUserBalancesSubscription = { cw20token_balance_by_pk?: { __typena
 
 
 export const GetAllPreapprovedNetworkTokensDocument = gql`
-    query GetAllPreapprovedNetworkTokens($codeIds: [Int!]) {
+    query GetAllPreapprovedNetworkTokens($codeIds: [Int!], $_loggedUser: String = "") {
   cw20token_info(where: {code_id: {_in: $codeIds}}) {
     address
     logo
@@ -16959,6 +16960,9 @@ export const GetAllPreapprovedNetworkTokensDocument = gql`
     type
     decimals
     circulating_supply
+    balances(where: {address: {_eq: $_loggedUser}}) {
+      balance
+    }
   }
 }
     `;
@@ -16976,6 +16980,7 @@ export const GetAllPreapprovedNetworkTokensDocument = gql`
  * const { data, loading, error } = useGetAllPreapprovedNetworkTokensQuery({
  *   variables: {
  *      codeIds: // value for 'codeIds'
+ *      _loggedUser: // value for '_loggedUser'
  *   },
  * });
  */

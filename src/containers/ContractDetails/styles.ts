@@ -50,6 +50,11 @@ export const styles = {
         opacity: '0',
         visibility: 'hidden',
     },
+    addToWalletIconHolder: {
+        transition: 'opacity .3s ease-in-out',
+        opacity: '0',
+        visibility: 'hidden',
+    },
     smallerEdit: {
         cursor: 'pointer',
         position: "absolute",
@@ -60,7 +65,20 @@ export const styles = {
     edit: {
         cursor: 'pointer',
         position: "absolute",
-        right: "0",
+        left: "0px",
+        top: "120px"
+    },
+    smallerAdd: {
+        cursor: 'pointer',
+        position: "absolute",
+        left: "30px",
+        top: "100px",
+        height: '25px'
+    },
+    add: {
+        cursor: 'pointer',
+        position: "absolute",
+        right: "0px",
         top: "120px"
     },
     contentHolder: {

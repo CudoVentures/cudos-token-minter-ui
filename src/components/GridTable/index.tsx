@@ -15,6 +15,7 @@ import { TOKEN_TYPE } from 'components/TokenDetails/helpers'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
 import { NAVIGATION_PATH } from 'utils/constants'
 import { displayTokenValueWithPrecisionTooltip } from 'containers/ContractDetails/components/helpers'
+import { AssetsView } from 'store/assetsNavigation'
 
 const GridTable = ({ displayData }: { displayData: any[] }) => {
 
@@ -53,9 +54,16 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
 
     const dataLength: number = filteredData.length
 
-    const handleClick = (token: CW20.TokenObject) => {
-        const subPath = `/${token.contractAddress}`
-        navigateToRoute(NAVIGATION_PATH.Assets + subPath)
+    const handleClick = (tokenAddress: string) => {
+
+        const subPath = `/${tokenAddress}`
+
+        if (currentAssetsView === AssetsView.AllAssets) {
+            navigateToRoute(NAVIGATION_PATH.AllAssets + subPath)
+            return
+        }
+
+        navigateToRoute(NAVIGATION_PATH.MyAssets + subPath)
     }
 
     const connectedUser = address && connectedLedger
@@ -64,7 +72,7 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
 
         return (
             <Card
-                onClick={connectedUser ? () => handleClick(token) : undefined}
+                onClick={connectedUser ? () => handleClick(token.contractAddress!) : undefined}
                 sx={connectedUser ? styles.connectedUserCard : styles.tokenCard}
             >
                 <ImgComponent
@@ -109,7 +117,7 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
         )
 
         //eslint-disable-next-line
-    }, [address])
+    }, [address, currentAssetsView])
 
     const transitionTo = (pageNumber: number) => {
         contentHolder!.current!.style.opacity! = '0'

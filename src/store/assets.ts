@@ -3,14 +3,17 @@ import { CW20 } from 'types/CW20'
 
 export interface assetsState {
   allAssets?: CW20.TokenObject[];
-  myAssets?: CW20.TokenObject[];
+  myAssets?: CW20.MyTokensData;
   selectedAsset?: CW20.TokenObject;
 }
 
 export const initialState: assetsState = {
-    allAssets: [],
-    myAssets: [],
-    selectedAsset: {}
+  allAssets: [],
+  myAssets: {
+    owned: [],
+    haveBalanceFrom: []
+  },
+  selectedAsset: {}
 }
 
 export const assetsSlice = createSlice({

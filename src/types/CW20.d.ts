@@ -83,6 +83,11 @@ declare module CW20 {
         isDisabled: boolean;
     }
 
+    interface MyTokensData {
+        owned: TokenObject[]
+        haveBalanceFrom: TokenObject[]
+    }
+
     export {
         CW20Coin,
         InstantiateMsg,
@@ -90,6 +95,7 @@ declare module CW20 {
         TokenObject,
         AddToWalletObject,
         SignAndBroadcastMsgData,
-        INPUT_FIELD
+        INPUT_FIELD,
+        MyTokensData
     }
 }

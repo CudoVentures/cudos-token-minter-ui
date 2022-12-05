@@ -20,6 +20,7 @@ import { ApolloProvider, NormalizedCacheObject, ApolloClient } from '@apollo/cli
 import { useApollo } from './graphql/client'
 import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
 import RequireConnectedWallet from 'components/RequireConnectedWallet'
+import { isCosmostationInstalled, isKeplrInstalled } from 'utils/helpers'
 
 import '@fontsource/poppins'
 
@@ -77,7 +78,7 @@ const App = () => {
 
   useEffect(() => {
 
-    if (window.keplr) {
+    if (isKeplrInstalled()) {
       window.addEventListener("keplr_keystorechange",
         async () => {
           await connectAccount(chosenNetwork!, LEDGERS.KEPLR)
@@ -85,7 +86,7 @@ const App = () => {
         });
     }
 
-    if (window.cosmostation) {
+    if (isCosmostationInstalled()) {
       window.cosmostation.cosmos.on("accountChanged",
         async () => {
           await connectAccount(chosenNetwork!, LEDGERS.COSMOSTATION)
@@ -115,14 +116,16 @@ const App = () => {
           {location.pathname === NAVIGATION_PATH.Home ? null : (
             <Layout>
               <Routes>
-                <Route path="mint-tokens" element={<MintTokens />} />
-                <Route path="assets">
-                  <Route index element={<Assets />} />
-                  <Route element={<RequireConnectedWallet />}>
-                    <Route element={<RequireValidContractAddress />}>
-                      <Route path=":contractAddress" element={<ContractDetails />} />
+                <Route path={NAVIGATION_PATH.MintTokens} element={<MintTokens />} />
+                <Route element={<RequireConnectedWallet />}>
+                  {[NAVIGATION_PATH.AllAssets, NAVIGATION_PATH.MyAssets].map(path => (
+                    <Route path={path}>
+                      <Route index element={<Assets />} />
+                      <Route element={<RequireValidContractAddress />}>
+                        <Route path=":contractAddress" element={<ContractDetails />} />
+                      </Route>
                     </Route>
-                  </Route>
+                  ))}
                 </Route>
                 <Route path="*" element={<Navigate to={NAVIGATION_PATH.Home} state={{ from: location }} />} />
               </Routes>
