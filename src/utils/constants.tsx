@@ -18,7 +18,7 @@ import { JdenticonConfig } from "jdenticon"
 export const PREAPPROVED_CODE_IDS = {
     NETWORK: {
         LOCAL: [25].sort(),
-        PRIVATE: [18].sort(),
+        PRIVATE: [30].sort(),
         PUBLIC: [].sort(),
         MAINNET: [].sort(),
     }
