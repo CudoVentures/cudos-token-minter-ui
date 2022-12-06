@@ -129,7 +129,7 @@ const ContractDetails = () => {
     }, [displayEditIcon])
 
     useEffect(() => {
-        
+
         if (displayAddToWalletIcon) {
             addToWalletIcon.current!.style.visibility = 'visible'
             addToWalletIcon.current!.style.opacity = '1'
@@ -162,7 +162,7 @@ const ContractDetails = () => {
                     ...selectedAsset,
                     totalSupply: fetchedContractData.cw20token_info_by_pk?.max_supply || undefined,
                     circulatingSupply: fetchedContractData.cw20token_info_by_pk?.circulating_supply,
-                    logoUrl: JSON.parse(fetchedContractData.cw20token_info_by_pk?.logo!).url
+                    logoUrl: fetchedContractData.cw20token_info_by_pk?.logo! !== 'null' ? JSON.parse(fetchedContractData.cw20token_info_by_pk?.logo!).url : ''
                 }
             }))
         }

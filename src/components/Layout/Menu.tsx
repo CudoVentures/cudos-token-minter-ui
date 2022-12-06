@@ -5,6 +5,7 @@ import { RootState } from 'store'
 import { AssetsView, updateAssetsNavigation } from 'store/assetsNavigation'
 import { APP_MENU, NAVIGATION_PATH } from 'utils/constants'
 import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
+import { isViewingMyAssets } from 'utils/helpers'
 import { styles } from './styles'
 
 const Menu = () => {
@@ -27,14 +28,10 @@ const Menu = () => {
             return false
         }
 
-        if ((
-            currentAssetsView === AssetsView.MyAssets ||
-            currentAssetsView === AssetsView.Others ||
-            currentAssetsView === AssetsView.Owned
-        ) && route === NAVIGATION_PATH.AllAssets) {
+        if (isViewingMyAssets(currentAssetsView!) && route === NAVIGATION_PATH.AllAssets) {
             return true
         }
-        
+
         if (location.pathname.includes(route)) {
             return true
         }

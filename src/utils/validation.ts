@@ -76,6 +76,16 @@ export const isValidTokenObject = async (tokenObject: CW20.TokenObject, tokenTyp
       continue
     }
 
+    if (key === 'initialSupply') {
+
+      if (new BigNumber(sanitizedTokenObject[key]!).isLessThanOrEqualTo(0)) {
+        informativeError = `${key} should be positive number`
+        result = false
+        break
+      }
+
+    }
+
     if (key === 'logoUrl') {
 
       //Having an image URL is optional field

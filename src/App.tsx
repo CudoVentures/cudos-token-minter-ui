@@ -118,8 +118,8 @@ const App = () => {
               <Routes>
                 <Route path={NAVIGATION_PATH.MintTokens} element={<MintTokens />} />
                 <Route element={<RequireConnectedWallet />}>
-                  {[NAVIGATION_PATH.AllAssets, NAVIGATION_PATH.MyAssets].map(path => (
-                    <Route path={path}>
+                  {[NAVIGATION_PATH.AllAssets, NAVIGATION_PATH.MyAssets].map((path, idx) => (
+                    <Route key={idx} path={path}>
                       <Route index element={<Assets />} />
                       <Route element={<RequireValidContractAddress />}>
                         <Route path=":contractAddress" element={<ContractDetails />} />
