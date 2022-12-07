@@ -37,7 +37,7 @@ const Assets = () => {
             const myData: CW20.TokenObject[] = []
             data.cw20token_info.forEach((item) => {
                 const fetchedItem: CW20.TokenObject = {
-                    logoUrl: JSON.parse(item.logo!).url!,
+                    logoUrl: item.logo !== 'null' ? JSON.parse(item.logo!).url! : '',
                     decimalPrecision: item.decimals,
                     circulatingSupply: item.circulating_supply,
                     name: item.name,
