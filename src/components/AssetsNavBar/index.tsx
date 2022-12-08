@@ -8,14 +8,14 @@ import { NAVIGATION_PATH } from "utils/constants"
 import { useMidlowResCheck } from "utils/CustomHooks/screenChecks"
 import useNavigateToRoute from "utils/CustomHooks/useNavigateToRoute"
 import SearchBar from "./components/SearchBar"
-import ViewAssets from "./components/ViewAssets"
+import ViewAllAssets from "./components/ViewAllAssets"
 import ViewNetworkFilter from "./components/ViewNetworkFilter"
 import ViewTokenTypeFilter from "./components/ViewTokenTypeFilter"
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { styles } from "./styles"
 import { COLORS_DARK_THEME } from "theme/colors"
 import ViewConnectedNetwork from "./components/ViewConnectedNetwork"
-import { CollapsableSubMenu } from "./helpers"
+import ViewMyAssetsFilter from "./components/ViewMyAssetsFilter"
 
 export const getConcatenatedText = (text: string): string => {
     return `${text} ${"Tokens"}`
@@ -74,7 +74,6 @@ const AssetsNavBar = () => {
     const removableContent = useRef<HTMLDivElement>()
     const isMidLowRes = useMidlowResCheck()
     const { activeSearch } = useSelector((state: RootState) => state.assetsNavState)
-    const { allAssets, myAssets } = useSelector((state: RootState) => state.assetsState)
     const { address, connectedLedger } = useSelector((state: RootState) => state.userState)
     const [removedContent, setRemovedContent] = useState<boolean>(false)
     const connectedUser = address && connectedLedger
@@ -103,16 +102,11 @@ const AssetsNavBar = () => {
                     Assets
                 </Typography>
                 <Box gap={4} display={'flex'} alignItems={'center'}>
-                    <ViewAssets assetsView={AssetsView.AllAssets} assetsCount={allAssets!.length} />
+                    <ViewAllAssets />
                     {address && connectedLedger ?
-                        <ViewAssets
-                            assetsView={AssetsView.MyAssets}
-                            assetsCount={
-                                myAssets?.owned?.length! + myAssets?.haveBalanceFrom?.length!
-                            }
-                        /> : null}
+                        <ViewMyAssetsFilter />
+                        : null}
                 </Box>
-                <CollapsableSubMenu />
             </Box>
             <Box id='right-menu' gap={2} display={'flex'} alignItems={'center'}>
                 {
@@ -130,4 +124,5 @@ const AssetsNavBar = () => {
         </Box>
     )
 }
+
 export default AssetsNavBar

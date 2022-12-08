@@ -6,6 +6,13 @@ import { isValidCudosAddress } from "./validation"
 import { TOKEN_TYPE } from "components/TokenDetails/helpers"
 import { separateDecimals, separateFractions, setDecimalPrecisionTo } from "./regexFormatting"
 import { CW20 } from "types/CW20"
+import { AssetsView } from "store/assetsNavigation"
+
+export const isViewingMyAssets = (view: AssetsView) => {
+  return view === AssetsView.MyAssets ||
+    view === AssetsView.Others ||
+    view === AssetsView.Owned
+}
 
 //Imporving UX at certain screen transitions
 export const delay = (ms: number) => {

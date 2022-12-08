@@ -33,7 +33,7 @@ export const styles = {
         borderTop: "1px solid rgba(65, 73, 99, 0.3)",
         padding: '0.8rem 1rem',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         display: 'flex',
         flex: '1'
     },
@@ -79,6 +79,33 @@ export const styles = {
     menuProps: {
         PaperProps: {
             sx: {
+                width: '220px',
+                marginTop: '15px',
+                borderRadius: '10px',
+                background: COLORS_DARK_THEME.LIGHT_BACKGROUND,
+                '& .MuiMenuItem-root': {
+                    background: COLORS_DARK_THEME.LIGHT_BACKGROUND,
+                    borderRadius: '10px',
+                    "&:hover": {
+                        cursor: 'pointer',
+                        background: 'rgba(99, 109, 143, 0.2)'
+                    },
+                    "&:focus": {
+                        background: COLORS_DARK_THEME.LIGHT_BACKGROUND
+                    },
+                    "&:focus:hover": {
+                        background: "rgba(99, 109, 143, 0.2)"
+                    },
+                    padding: '12px',
+                    margin: 0.5
+                },
+            },
+        },
+    },
+    myAssets: {
+        PaperProps: {
+            sx: {
+                marginLeft: '40px',
                 width: '220px',
                 marginTop: '15px',
                 borderRadius: '10px',

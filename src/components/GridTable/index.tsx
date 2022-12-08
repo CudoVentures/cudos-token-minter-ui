@@ -1,6 +1,6 @@
 import { Box, Grid, Pagination, PaginationItem, Typography } from '@mui/material'
 import Card from 'components/Card/Card'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
@@ -16,6 +16,7 @@ import useNavigateToRoute from 'utils/CustomHooks/useNavigateToRoute'
 import { NAVIGATION_PATH } from 'utils/constants'
 import { displayTokenValueWithPrecisionTooltip } from 'containers/ContractDetails/components/helpers'
 import { AssetsView } from 'store/assetsNavigation'
+import { isViewingMyAssets } from 'utils/helpers'
 
 const GridTable = ({ displayData }: { displayData: any[] }) => {
 
@@ -141,50 +142,57 @@ const GridTable = ({ displayData }: { displayData: any[] }) => {
     }, [currentAssetsView])
 
     return (filteredData.length < 1 ? <NoAssetsView failedSearch={true} /> :
-        <Box ref={contentHolder} gap={2} sx={styles.contentHolder} >
-            <Grid container
-                style={styles.gridHolder}
-                spacing={{ xs: 2 }}
-                columns={{
-                    lg: dataLength < maxItemPerRow ? dataLength : maxItemPerRow,
-                    md: dataLength < 3 ? dataLength : 3,
-                    sm: 2,
-                    xs: 2
-                }}
-            >
-                {filteredData.map((TOKEN, idx) => {
-                    return (
-                        <Grid item
-                            key={idx}
-                            lg={1}
-                            xs={1}
-                            style={{ textAlign: "center" }}
-                        >
-                            <TokenCard token={TOKEN} />
-                        </Grid>
-                    )
-                })}
-            </Grid>
-            {dataLength > maxItemsPerPage ?
-                <Box style={styles.pagination}>
-                    <Pagination
-                        color='primary'
-                        shape={'rounded'}
-                        onChange={handlePageChange}
-                        count={Math.ceil(dataLength / maxItemsPerPage)}
-                        renderItem={(item) => (
-                            <PaginationItem
-                                components={{
-                                    previous: KeyboardArrowLeftIcon,
-                                    next: KeyboardArrowRightIcon
-                                }}
-                                {...item}
-                            />
-                        )}
-                    />
-                </Box> : null
+        <Fragment>
+            {isViewingMyAssets(currentAssetsView!) && currentAssetsView !== AssetsView.MyAssets ?
+                <Typography color={'text.secondary'} marginLeft={'1rem'}>
+                    {currentAssetsView?.toUpperCase()}
+                </Typography> : null
             }
-        </Box>
+            <Box ref={contentHolder} gap={2} sx={styles.contentHolder} >
+                <Grid container
+                    style={styles.gridHolder}
+                    spacing={{ xs: 2 }}
+                    columns={{
+                        lg: dataLength < maxItemPerRow ? dataLength : maxItemPerRow,
+                        md: dataLength < 3 ? dataLength : 3,
+                        sm: 2,
+                        xs: 2
+                    }}
+                >
+                    {filteredData.map((TOKEN, idx) => {
+                        return (
+                            <Grid item
+                                key={idx}
+                                lg={1}
+                                xs={1}
+                                style={{ textAlign: "center" }}
+                            >
+                                <TokenCard key={idx} token={TOKEN} />
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+                {dataLength > maxItemsPerPage ?
+                    <Box style={styles.pagination}>
+                        <Pagination
+                            color='primary'
+                            shape={'rounded'}
+                            onChange={handlePageChange}
+                            count={Math.ceil(dataLength / maxItemsPerPage)}
+                            renderItem={(item) => (
+                                <PaginationItem
+                                    components={{
+                                        previous: KeyboardArrowLeftIcon,
+                                        next: KeyboardArrowRightIcon
+                                    }}
+                                    {...item}
+                                />
+                            )}
+                        />
+                    </Box> : null
+                }
+            </Box>
+        </Fragment>
     )
 }
 

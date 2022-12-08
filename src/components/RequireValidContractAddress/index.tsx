@@ -39,7 +39,7 @@ const RequireValidContractAddress = () => {
             const itemData = data.cw20token_info[0]
 
             const fetchedItem: CW20.TokenObject = {
-                logoUrl: JSON.parse(itemData.logo!).url!,
+                logoUrl: itemData.logo! !== 'null' ? JSON.parse(itemData.logo!).url! : '',
                 decimalPrecision: itemData.decimals,
                 circulatingSupply: itemData.circulating_supply,
                 name: itemData.name,

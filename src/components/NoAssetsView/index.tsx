@@ -22,7 +22,7 @@ const NoAssetsView = ({ failedSearch }: { failedSearch?: boolean }) => {
         }
 
         if (view === AssetsView.Others) {
-            return 'You hold no balances'
+            return 'You hold no balances from other tokens'
         }
 
 

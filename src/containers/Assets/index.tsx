@@ -43,7 +43,7 @@ const Assets = () => {
             }
             data.cw20token_info.forEach((item) => {
                 const fetchedItem: CW20.TokenObject = {
-                    logoUrl: JSON.parse(item.logo!).url!,
+                    logoUrl: item.logo !== 'null' ? JSON.parse(item.logo!).url! : '',
                     decimalPrecision: item.decimals,
                     circulatingSupply: item.circulating_supply,
                     name: item.name,
@@ -54,12 +54,12 @@ const Assets = () => {
                     owner: item.creator!,
                 }
                 allData.push(fetchedItem)
-                
+
                 if (fetchedItem.owner === loggedInUser) {
                     myData.owned.push(fetchedItem)
                 }
 
-                if (item.balances.length) {
+                if (fetchedItem.owner !== loggedInUser && item.balances.length) {
                     myData.haveBalanceFrom.push(fetchedItem)
                 }
             })
