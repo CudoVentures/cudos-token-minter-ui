@@ -59,7 +59,8 @@ const NetworkInfo = ({ componentStyle }: { componentStyle: 'menu' | 'nav' }) => 
     setOpen(false)
   }
   const disabledDropDown = !address
-  const collapsable = networksToDisplayInMenu.length > 1
+  // const collapsable = networksToDisplayInMenu.length > 1
+  const collapsable = false
   const isMenu = componentStyle === 'menu'
 
   return (
