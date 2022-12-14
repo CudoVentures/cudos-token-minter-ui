@@ -69,11 +69,13 @@ export const addPrecision = (amount: string, precision: number): string => {
 
 export const getSanitizedTokenObject = (oldObject: CW20.TokenObject): CW20.TokenObject => {
 
+  const precision = oldObject.decimalPrecision || 0
+
   return {
     ...oldObject,
     name: oldObject.name?.trim(),
-    initialSupply: addPrecision(sanitizeString(oldObject.initialSupply!), oldObject.decimalPrecision!),
-    totalSupply: addPrecision(sanitizeString(oldObject.totalSupply!), oldObject.decimalPrecision!)
+    initialSupply: addPrecision(sanitizeString(oldObject.initialSupply!), precision),
+    totalSupply: addPrecision(sanitizeString(oldObject.totalSupply!), precision)
   }
 }
 

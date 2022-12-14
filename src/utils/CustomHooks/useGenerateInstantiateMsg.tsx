@@ -7,7 +7,8 @@ import { CW20 } from "types/CW20"
 
 interface BasicMsg {
     msg: Omit<ContractMsgInstantiate, 'token_type'>,
-    extendedWith: (chosenType: Record<string, unknown>) => void
+    addTokenType: (chosenType: Record<string, unknown>) => void
+    handleLogo: (logoUrl: string | undefined) => void
 }
 
 const useGenerateInstantiateMsg = () => {
@@ -28,30 +29,36 @@ const useGenerateInstantiateMsg = () => {
                     address: address!,
                     amount: tokenObject.initialSupply!
                 }],
-                marketing: {
-                    logo: {
-                        url: tokenObject.logoUrl!
-                    }
-                },
             },
-            extendedWith(chosenType: Record<string, unknown>) {
+            addTokenType(chosenType: Record<string, unknown>) {
                 return {
                     ...this.msg,
                     token_type: chosenType
                 }
+            },
+            handleLogo(logoUrl: string | undefined) {
+                Object.assign(this.msg, {
+                    marketing: logoUrl ? {
+                        logo: {
+                            url: logoUrl
+                        }
+                    } : {}
+                })
             }
         }
 
+        basicMsg.handleLogo(tokenObject.logoUrl)
+
         if (tokenType === TOKEN_TYPE.Standard) {
-            return basicMsg.extendedWith({ standard: {} })
+            return basicMsg.addTokenType({ standard: {} })
         }
 
         if (tokenType === TOKEN_TYPE.Burnable) {
-            return basicMsg.extendedWith({ burnable: {} })
+            return basicMsg.addTokenType({ burnable: {} })
         }
 
         if (tokenType === TOKEN_TYPE.Mintable) {
-            return basicMsg.extendedWith({
+            return basicMsg.addTokenType({
                 mintable: {
                     minter: address!,
                     cap: tokenObject.totalSupply!
@@ -60,7 +67,7 @@ const useGenerateInstantiateMsg = () => {
         }
 
         if (tokenType === TOKEN_TYPE.Unlimited) {
-            return basicMsg.extendedWith({
+            return basicMsg.addTokenType({
                 unlimited: {
                     minter: address!
                 }
