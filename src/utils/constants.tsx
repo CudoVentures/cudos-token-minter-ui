@@ -115,6 +115,10 @@ export const LEDGERS = {
 
 //APP CONFIG
 
+export const APP_DETAILS = {
+    DEPLOYMENT_VERSION: import.meta.env.VITE_APP_DEPLOYMENT_VERSION || process.env.VITE_APP_DEPLOYMENT_VERSION || ""
+}
+
 export const JD_CONFIG: JdenticonConfig = {
     hues: [204],
     lightness: {
@@ -161,7 +165,8 @@ export const FOOTER = {
         { text: 'Terms & Conditions', url: 'https://www.cudos.org/terms-and-conditions/' },
         { text: 'Privacy Policy', url: 'https://www.cudos.org/privacy-policy' },
         { text: 'cudos.org', url: 'https://www.cudos.org/' },
-        { text: `License © 2018 - ${moment().year()}`, url: 'https://www.cudos.org/' }
+        { text: `License © 2018 - ${moment().year()}`, url: 'https://www.cudos.org/' },
+        { text: `${APP_DETAILS.DEPLOYMENT_VERSION}`, url: `https://github.com/CudoVentures/cudos-dashboard/releases/tag/${APP_DETAILS.DEPLOYMENT_VERSION}` }
     ],
     RIGHT_LINKS: [
         { icon: <TwitterIcon />, url: 'https://twitter.com/CUDOS_' },
